@@ -21,10 +21,19 @@ test.describe("Sutur one-page website", () => {
 
   test("booking CTA opens dialog", async ({ page }) => {
     await page.goto("/");
-    const bookButton = page.getByRole("button", {
-      name: /Book a free discovery call/i,
+
+    // Click the 3D business card to flip it
+    const bookingScene = page.locator(".booking-scene");
+    await expect(bookingScene).toBeVisible();
+    await bookingScene.click();
+
+    // Wait for flip animation, then click "Open booking form"
+    const openFormButton = page.getByRole("button", {
+      name: /Open booking form/i,
     });
-    await bookButton.first().click();
+    await expect(openFormButton).toBeVisible({ timeout: 5000 });
+    await openFormButton.click();
+
     // Dialog should be visible
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
@@ -32,11 +41,20 @@ test.describe("Sutur one-page website", () => {
 
   test("booking form shows validation errors", async ({ page }) => {
     await page.goto("/");
-    // Open dialog
-    await page
-      .getByRole("button", { name: /Book a free discovery call/i })
-      .first()
-      .click();
+
+    // Flip the 3D business card
+    const bookingScene = page.locator(".booking-scene");
+    await bookingScene.click();
+
+    // Open the form dialog
+    const openFormButton = page.getByRole("button", {
+      name: /Open booking form/i,
+    });
+    await expect(openFormButton).toBeVisible({ timeout: 5000 });
+    await openFormButton.click();
+
+    // Wait for dialog
+    await expect(page.getByRole("dialog")).toBeVisible();
 
     // Try to submit empty form
     const submitButton = page.getByRole("button", {

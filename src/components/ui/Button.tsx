@@ -20,18 +20,11 @@ type ButtonAsLink = ButtonBaseProps &
 type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const baseClasses =
-  "inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sutur-active-orange)] disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]";
-
-const variantClasses: Record<string, string> = {
-  primary:
-    "bg-[var(--sutur-active-orange)] text-white hover:brightness-110 active:brightness-95 shadow-sm",
-  secondary:
-    "border-2 border-[var(--sutur-deep-interface)] text-[var(--sutur-deep-interface)] hover:bg-[var(--sutur-soft-signal)] active:bg-[var(--sutur-soft-signal)]",
-};
+  "btn-primary";
 
 const sizeClasses: Record<string, string> = {
-  default: "px-5 py-2.5 text-sm",
-  lg: "px-8 py-3.5 text-base",
+  default: "",
+  lg: "btn-lg",
 };
 
 export default function Button(props: ButtonProps) {
@@ -43,7 +36,7 @@ export default function Button(props: ButtonProps) {
     ...rest
   } = props;
 
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const classes = `${baseClasses} ${sizeClasses[size]} ${className}`;
 
   if (props.href !== undefined) {
     const { href, ...anchorProps } = rest as ButtonAsLink;
