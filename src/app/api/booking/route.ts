@@ -1,4 +1,0 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { bookingSchema } from '@/lib/booking/schema';
-export async function GET(request: NextRequest) { const date = request.nextUrl.searchParams.get('date'); if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return NextResponse.json({ error: 'A valid date is required.' }, { status: 400 }); const day = new Date(`${date}T12:00:00`).getDay(); return NextResponse.json({ slots: day === 0 || day === 6 ? [] : ['09:30', '11:00', '14:00', '15:30'], mode: 'mock' }); }
-export async function POST(request: NextRequest) { const result = bookingSchema.safeParse(await request.json()); if (!result.success) return NextResponse.json({ error: 'Invalid request', issues: result.error.flatten() }, { status: 400 }); return NextResponse.json({ id: `mock-${Date.now()}`, status: 'requested', mode: 'mock' }, { status: 201 }); }
