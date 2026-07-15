@@ -1,0 +1,1 @@
+export function Footer(){return <footer><div><strong>Sutur</strong><p>Tailored Odoo ERP systems and practical agents.</p></div><div><p>[Business contact email]</p><span>Privacy · Terms — legal copy pending</span></div><small>© 2026 Sutur. Local development preview.</small></footer>}

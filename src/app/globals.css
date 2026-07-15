@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --sutur-deep-interface: #3b1447;
+  --sutur-soft-signal: #ead1e5;
+  --sutur-active-orange: #f57e20;
+  --sutur-data-violet: #906fb1;
+  --surface: #fffdfb;
+  --ink: #25152a;
+  --muted-ink: #655a67;
+  --line: color-mix(in srgb, var(--sutur-deep-interface) 18%, transparent);
+}
+
+@theme inline {
+  --color-deep-interface: var(--sutur-deep-interface);
+  --color-soft-signal: var(--sutur-soft-signal);
+  --color-active-orange: var(--sutur-active-orange);
+  --color-data-violet: var(--sutur-data-violet);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted-ink: var(--muted-ink);
+  --color-line: var(--line);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: Arial, Helvetica, sans-serif;
+}
+
+/* Remove dark mode default — Sutur is light-only */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #fffdfb;
+    --ink: #25152a;
+    --muted-ink: #655a67;
+  }
+}
+
+body {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility: focus styles */
+*:focus-visible {
+  outline: 2px solid var(--sutur-active-orange);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Selection */
+::selection {
+  background: var(--sutur-soft-signal);
+  color: var(--sutur-deep-interface);
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+*{box-sizing:border-box} body{margin:0} a{color:inherit;text-decoration:none} .site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 0;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.brand{display:flex}.desktop-nav{display:flex;align-items:center;gap:1.8rem;font-weight:700}.menu{display:none}.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:.8rem 1.25rem;border:0;border-radius:999px;background:var(--sutur-active-orange);color:#28122f;font-weight:800;box-shadow:0 8px 24px #f57e2033}.button.small{min-height:44px}.hero,.section{padding:7rem 0}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:4rem;align-items:center;min-height:82vh}.hero-copy{max-width:700px}h1,h2,h3{color:var(--sutur-deep-interface);line-height:1.04;margin:.5rem 0 1rem}h1{font-size:clamp(3rem,6vw,6.3rem);letter-spacing:-.06em}h2{font-size:clamp(2.25rem,4.5vw,4.5rem);letter-spacing:-.045em}.lead{font-size:clamp(1.1rem,1.8vw,1.4rem);line-height:1.6;color:var(--muted-ink)}.hero-actions{display:flex;gap:1.3rem;align-items:center;margin:2rem 0}.partner-placeholder{display:grid;grid-template-columns:auto 1fr;max-width:420px;gap:.15rem 1rem;padding:1rem;border:1px dashed var(--sutur-data-violet);border-radius:16px;background:#ead1e544}.partner-placeholder small{grid-column:2;color:var(--muted-ink)}.partner-placeholder span{grid-row:1/3;align-self:center;font-size:.7rem;text-transform:uppercase;color:var(--sutur-data-violet)}.section{border-top:1px solid var(--line)}.split,.problem,.agents>.split,.team,.booking,.why{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}.issue-flow,.timeline{list-style:none;padding:0}.issue-flow li{display:flex;gap:1.3rem;padding:1.1rem 0;border-bottom:1px solid var(--line);font-size:1.2rem}.issue-flow span,.agent-list>article>span,.timeline>li>span{color:var(--sutur-active-orange);font-weight:800}.agent-list article{display:flex;gap:1.2rem;padding:1.25rem 0;border-bottom:1px solid var(--line)}.agent-list p,.why-list p,.timeline p{color:var(--muted-ink);line-height:1.6}.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:3rem;background:var(--line)}.timeline li{padding:1.5rem;background:var(--surface)}.why-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.why-list article,.team-list article{padding:1.6rem;border:1px solid var(--line);border-radius:20px;background:#ead1e52b}.team-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.portrait{aspect-ratio:1.4;border-radius:14px;background:var(--sutur-deep-interface);color:white;display:grid;place-items:center;font-size:2rem}.booking{background:var(--sutur-deep-interface);color:white;border-radius:32px;padding:clamp(2rem,6vw,5rem);margin:5rem 0}.booking h2{color:white}.booking .lead{color:#ead1e5}.booking-panel{background:var(--surface);color:var(--ink);padding:1.5rem;border-radius:24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}form label{display:grid;gap:.4rem;margin-bottom:1rem;font-weight:700}input,select,textarea{width:100%;min-height:48px;padding:.75rem;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.honeypot{position:absolute;left:-9999px}.micro{font-size:.8rem;color:var(--muted-ink)}footer{display:grid;grid-template-columns:1fr 1fr;gap:2rem;padding:3rem 0;border-top:1px solid var(--line)}footer small{grid-column:1/-1}.mobile-nav{position:fixed;inset:0;z-index:50;background:var(--sutur-deep-interface);color:white;padding:2rem}.mobile-nav nav{display:grid;gap:1rem;margin-top:4rem;font-size:2rem}.mobile-nav button{float:right;min-width:44px;min-height:44px}.success{padding:2rem;border-radius:16px;background:#ead1e5;color:var(--ink)}
+@media(max-width:760px){.desktop-nav{display:none}.menu{display:block;min-width:44px;min-height:44px}.hero,.split,.problem,.agents>.split,.team,.booking,.why{grid-template-columns:1fr;gap:2.5rem}.hero,.section{padding:4rem 0}.hero{min-height:auto}.timeline{grid-template-columns:1fr}.form-grid,.team-list,.why-list{grid-template-columns:1fr}footer{grid-template-columns:1fr}.hero-actions{align-items:flex-start;flex-direction:column}h1{font-size:3rem}}
+
