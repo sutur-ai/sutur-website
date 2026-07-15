@@ -5,14 +5,18 @@ export function HowItWorks() {
   return (
     <div className="container">
       <section className="section" id="process">
-        <SectionLabel>A clear route to launch</SectionLabel>
-        <h2 style={{ marginTop: '1rem' }}>See the direction before the build begins.</h2>
+        <div className="process-head">
+          <div>
+            <SectionLabel>A clear route to launch</SectionLabel>
+            <h2 style={{ marginTop: '1rem' }}>See the direction before the build begins.</h2>
+          </div>
+        </div>
         <ol className="timeline">
           {ENGAGEMENT_STAGES.map((stage, i) => (
             <li key={stage.title}>
-              <span className="step-num">{i + 1}</span>
-              <h3 style={{ marginTop: '.5rem' }}>{stage.title}</h3>
-              <p style={{ marginTop: '.3rem' }}>{stage.description}</p>
+              <div className="num">{String(i + 1).padStart(2, '0')}</div>
+              <h3>{stage.title}</h3>
+              <p>{stage.description}</p>
             </li>
           ))}
         </ol>

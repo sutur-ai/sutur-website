@@ -23,7 +23,7 @@ test.describe("Sutur one-page website", () => {
     await page.goto("/");
 
     // Click the 3D business card to flip it
-    const bookingScene = page.locator(".booking-scene");
+    const bookingScene = page.locator(".card-scene");
     await expect(bookingScene).toBeVisible();
     await bookingScene.click();
 
@@ -43,7 +43,7 @@ test.describe("Sutur one-page website", () => {
     await page.goto("/");
 
     // Flip the 3D business card
-    const bookingScene = page.locator(".booking-scene");
+    const bookingScene = page.locator(".card-scene");
     await bookingScene.click();
 
     // Open the form dialog

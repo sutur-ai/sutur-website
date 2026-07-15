@@ -15,19 +15,12 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <div className="section-divider" />
         <OperationalProblem />
-        <div className="section-divider" />
         <ErpSolutions />
-        <div className="section-divider" />
         <AgentSolutions />
-        <div className="section-divider" />
         <HowItWorks />
-        <div className="section-divider" />
         <WhySutur />
-        <div className="section-divider" />
         <Team />
-        <div className="section-divider" />
         <BookCall />
       </main>
       <Footer />

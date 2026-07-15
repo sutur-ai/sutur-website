@@ -15,28 +15,26 @@ export function Header() {
 
   return (
     <header className="site-header">
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <a className="brand" href="#top" aria-label="Sutur home">
+      <div className="container inner">
+        <a href="#top" aria-label="Sutur home">
           <SuturMark />
         </a>
         <nav className="desktop-nav" aria-label="Primary">
           {links.map(([t, h]) => (
             <a key={h} href={h}>{t}</a>
           ))}
-          <a className="btn-primary btn-sm" href="#book" style={{ color: '#2a1030' }}>Book a call</a>
+          <a href="#book" className="btn-nav">Book a call</a>
         </nav>
-        <button className="menu" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)}>
+        <button className="menu-toggle" aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)}>
           Menu
         </button>
       </div>
       {open && (
-        <div className="mobile-nav" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-          <header>
-            <SuturMark className="text-white" />
-            <button className="close-btn" aria-label="Close menu" onClick={() => setOpen(false)}>
-              Close
-            </button>
-          </header>
+        <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+          <div className="top">
+            <SuturMark />
+            <button className="close" aria-label="Close menu" onClick={() => setOpen(false)}>Close</button>
+          </div>
           <nav>
             {links.map(([t, h]) => (
               <a key={h} href={h} onClick={() => setOpen(false)}>{t}</a>

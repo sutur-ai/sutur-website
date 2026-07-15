@@ -4,8 +4,8 @@ import { agentPatterns } from '@/content/services';
 
 export function AgentSolutions() {
   return (
-    <div className="container">
-      <section className="section" id="agents">
+    <section className="section dark-section" id="agents">
+      <div className="container">
         <div className="agents-intro">
           <SectionLabel>Practical agents</SectionLabel>
           <h2 style={{ marginTop: '1rem' }}>Useful intelligence, inside clear boundaries.</h2>
@@ -13,11 +13,13 @@ export function AgentSolutions() {
             Agents are tailored to approved workflows and authorized company resources—not given unrestricted access or authority.
           </p>
         </div>
-        <div className="agents-grid">
-          <AgentKnowledgeDiagram />
-          <div>
+        <div className="agents-layout">
+          <div className="diagram-wrap">
+            <AgentKnowledgeDiagram />
+          </div>
+          <div className="agent-list">
             {agentPatterns.map((a, i) => (
-              <article key={a.title} className="agent-card glass">
+              <article key={a.title} className="agent-card">
                 <span className="agent-badge">0{i + 1}</span>
                 <div>
                   <h3>{a.title}</h3>
@@ -27,7 +29,7 @@ export function AgentSolutions() {
             ))}
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

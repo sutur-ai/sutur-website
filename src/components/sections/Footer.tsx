@@ -3,15 +3,19 @@ export function Footer() {
     <div className="container">
       <footer>
         <div className="footer-brand">
-          <strong>Sutur</strong>
+          <div className="brand-text">Sutur</div>
           <p>Tailored Odoo ERP systems and practical agents.</p>
         </div>
-        <div className="footer-meta">
+        <div className="footer-col">
+          <h4>Contact</h4>
           <p>[Business contact email]</p>
-          <span>Privacy · Terms — legal copy pending</span>
+        </div>
+        <div className="footer-col">
+          <h4>Legal</h4>
+          <p>Privacy · Terms — legal copy pending</p>
         </div>
         <div className="footer-copy">
-          © 2026 Sutur. Local development preview.
+          <span>© 2026 Sutur. Local development preview.</span>
         </div>
       </footer>
     </div>
