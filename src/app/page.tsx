@@ -13,16 +13,16 @@ export default function Home() {
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
-          <p className="eyebrow">TAILORED ODOO + PRACTICAL AGENTS</p>
+          <p className="eyebrow">PASSIONATE ABOUT YOUR PROCESS</p>
           <h1>
-            We build the operating system
+            Your process deserves
             <br />
-            <em>your business deserves.</em>
+            <em>people who care.</em>
           </h1>
           <p className="lead">
-            A small, focused team building tailored Odoo systems and AI agents —
-            with the precision your operations deserve and the care your team
-            will feel.
+            We&apos;re a young, passionate team — and we bring that energy to
+            every Odoo system and AI agent we build. Our goal is simple: your
+            operations get smoother, your team&apos;s work gets easier.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">
