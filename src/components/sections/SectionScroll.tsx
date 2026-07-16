@@ -149,7 +149,10 @@ export function SectionScroll() {
           aria-label="Previous section"
           onClick={() => move(-1)}
         >
-          <span aria-hidden="true">↑</span>
+          <svg aria-hidden="true" viewBox="0 0 20 12">
+            <path d="M2 10 10 2l8 8" />
+          </svg>
+          <span className="section-cue-line" aria-hidden="true" />
           <small>Previous</small>
         </button>
       )}
@@ -161,7 +164,10 @@ export function SectionScroll() {
           onClick={() => move(1)}
         >
           <small>Explore</small>
-          <span aria-hidden="true">↓</span>
+          <span className="section-cue-line" aria-hidden="true" />
+          <svg aria-hidden="true" viewBox="0 0 20 12">
+            <path d="m2 2 8 8 8-8" />
+          </svg>
         </button>
       )}
     </>

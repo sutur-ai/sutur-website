@@ -91,6 +91,10 @@ describe("homepage section rhythm", () => {
     expect(sectionScroll).toContain('aria-label="Previous section"');
     expect(sectionScroll).toContain('aria-label="Next section"');
     expect(sectionScroll).toMatch(/dispatchEvent\([\s\S]*new WheelEvent/);
+    expect(sectionScroll).toContain('<svg');
+    expect(sectionScroll).toContain('className="section-cue-line"');
+    expect(css).toMatch(/\.section-cue\s*{[^}]*background:\s*transparent/s);
+    expect(css).toMatch(/\.section-cue\s*{[^}]*border:\s*0/s);
     expect(css).toMatch(/@keyframes\s+cue-down/);
     expect(css).toMatch(/@keyframes\s+cue-up/);
   });
