@@ -1,4 +1,11 @@
-export const modules = ['CRM', 'Sales', 'Purchasing', 'Accounting', 'Manufacturing', 'Inventory'];
+export const odooModules = [
+  { name: 'CRM', description: 'Relationships, pipeline, and the next right move.', icon: '/brand/odoo-modules/crm.png' },
+  { name: 'Sales', description: 'Quotes, approvals, and every deal in one place.', icon: '/brand/odoo-modules/sales.png' },
+  { name: 'Accounting', description: 'Invoices, payments, and live financial visibility.', icon: '/brand/odoo-modules/accounting.png' },
+  { name: 'Inventory', description: 'Reliable stock, movements, and replenishment.', icon: '/brand/odoo-modules/inventory.png' },
+  { name: 'Purchasing', description: 'Demand, suppliers, and purchase follow-through.', icon: '/brand/odoo-modules/purchasing.png' },
+  { name: 'Manufacturing', description: 'Work orders, planning, and production control.', icon: '/brand/odoo-modules/manufacturing.png' },
+] as const;
 export const agentExamples = [
   ['01', 'Knowledge agent', 'Grounded answers from the documents your team already trusts.'],
   ['02', 'Reporting assistant', 'Clear, role-aware answers from operational data.'],

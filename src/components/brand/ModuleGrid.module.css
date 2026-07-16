@@ -1,0 +1,138 @@
+.grid {
+  width: min(100%, 650px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.module {
+  --accent: var(--violet);
+  position: relative;
+  min-width: 0;
+  min-height: 202px;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 21, 32, 0.2);
+  border-top: 4px solid var(--accent);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--accent), transparent 85%), transparent 38%),
+    rgba(250, 245, 236, 0.82);
+  box-shadow: 4px 4px 0 rgba(26, 21, 32, 0.1);
+}
+
+.module:nth-child(2) { --accent: var(--orange); }
+.module:nth-child(3) { --accent: #a76a18; }
+.module:nth-child(4) { --accent: #1f6887; }
+.module:nth-child(5) { --accent: #3f735c; }
+.module:nth-child(6) { --accent: #8d3d59; }
+
+.topline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.number {
+  padding-top: 4px;
+  color: var(--accent);
+  font: 700 11px/1 Inter, Arial, sans-serif;
+  letter-spacing: 0.16em;
+}
+
+.logo {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 68%);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.logo img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.information {
+  position: relative;
+  z-index: 1;
+}
+
+.overline {
+  margin: 12px 0 5px;
+  color: var(--accent);
+  font: 700 10px/1 Inter, Arial, sans-serif;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.module h3 {
+  margin: 0;
+  color: var(--ink);
+  font: 500 clamp(25px, 2.1vw, 31px)/1 Fraunces, serif;
+  letter-spacing: -0.045em;
+}
+
+.description {
+  max-width: 260px;
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .module {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 16px;
+    padding: 17px 18px;
+    border-radius: 16px;
+  }
+
+  .topline {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 12px;
+  }
+
+  .number {
+    padding: 0;
+  }
+
+  .logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+  }
+
+  .logo img {
+    width: 47px;
+    height: 47px;
+  }
+
+  .overline {
+    margin-top: 0;
+  }
+
+  .module h3 {
+    font-size: clamp(26px, 8vw, 31px);
+  }
+
+  .description {
+    max-width: none;
+    margin-top: 8px;
+  }
+}
