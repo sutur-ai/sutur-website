@@ -1,72 +1,59 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './ModuleDeck.module.css';
 
 const modules = [
-  ['CRM', '/brand/odoo-modules/crm.png'],
-  ['Sales', '/brand/odoo-modules/sales.png'],
-  ['Accounting', '/brand/odoo-modules/accounting.png'],
-  ['Inventory', '/brand/odoo-modules/inventory.png'],
-  ['Purchasing', '/brand/odoo-modules/purchasing.png'],
-  ['Manufacturing', '/brand/odoo-modules/manufacturing.png'],
+  ['CRM', 'Relationships, pipeline, and the next right move.', '/brand/odoo-modules/crm.png'],
+  ['Sales', 'Quotes, approvals, and every deal in one place.', '/brand/odoo-modules/sales.png'],
+  ['Accounting', 'Invoices, payments, and live financial visibility.', '/brand/odoo-modules/accounting.png'],
+  ['Inventory', 'Reliable stock, movements, and replenishment.', '/brand/odoo-modules/inventory.png'],
+  ['Purchasing', 'Demand, suppliers, and purchase follow-through.', '/brand/odoo-modules/purchasing.png'],
+  ['Manufacturing', 'Work orders, planning, and production control.', '/brand/odoo-modules/manufacturing.png'],
 ] as const;
-
-function signedDistance(index: number, active: number) {
-  const distance = index - active;
-  const half = modules.length / 2;
-  return distance > half ? distance - modules.length : distance < -half ? distance + modules.length : distance;
-}
 
 export function ModuleDeck() {
   const [active, setActive] = useState(0);
-  const touchStart = useRef<number | null>(null);
-  const previous = useCallback(() => setActive((current) => (current - 1 + modules.length) % modules.length), []);
-  const next = useCallback(() => setActive((current) => (current + 1) % modules.length), []);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') previous();
-      if (event.key === 'ArrowRight') next();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [next, previous]);
+  const scrollTo = (index: number) => cardRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  const previous = () => scrollTo((active - 1 + modules.length) % modules.length);
+  const next = () => scrollTo((active + 1) % modules.length);
+  const updateActive = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const middle = track.getBoundingClientRect().left + track.clientWidth / 2;
+    let nearest = active;
+    let smallestDistance = Infinity;
+    cardRefs.current.forEach((card, index) => {
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - middle);
+      if (distance < smallestDistance) { smallestDistance = distance; nearest = index; }
+    });
+    setActive((current) => current === nearest ? current : nearest);
+  };
 
-  return (
-    <section
-      className={styles.deck}
-      aria-label="Browse core Odoo modules"
+  return <section className={styles.deck} aria-label="Browse core Odoo modules">
+    <div
+      className={styles.track}
+      ref={trackRef}
       tabIndex={0}
-      onWheel={(event) => { if (Math.abs(event.deltaY) > 12) { event.preventDefault(); event.deltaY > 0 ? next() : previous(); } }}
-      onPointerDown={(event) => { touchStart.current = event.clientX; }}
-      onPointerUp={(event) => { if (touchStart.current === null) return; const distance = event.clientX - touchStart.current; if (Math.abs(distance) > 35) distance > 0 ? previous() : next(); touchStart.current = null; }}
+      onScroll={updateActive}
+      onKeyDown={(event) => { if (event.key === 'ArrowLeft') { event.preventDefault(); previous(); } if (event.key === 'ArrowRight') { event.preventDefault(); next(); } }}
+      onWheel={(event) => { if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) { event.preventDefault(); trackRef.current?.scrollBy({ left: event.deltaY, behavior: 'auto' }); } }}
     >
-      <div className={styles.stage} aria-live="polite">
-        {modules.map(([name, icon], index) => {
-          const position = signedDistance(index, active);
-          const isActive = position === 0;
-          return <button
-            className={`${styles.card} ${isActive ? styles.active : ''}`}
-            key={name}
-            type="button"
-            aria-label={`Show ${name}`}
-            aria-current={isActive ? 'true' : undefined}
-            onClick={() => setActive(index)}
-            style={{ '--position': position, '--depth': Math.abs(position) } as React.CSSProperties}
-          >
-            <span className={styles.number}>{String(index + 1).padStart(2, '0')}</span>
-            <img src={icon} alt="" width={100} height={100} />
-            <strong>{name}</strong>
-            {isActive && <span className={styles.current}>Odoo module</span>}
-          </button>;
-        })}
-      </div>
-      <div className={styles.controls}>
-        <button type="button" onClick={previous} aria-label="Previous module">←</button>
-        <p><b>{String(active + 1).padStart(2, '0')}</b> / {String(modules.length).padStart(2, '0')} <span>Scroll, swipe, or use the arrows</span></p>
-        <button type="button" onClick={next} aria-label="Next module">→</button>
-      </div>
-    </section>
-  );
+      {modules.map(([name, description, icon], index) => <article className={styles.card} key={name} ref={(card) => { cardRefs.current[index] = card; }} aria-current={active === index ? 'true' : undefined}>
+        <div className={styles.cardHead}><span>{String(index + 1).padStart(2, '0')}</span><img src={icon} alt={`${name} icon`} width={100} height={100} /></div>
+        <div><p className={styles.overline}>Odoo module</p><h3>{name}</h3><p className={styles.description}>{description}</p></div>
+        <span className={styles.spine}>SUTUR × ODOO</span>
+      </article>)}
+    </div>
+    <div className={styles.controls}>
+      <button type="button" onClick={previous} aria-label="Previous module">←</button>
+      <p><b>{String(active + 1).padStart(2, '0')}</b> / {String(modules.length).padStart(2, '0')}<span>Scroll freely. It settles on the closest module.</span></p>
+      <button type="button" onClick={next} aria-label="Next module">→</button>
+    </div>
+  </section>;
 }
