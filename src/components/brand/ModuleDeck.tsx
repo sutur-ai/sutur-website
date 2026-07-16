@@ -24,6 +24,7 @@ export function ModuleDeck() {
   const [dragX, setDragState] = useState(0);
   const [motionSide, setMotionSide] = useState<Direction | 0>(0);
   const [phase, setPhaseState] = useState<Phase>('idle');
+  const [recycling, setRecycling] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const activePointer = useRef<number | null>(null);
   const originX = useRef(0);
@@ -50,11 +51,15 @@ export function ModuleDeck() {
 
   const exitDistance = () => cardWidth() * 1.22;
 
-  const finishReset = () => {
+  const finishReset = (recycledCard?: number) => {
+    if (recycledCard !== undefined) setRecycling(recycledCard);
     setPhase('resetting');
     setDrag(0);
     setMotionSide(0);
-    window.requestAnimationFrame(() => window.requestAnimationFrame(() => setPhase('idle')));
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      setPhase('idle');
+      setRecycling(null);
+    }));
   };
 
   const complete = (direction?: Direction) => {
@@ -83,8 +88,9 @@ export function ModuleDeck() {
     setMotionSide(travelSide);
     setDrag(travelSide * exitDistance());
     settleTimer.current = window.setTimeout(() => {
+      const outgoing = active;
       setActive((current) => modulo(current + resolved, modules.length));
-      finishReset();
+      finishReset(outgoing);
     }, SETTLE_MS);
   };
 
@@ -180,10 +186,11 @@ export function ModuleDeck() {
               className={`${styles.card} ${isCurrent ? styles.current : ''}`}
               key={name}
               aria-current={isCurrent ? 'true' : undefined}
-              aria-hidden={!isCurrent && !isCandidate}
+              aria-hidden={recycling === index || (!isCurrent && !isCandidate)}
               style={{
                 transform: `translate3d(calc(-50% + ${x}px), ${y}px, 0) scale(${scale}) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`,
                 zIndex,
+                opacity: recycling === index ? 0 : 1,
               }}
             >
               <div className={styles.cardContent} style={{ opacity: contentOpacity }}>
