@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ModuleDeck.module.css';
 
 const modules = [
@@ -13,82 +13,101 @@ const modules = [
 ] as const;
 
 type Direction = -1 | 1;
+const modulo = (value: number, length: number) => (value % length + length) % length;
 
 export function ModuleDeck() {
   const [active, setActive] = useState(0);
-  const [drag, setDrag] = useState(0);
-  const [dragging, setDragging] = useState(false);
+  const [drag, setDragState] = useState(0);
+  const [interacting, setInteracting] = useState(false);
+  const [recycling, setRecycling] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
+  const dragRef = useRef(0);
   const settling = useRef(false);
+  const wheelTimer = useRef<number | null>(null);
   const distance = () => (stageRef.current?.clientWidth || 600) * .82;
+  const setDrag = (value: number) => { dragRef.current = value; setDragState(value); };
   const progress = Math.min(Math.abs(drag) / distance(), 1);
 
-  const completeSwipe = (direction: Direction) => {
-    if (settling.current || (direction === 1 && active === modules.length - 1) || (direction === -1 && active === 0)) { setDrag(0); return; }
+  useEffect(() => () => { if (wheelTimer.current) window.clearTimeout(wheelTimer.current); }, []);
+
+  const settle = (direction?: Direction) => {
+    const threshold = distance() * .16;
+    const resolved = direction ?? (dragRef.current < -threshold ? 1 : dragRef.current > threshold ? -1 : undefined);
+    if (!resolved || settling.current) { setInteracting(false); setDrag(0); return; }
     settling.current = true;
-    setDragging(false);
-    setDrag(direction * distance());
+    setInteracting(false);
+    setDrag(resolved * distance());
     window.setTimeout(() => {
-      setActive((current) => current + direction);
+      const outgoing = active;
+      setRecycling(outgoing);
+      setActive((current) => modulo(current + resolved, modules.length));
       setDrag(0);
-      settling.current = false;
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        setRecycling(null);
+        settling.current = false;
+      }));
     }, 360);
   };
 
-  const moveWithArrow = (direction: Direction) => completeSwipe(direction);
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (settling.current) return;
-    startX.current = event.clientX;
-    setDragging(true);
+    startX.current = event.clientX - dragRef.current;
+    setInteracting(true);
     event.currentTarget.setPointerCapture(event.pointerId);
   };
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragging || settling.current) return;
-    const raw = event.clientX - startX.current;
-    const allowed = raw > 0 && active === 0 ? raw * .18 : raw < 0 && active === modules.length - 1 ? raw * .18 : raw;
-    setDrag(Math.max(-distance() * .8, Math.min(distance() * .8, allowed)));
+    if (!interacting || settling.current) return;
+    const limit = distance() * .82;
+    setDrag(Math.max(-limit, Math.min(limit, event.clientX - startX.current)));
   };
-  const onPointerUp = () => {
-    if (!dragging) return;
-    const threshold = distance() * .17;
-    if (drag < -threshold) completeSwipe(1);
-    else if (drag > threshold) completeSwipe(-1);
-    else { setDragging(false); setDrag(0); }
+  const onPointerUp = () => { if (interacting) settle(); };
+  const onWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (settling.current) return;
+    const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!delta) return;
+    event.preventDefault();
+    setInteracting(true);
+    const limit = distance() * .82;
+    setDrag(Math.max(-limit, Math.min(limit, dragRef.current - delta * .62)));
+    if (wheelTimer.current) window.clearTimeout(wheelTimer.current);
+    wheelTimer.current = window.setTimeout(() => settle(), 95);
   };
 
   return <section className={styles.deck} aria-label="Browse core Odoo modules">
     <div
-      className={`${styles.stage} ${dragging ? styles.dragging : ''}`}
+      className={`${styles.stage} ${interacting ? styles.dragging : ''}`}
       ref={stageRef}
       tabIndex={0}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
-      onKeyDown={(event) => { if (event.key === 'ArrowLeft') moveWithArrow(-1); if (event.key === 'ArrowRight') moveWithArrow(1); }}
+      onWheel={onWheel}
+      onKeyDown={(event) => { if (event.key === 'ArrowLeft') settle(-1); if (event.key === 'ArrowRight') settle(1); }}
     >
       {modules.map(([name, description, icon], index) => {
-        const relative = index - active;
-        const isCurrent = relative === 0;
-        const isNext = relative === 1;
-        const isPrevious = relative === -1;
+        const forward = modulo(index - active, modules.length);
+        const previous = modulo(active - 1, modules.length) === index;
+        const isCurrent = forward === 0;
+        const isNext = forward === 1;
         const nextProgress = drag < 0 ? progress : 0;
         const previousProgress = drag > 0 ? progress : 0;
-        let x = 62 + Math.max(relative - 1, 0) * 14;
-        let y = Math.max(relative - 1, 0) * 2;
-        let scale = .94;
-        let rotate = 3;
+        let x = 88 + Math.max(forward - 1, 0) * 22;
+        let y = Math.max(forward - 1, 0) * 7;
+        let scale = Math.max(.85, .95 - Math.max(forward - 1, 0) * .018);
+        let rotate = 3 + Math.max(forward - 1, 0) * .45;
         let rotateY = -5;
-        let opacity = relative < 0 ? 0 : 1;
-        if (isCurrent) { x = drag; y = 0; scale = 1; rotate = drag / 42; rotateY = -drag / 34; }
-        if (isNext) { x = 62 * (1 - nextProgress); y = 2 * (1 - nextProgress); scale = .94 + .06 * nextProgress; rotate = 3 * (1 - nextProgress); rotateY = -5 * (1 - nextProgress); }
-        if (isPrevious && previousProgress > 0) { x = -62 * (1 - previousProgress); y = 2 * (1 - previousProgress); scale = .94 + .06 * previousProgress; rotate = -3 * (1 - previousProgress); rotateY = 5 * (1 - previousProgress); opacity = 1; }
+        let opacity = 1;
+        if (isCurrent) { x = drag; y = 0; scale = 1; rotate = drag / 46; rotateY = -drag / 42; }
+        if (isNext) { x = 88 * (1 - nextProgress); y = 7 * (1 - nextProgress); scale = .95 + .05 * nextProgress; rotate = 3 * (1 - nextProgress); rotateY = -5 * (1 - nextProgress); }
+        if (previous && previousProgress > 0) { x = -88 * (1 - previousProgress); y = 7 * (1 - previousProgress); scale = .95 + .05 * previousProgress; rotate = -3 * (1 - previousProgress); rotateY = 5 * (1 - previousProgress); }
+        if (recycling === index) opacity = 0;
         return <article
           className={`${styles.card} ${isCurrent ? styles.current : ''}`}
           key={name}
           aria-current={isCurrent ? 'true' : undefined}
-          style={{ transform: `translateX(calc(-50% + ${x}px)) translateY(${y}px) scale(${scale}) rotateZ(${rotate}deg) rotateY(${rotateY}deg)`, zIndex: 20 - Math.max(relative, 0), opacity }}
+          style={{ transform: `translateX(calc(-50% + ${x}px)) translateY(${y}px) scale(${scale}) rotateZ(${rotate}deg) rotateY(${rotateY}deg)`, zIndex: isCurrent ? 50 : previous && previousProgress > 0 ? 45 : 40 - forward, opacity }}
         >
           <div className={styles.cardHead}><span>{String(index + 1).padStart(2, '0')}</span><img src={icon} alt={`${name} icon`} width={104} height={104} /></div>
           <div><p className={styles.overline}>Odoo module</p><h3>{name}</h3><p className={styles.description}>{description}</p></div>
@@ -97,9 +116,9 @@ export function ModuleDeck() {
       })}
     </div>
     <div className={styles.controls}>
-      <button type="button" onClick={() => moveWithArrow(-1)} disabled={active === 0} aria-label="Previous module">←</button>
-      <p><b>{String(active + 1).padStart(2, '0')} / {String(modules.length).padStart(2, '0')}</b><span>Drag the front card to browse modules.</span></p>
-      <button type="button" onClick={() => moveWithArrow(1)} disabled={active === modules.length - 1} aria-label="Next module">→</button>
+      <button type="button" onClick={() => settle(-1)} aria-label="Previous module">←</button>
+      <p><b>{String(active + 1).padStart(2, '0')} / {String(modules.length).padStart(2, '0')}</b><span>Drag or scroll through the module deck.</span></p>
+      <button type="button" onClick={() => settle(1)} aria-label="Next module">→</button>
     </div>
   </section>;
 }
