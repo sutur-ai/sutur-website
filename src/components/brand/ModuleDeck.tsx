@@ -211,12 +211,12 @@ export function ModuleDeck() {
       </div>
 
       <div className={styles.controls}>
-        <button type="button" onClick={() => complete(-1)} aria-label="Previous module">←</button>
+        <button type="button" onClick={() => complete(1)} aria-label="Previous module">←</button>
         <p>
           <b>{String(active + 1).padStart(2, '0')} / {String(modules.length).padStart(2, '0')}</b>
           <span>Drag the card in either direction.</span>
         </p>
-        <button type="button" onClick={() => complete(1)} aria-label="Next module">→</button>
+        <button type="button" onClick={() => complete(-1)} aria-label="Next module">→</button>
       </div>
     </section>
   );
