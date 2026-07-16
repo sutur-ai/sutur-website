@@ -237,6 +237,93 @@ h1 em {
     serif;
   color: var(--violet);
 }
+.hero.surface-ink {
+  background:
+    radial-gradient(circle at 68% 52%, rgba(245, 126, 32, 0.2), transparent 42%),
+    radial-gradient(circle at 14% 78%, rgba(144, 111, 177, 0.22), transparent 32%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0),
+    linear-gradient(135deg, var(--dark), var(--dark2));
+  background-size: auto, auto, 26px 26px, auto;
+}
+.hero.surface-ink .button {
+  border-color: rgba(245, 126, 32, 0.5);
+  box-shadow: 4px 4px 0 rgba(245, 126, 32, 0.35);
+}
+.hero-caps {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  margin: 28px 0 0;
+}
+.hero-orb {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 430px;
+}
+.orb-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 38%,
+    rgba(245, 126, 32, 0.38),
+    rgba(59, 20, 71, 0.55),
+    transparent 70%
+  );
+  filter: blur(48px);
+  animation: orb-breathe 7s ease-in-out infinite;
+}
+.orb-core {
+  position: relative;
+  z-index: 2;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--gold) 0%,
+    var(--orange) 22%,
+    var(--violet) 56%,
+    var(--dark) 86%
+  );
+  box-shadow:
+    0 0 55px 12px rgba(245, 126, 32, 0.16),
+    0 0 100px 24px rgba(59, 20, 71, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  animation: orb-breathe 7s ease-in-out infinite;
+}
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.orb-ring-1 {
+  width: 300px;
+  height: 300px;
+  border: 1px dashed rgba(144, 111, 177, 0.22);
+  animation: orb-spin 28s linear infinite;
+}
+.orb-ring-2 {
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(245, 126, 32, 0.1);
+  animation: orb-spin 42s linear infinite reverse;
+}
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+@keyframes orb-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.hero h1 {
+  text-wrap: initial;
+}
 .ops-visual {
   height: 430px;
   position: relative;
@@ -955,6 +1042,9 @@ footer b {
     margin-top: clamp(12px, 2.5svh, 26px);
     padding-top: clamp(10px, 1.8svh, 17px);
   }
+  .hero-orb {
+    height: min(430px, 52svh);
+  }
   .ops-visual {
     height: min(430px, 52svh);
     transform: scale(clamp(0.72, calc(100svh / 900), 1));
@@ -1154,7 +1244,8 @@ footer b {
   h1 {
     font-size: 3.25rem;
   }
-  .ops-visual {
+  .ops-visual,
+  .hero-orb {
     display: none;
   }
   .hero {

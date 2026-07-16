@@ -1,9 +1,6 @@
 import { Header } from "@/components/sections/Header";
 import { SectionScroll } from "@/components/sections/SectionScroll";
-import {
-  OperationsDiagram,
-  KnowledgeDiagram,
-} from "@/components/brand/Diagrams";
+import { HeroOrb, KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
 import { Booking } from "@/components/booking/Booking";
 import { agentExamples, differentiators } from "@/content/services";
@@ -14,15 +11,18 @@ export default function Home() {
     <main id="top">
       <SectionScroll />
       <Header />
-      <section className="hero scroll-section surface-paper">
+      <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
           <p className="eyebrow">TAILORED ODOO + PRACTICAL AGENTS</p>
           <h1>
-            Bring your whole business into <em>one clear</em> operating system.
+            Your business,
+            <br />
+            <em>running the way it should.</em>
           </h1>
           <p className="lead">
-            Sutur designs and implements tailored Odoo ERP systems that connect
-            your finance, sales, operations, and teams.
+            A focused team building tailored Odoo systems and AI agents —
+            passionate about making your operations cleaner, faster, and easier
+            to run.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">
@@ -32,22 +32,9 @@ export default function Home() {
               Explore solutions →
             </a>
           </div>
-          <p className="partner">
-            <b>OP</b> Odoo Partner <small>Official badge file pending</small>
-          </p>
-          <div className="stats">
-            <span>
-              <b>7+</b> engagement stages
-            </span>
-            <span>
-              <b>1yr</b> close follow-up
-            </span>
-            <span>
-              <b>1:1</b> dedicated contact
-            </span>
-          </div>
+          <p className="hero-caps">Odoo ERP · AI Agents · 1:1 Partnership</p>
         </div>
-        <OperationsDiagram />
+        <HeroOrb />
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
         <div>
