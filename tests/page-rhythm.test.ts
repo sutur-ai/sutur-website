@@ -84,4 +84,14 @@ describe("homepage section rhythm", () => {
     expect(sectionScroll).toMatch(/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
     expect(sectionScroll).toMatch(/gestureLocked/);
   });
+
+  it("shows accessible animated cues for the available scroll directions", () => {
+    expect(sectionScroll).toContain('className="section-cue section-cue-up"');
+    expect(sectionScroll).toContain('className="section-cue section-cue-down"');
+    expect(sectionScroll).toContain('aria-label="Previous section"');
+    expect(sectionScroll).toContain('aria-label="Next section"');
+    expect(sectionScroll).toMatch(/dispatchEvent\([\s\S]*new WheelEvent/);
+    expect(css).toMatch(/@keyframes\s+cue-down/);
+    expect(css).toMatch(/@keyframes\s+cue-up/);
+  });
 });

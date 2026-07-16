@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const TRANSITION_MS = 760;
 const GESTURE_QUIET_MS = 180;
@@ -12,6 +12,9 @@ function easeInOutCubic(progress: number) {
 }
 
 export function SectionScroll() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [sectionCount, setSectionCount] = useState(0);
+
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const desktop = window.matchMedia('(min-width: 901px)');
@@ -26,6 +29,21 @@ export function SectionScroll() {
 
     const targetTop = (element: HTMLElement, index: number) =>
       index === 0 ? 0 : element.offsetTop;
+
+    const updateActiveSection = () => {
+      const sections = targets();
+      const positions = sections.map(targetTop);
+      const current = positions.reduce(
+        (closest, position, index) =>
+          Math.abs(position - window.scrollY) <
+          Math.abs(positions[closest] - window.scrollY)
+            ? index
+            : closest,
+        0,
+      );
+      setSectionCount(sections.length);
+      setActiveIndex(current);
+    };
 
     const releaseGesture = () => {
       if (!animationRunning && gestureQuiet) gestureLocked = false;
@@ -100,9 +118,12 @@ export function SectionScroll() {
       animateTo(positions[next]);
     };
 
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
     window.addEventListener('wheel', onWheel, { passive: false });
 
     return () => {
+      window.removeEventListener('scroll', updateActiveSection);
       window.removeEventListener('wheel', onWheel);
       window.cancelAnimationFrame(animationFrame);
       window.clearTimeout(quietTimer);
@@ -110,5 +131,39 @@ export function SectionScroll() {
     };
   }, []);
 
-  return null;
+  const move = (direction: -1 | 1) => {
+    window.dispatchEvent(
+      new WheelEvent('wheel', {
+        deltaY: direction * 100,
+        cancelable: true,
+      }),
+    );
+  };
+
+  return (
+    <>
+      {activeIndex > 0 && (
+        <button
+          className="section-cue section-cue-up"
+          type="button"
+          aria-label="Previous section"
+          onClick={() => move(-1)}
+        >
+          <span aria-hidden="true">↑</span>
+          <small>Previous</small>
+        </button>
+      )}
+      {activeIndex < sectionCount - 1 && (
+        <button
+          className="section-cue section-cue-down"
+          type="button"
+          aria-label="Next section"
+          onClick={() => move(1)}
+        >
+          <small>Explore</small>
+          <span aria-hidden="true">↓</span>
+        </button>
+      )}
+    </>
+  );
 }
