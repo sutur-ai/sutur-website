@@ -5,6 +5,8 @@ export const odooModules = [
   { name: 'Inventory', description: 'Reliable stock, movements, and replenishment.', icon: '/brand/odoo-modules/inventory.png' },
   { name: 'Purchasing', description: 'Demand, suppliers, and purchase follow-through.', icon: '/brand/odoo-modules/purchasing.png' },
   { name: 'Manufacturing', description: 'Work orders, planning, and production control.', icon: '/brand/odoo-modules/manufacturing.png' },
+  { name: 'E-commerce', description: 'Storefront, payments, orders, and fulfillment in one connected flow.', icon: '/brand/odoo-modules/ecommerce.png' },
+  { name: 'Custom Development', description: 'Purpose-built Odoo features and integrations for the way your business works.', icon: '/brand/odoo-modules/custom-development.svg', category: 'Sutur service' },
 ] as const;
 export const agentExamples = [
   ['01', 'Knowledge agent', 'Grounded answers from the documents your team already trusts.'],

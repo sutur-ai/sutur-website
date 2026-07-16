@@ -26,6 +26,8 @@
 .module:nth-child(4) { --accent: #1f6887; }
 .module:nth-child(5) { --accent: #3f735c; }
 .module:nth-child(6) { --accent: #8d3d59; }
+.module:nth-child(7) { --accent: #6b4f8f; }
+.module:nth-child(8) { --accent: #c75928; }
 
 .topline {
   position: relative;
