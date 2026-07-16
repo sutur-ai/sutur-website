@@ -26,6 +26,7 @@ export function ModuleDeck() {
   const [phase, setPhaseState] = useState<Phase>('idle');
   const [recycling, setRecycling] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(0);
   const activePointer = useRef<number | null>(null);
   const originX = useRef(0);
   const dragRef = useRef(0);
@@ -33,6 +34,8 @@ export function ModuleDeck() {
   const lastSample = useRef({ x: 0, time: 0 });
   const velocity = useRef(0);
   const settleTimer = useRef<number | null>(null);
+  const pendingDirection = useRef<Direction | null>(null);
+  const resetVersion = useRef(0);
 
   const setPhase = (next: Phase) => {
     phaseRef.current = next;
@@ -52,18 +55,52 @@ export function ModuleDeck() {
   const exitDistance = () => cardWidth() * 1.22;
 
   const finishReset = (recycledCard?: number) => {
+    const version = ++resetVersion.current;
     if (recycledCard !== undefined) setRecycling(recycledCard);
     setPhase('resetting');
     setDrag(0);
     setMotionSide(0);
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      if (resetVersion.current !== version) return;
       setPhase('idle');
       setRecycling(null);
     }));
   };
 
+  const commitPending = () => {
+    const direction = pendingDirection.current;
+    if (direction === null) return undefined;
+
+    pendingDirection.current = null;
+    const outgoing = activeRef.current;
+    const next = modulo(outgoing + direction, modules.length);
+    activeRef.current = next;
+    setActive(next);
+    return outgoing;
+  };
+
+  const interruptTransition = () => {
+    if (settleTimer.current) window.clearTimeout(settleTimer.current);
+    settleTimer.current = null;
+    const version = ++resetVersion.current;
+    const outgoing = commitPending();
+
+    if (outgoing !== undefined) setRecycling(outgoing);
+    setDrag(0);
+    setMotionSide(0);
+    setPhase('idle');
+
+    if (outgoing !== undefined) {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        if (resetVersion.current === version) setRecycling(null);
+      }));
+    }
+  };
+
   const complete = (direction?: Direction) => {
-    if (phaseRef.current === 'settling' || phaseRef.current === 'resetting') return;
+    if (phaseRef.current === 'settling' || phaseRef.current === 'resetting') {
+      interruptTransition();
+    }
 
     const width = cardWidth();
     const threshold = width * 0.3;
@@ -85,11 +122,12 @@ export function ModuleDeck() {
     }
 
     const travelSide: Direction = resolved > 0 ? -1 : 1;
+    pendingDirection.current = resolved;
     setMotionSide(travelSide);
     setDrag(travelSide * exitDistance());
     settleTimer.current = window.setTimeout(() => {
-      const outgoing = active;
-      setActive((current) => modulo(current + resolved, modules.length));
+      settleTimer.current = null;
+      const outgoing = commitPending();
       finishReset(outgoing);
     }, SETTLE_MS);
   };
@@ -99,9 +137,11 @@ export function ModuleDeck() {
   }, []);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (phaseRef.current === 'settling' || phaseRef.current === 'resetting') return;
+    if (phaseRef.current === 'settling' || phaseRef.current === 'resetting') {
+      interruptTransition();
+    }
     activePointer.current = event.pointerId;
-    originX.current = event.clientX - dragRef.current;
+    originX.current = event.clientX;
     lastSample.current = { x: event.clientX, time: event.timeStamp };
     velocity.current = 0;
     setPhase('dragging');
