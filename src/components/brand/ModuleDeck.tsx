@@ -200,7 +200,7 @@ export function ModuleDeck() {
                 </div>
                 <div>
                   <p className={styles.overline}>Odoo module</p>
-                  <h3>{name}</h3>
+                  <h3 className={name === 'Manufacturing' ? styles.longTitle : undefined}>{name}</h3>
                   <p className={styles.description}>{description}</p>
                 </div>
                 <span className={styles.signature}>SUTUR × ODOO</span>
