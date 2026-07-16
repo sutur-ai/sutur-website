@@ -15,14 +15,14 @@ export default function Home() {
         <div className="hero-copy">
           <p className="eyebrow">TAILORED ODOO + PRACTICAL AGENTS</p>
           <h1>
-            Your business,
+            We build the operating system
             <br />
-            <em>running the way it should.</em>
+            <em>your business deserves.</em>
           </h1>
           <p className="lead">
-            A focused team building tailored Odoo systems and AI agents —
-            passionate about making your operations cleaner, faster, and easier
-            to run.
+            A small, focused team building tailored Odoo systems and AI agents —
+            with the precision your operations deserve and the care your team
+            will feel.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">
