@@ -4,12 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import styles from './ModuleDeck.module.css';
 
 const moduleCards = [
-  { name: 'CRM', eyebrow: 'Relationships, in context', copy: 'Every lead, conversation, next step, and commercial signal in one calm workspace.', accent: 'violet', glyph: '↗', metric: 'Pipeline clarity' },
-  { name: 'Sales', eyebrow: 'From quote to close', copy: 'Build polished proposals, keep approvals moving, and give your team one view of every deal.', accent: 'orange', glyph: '✦', metric: 'Faster quotes' },
-  { name: 'Accounting', eyebrow: 'Numbers that stay current', copy: 'Bring invoicing, payments, reconciliation, and reporting into the same operational rhythm.', accent: 'gold', glyph: '∿', metric: 'Live financials' },
-  { name: 'Inventory', eyebrow: 'Stock without guesswork', copy: 'See availability, movements, replenishment, and warehouse decisions before they become urgent.', accent: 'blue', glyph: '◫', metric: 'Reliable stock' },
-  { name: 'Purchasing', eyebrow: 'A cleaner supply flow', copy: 'Turn demand into controlled purchasing, supplier visibility, and dependable follow-through.', accent: 'green', glyph: '⌁', metric: 'Smarter buying' },
-  { name: 'Manufacturing', eyebrow: 'Built for the floor', copy: 'Connect bills of materials, work orders, planning, and quality with the rest of the business.', accent: 'rose', glyph: '◈', metric: 'Connected production' },
+  { name: 'CRM', eyebrow: 'Relationships, in context', copy: 'Every lead, conversation, next step, and commercial signal in one calm workspace.', accent: 'violet', icon: '/brand/odoo-modules/crm.png', metric: 'Pipeline clarity' },
+  { name: 'Sales', eyebrow: 'From quote to close', copy: 'Build polished proposals, keep approvals moving, and give your team one view of every deal.', accent: 'orange', icon: '/brand/odoo-modules/sales.png', metric: 'Faster quotes' },
+  { name: 'Accounting', eyebrow: 'Numbers that stay current', copy: 'Bring invoicing, payments, reconciliation, and reporting into the same operational rhythm.', accent: 'gold', icon: '/brand/odoo-modules/accounting.png', metric: 'Live financials' },
+  { name: 'Inventory', eyebrow: 'Stock without guesswork', copy: 'See availability, movements, replenishment, and warehouse decisions before they become urgent.', accent: 'blue', icon: '/brand/odoo-modules/inventory.png', metric: 'Reliable stock' },
+  { name: 'Purchasing', eyebrow: 'A cleaner supply flow', copy: 'Turn demand into controlled purchasing, supplier visibility, and dependable follow-through.', accent: 'green', icon: '/brand/odoo-modules/purchasing.png', metric: 'Smarter buying' },
+  { name: 'Manufacturing', eyebrow: 'Built for the floor', copy: 'Connect bills of materials, work orders, planning, and quality with the rest of the business.', accent: 'rose', icon: '/brand/odoo-modules/manufacturing.png', metric: 'Connected production' },
 ] as const;
 
 export function ModuleDeck() {
@@ -40,7 +40,7 @@ export function ModuleDeck() {
               aria-hidden={!isActive}
               style={{ '--stack': offset } as React.CSSProperties}
             >
-              <div className={styles.cardTop}><span>{String(index + 1).padStart(2, '0')}</span><span className={styles.glyph}>{card.glyph}</span></div>
+              <div className={styles.cardTop}><span>{String(index + 1).padStart(2, '0')}</span><img className={styles.moduleIcon} src={card.icon} alt={`${card.name} icon`} width={72} height={72} /></div>
               <div className={styles.cardCopy}><p>{card.eyebrow}</p><h3>{card.name}</h3><span>{card.copy}</span></div>
               <div className={styles.cardFooter}><i /><b>{card.metric}</b></div>
             </article>
