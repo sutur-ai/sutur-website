@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const page = readFileSync(
@@ -13,6 +13,13 @@ const header = readFileSync(
   new URL("../src/components/sections/Header.tsx", import.meta.url),
   "utf8",
 );
+const sectionScrollUrl = new URL(
+  "../src/components/sections/SectionScroll.tsx",
+  import.meta.url,
+);
+const sectionScroll = existsSync(sectionScrollUrl)
+  ? readFileSync(sectionScrollUrl, "utf8")
+  : "";
 
 describe("homepage section rhythm", () => {
   it("alternates light and dark surfaces across every content section", () => {
@@ -67,5 +74,14 @@ describe("homepage section rhythm", () => {
     expect(css).toMatch(
       /@media\s*\(max-width:\s*900px\)[\s\S]*section\.scroll-section\s*{[^}]*height:\s*auto/s,
     );
+  });
+
+  it("turns any desktop wheel gesture into one fixed-duration section transition", () => {
+    expect(page).toContain("<SectionScroll />");
+    expect(sectionScroll).toMatch(/const TRANSITION_MS = 760/);
+    expect(sectionScroll).toMatch(/requestAnimationFrame/);
+    expect(sectionScroll).toMatch(/addEventListener\('wheel',[\s\S]*passive: false/);
+    expect(sectionScroll).toMatch(/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+    expect(sectionScroll).toMatch(/gestureLocked/);
   });
 });

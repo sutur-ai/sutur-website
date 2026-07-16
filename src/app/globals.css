@@ -20,6 +20,10 @@ html {
   scroll-padding-top: 82px;
   scroll-snap-type: y mandatory;
 }
+html.is-section-animating {
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
 body {
   margin: 0;
   background: var(--paper);

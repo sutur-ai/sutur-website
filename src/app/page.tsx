@@ -1,4 +1,5 @@
 import { Header } from "@/components/sections/Header";
+import { SectionScroll } from "@/components/sections/SectionScroll";
 import {
   OperationsDiagram,
   KnowledgeDiagram,
@@ -11,6 +12,7 @@ import { process } from "@/content/process";
 export default function Home() {
   return (
     <main id="top">
+      <SectionScroll />
       <Header />
       <section className="hero scroll-section surface-paper">
         <div className="hero-copy">
