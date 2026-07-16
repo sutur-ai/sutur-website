@@ -27,8 +27,9 @@ describe("homepage section rhythm", () => {
       ...page.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
     ].map(([, surface]) => surface);
 
+    // Hero + solution open as a continuous dark block (design intent), then alternate.
     expect(surfaces).toEqual([
-      "paper",
+      "ink",
       "ink",
       "paper",
       "ink",
