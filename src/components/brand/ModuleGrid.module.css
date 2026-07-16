@@ -99,7 +99,42 @@
   line-height: 1.45;
 }
 
-@media (max-width: 1100px) {
+@media (min-width: 901px) {
+  .grid {
+    gap: clamp(8px, 1.4svh, 14px);
+  }
+
+  .module {
+    min-height: clamp(142px, 20svh, 190px);
+    padding: clamp(12px, 2svh, 19px);
+  }
+
+  .logo {
+    width: clamp(46px, 6.4svh, 60px);
+    height: clamp(46px, 6.4svh, 60px);
+  }
+
+  .logo img {
+    width: clamp(38px, 5.4svh, 50px);
+    height: clamp(38px, 5.4svh, 50px);
+  }
+
+  .overline {
+    margin-top: clamp(5px, 1.1svh, 11px);
+  }
+
+  .module h3 {
+    font-size: clamp(21px, min(2.1vw, 3.2svh), 29px);
+  }
+
+  .description {
+    margin-top: clamp(5px, 1svh, 9px);
+    font-size: clamp(11px, 1.5svh, 13px);
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

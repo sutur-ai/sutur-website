@@ -57,6 +57,15 @@ header {
   z-index: 20;
   background: rgba(245, 239, 228, 0.9);
   backdrop-filter: blur(12px);
+  transition:
+    transform 240ms ease,
+    opacity 180ms ease;
+  will-change: transform;
+}
+header.is-collapsed {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 .wordmark {
   font:
@@ -805,9 +814,150 @@ footer b {
     opacity: 0.7;
   }
 }
+@media (min-width: 901px) {
+  html {
+    scroll-padding-top: 0;
+  }
+  section.scroll-section {
+    height: 100svh;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+  .hero.scroll-section {
+    height: calc(100svh - 82px);
+    min-height: calc(100svh - 82px);
+    scroll-margin-top: 82px;
+  }
+  .hero,
+  .section,
+  .booking-section {
+    padding-top: clamp(28px, 5svh, 54px);
+    padding-bottom: clamp(28px, 5svh, 54px);
+  }
+  .section h2,
+  .booking-section h2 {
+    font-size: clamp(2.35rem, min(4.6vw, 7svh), 5.2rem);
+  }
+  h1 {
+    font-size: clamp(3rem, min(6.2vw, 8.6svh), 5.8rem);
+  }
+  .eyebrow {
+    margin-bottom: clamp(8px, 1.8svh, 18px);
+  }
+  .lead {
+    margin-top: clamp(10px, 2svh, 22px);
+    margin-bottom: clamp(10px, 2svh, 22px);
+    font-size: clamp(15px, 1.8svh, 18px);
+  }
+  .hero {
+    gap: clamp(28px, 4vw, 50px);
+  }
+  .hero-actions {
+    gap: clamp(18px, 2vw, 28px);
+    margin: clamp(14px, 2.6svh, 28px) 0;
+  }
+  .stats {
+    margin-top: clamp(12px, 2.5svh, 26px);
+    padding-top: clamp(10px, 1.8svh, 17px);
+  }
+  .ops-visual {
+    height: min(430px, 52svh);
+    transform: scale(clamp(0.72, calc(100svh / 900), 1));
+  }
+  .solution {
+    gap: clamp(20px, 3.8svh, 42px);
+    align-content: center;
+  }
+  .agents {
+    align-content: center;
+  }
+  .agents-grid {
+    gap: clamp(48px, 7vw, 100px);
+    margin-top: clamp(22px, 3.5svh, 48px);
+  }
+  .knowledge-diagram {
+    height: clamp(250px, 36svh, 320px);
+  }
+  .agent-list {
+    gap: clamp(8px, 1.3svh, 14px);
+  }
+  .agent-list article {
+    padding: clamp(13px, 2svh, 21px) clamp(18px, 2vw, 26px);
+  }
+  .agent-list h3,
+  .why-grid h3,
+  .people h3 {
+    font-size: clamp(20px, 2.8svh, 27px);
+    margin: 2px 0 clamp(4px, 0.8svh, 8px);
+  }
+  .agent-list p,
+  .why-grid p,
+  .people p,
+  .timeline p {
+    font-size: clamp(12px, 1.7svh, 16px);
+    line-height: 1.45;
+  }
+  .process {
+    align-content: center;
+  }
+  .timeline {
+    margin-top: clamp(28px, 5svh, 58px);
+  }
+  .timeline article {
+    min-height: 0;
+    padding: clamp(16px, 2.8svh, 26px) clamp(12px, 1.4vw, 20px) 0;
+  }
+  .timeline h3 {
+    font-size: clamp(18px, 2.6svh, 24px);
+  }
+  .why {
+    align-content: center;
+  }
+  .why-grid {
+    gap: clamp(10px, 1.8svh, 17px);
+    margin-top: clamp(24px, 4.2svh, 50px);
+  }
+  .why-grid article {
+    padding: clamp(16px, 2.6svh, 28px);
+  }
+  .team {
+    gap: clamp(48px, 7vw, 90px);
+  }
+  .people article {
+    padding: clamp(14px, 2svh, 20px);
+  }
+  .people article div {
+    height: clamp(120px, 21svh, 180px);
+    margin: clamp(8px, 1.5svh, 14px) 0;
+  }
+  .booking-section {
+    display: grid;
+    align-content: center;
+  }
+  .card-scene {
+    width: min(470px, 52svh);
+    height: clamp(220px, 34svh, 290px);
+    margin-top: clamp(22px, 4svh, 42px);
+  }
+  .business-card {
+    padding: clamp(24px, 4svh, 34px);
+  }
+  .business-card h3 {
+    font-size: clamp(29px, 4.2svh, 37px);
+  }
+}
 @media (max-width: 900px) {
-  header {
+  header,
+  header.is-collapsed {
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
     padding: 0 25px;
+  }
+  section.scroll-section {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
   }
   nav,
   .header-cta {

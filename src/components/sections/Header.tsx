@@ -1,3 +1,64 @@
 'use client';
-import { useState } from 'react';
-export function Header() { const [open,setOpen]=useState(false); const links=[['Solutions','solutions'],['Agents','agents'],['Process','process'],['Team','team']]; const go=(id:string)=>{setOpen(false);document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}; return <header><a className="wordmark" href="#top" aria-label="Sutur home"><img src="/brand/sutur-wordmark.png" alt="Sutur" width={144} height={45} style={{ display: 'block', height: 'auto', width: '144px' }} /></a><nav aria-label="Primary navigation">{links.map(([label,id])=><button key={id} onClick={()=>go(id)}>{label}</button>)}</nav><button className="header-cta" onClick={()=>go('book')}>Book a call</button><button className="menu" aria-expanded={open} onClick={()=>setOpen(!open)}>Menu</button>{open&&<div className="mobile-menu">{links.map(([label,id])=><button key={id} onClick={()=>go(id)}>{label}</button>)}<button onClick={()=>go('book')}>Book a call →</button></div>}</header>; }
+
+import { useEffect, useState } from 'react';
+
+const links = [
+  ['Solutions', 'solutions'],
+  ['Agents', 'agents'],
+  ['Process', 'process'],
+  ['Team', 'team'],
+];
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const updateHeader = () => setCollapsed(window.scrollY > 32);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    return () => window.removeEventListener('scroll', updateHeader);
+  }, []);
+
+  const go = (id: string) => {
+    setOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <header className={collapsed ? 'is-collapsed' : undefined}>
+      <a className="wordmark" href="#top" aria-label="Sutur home">
+        <img
+          src="/brand/sutur-wordmark.png"
+          alt="Sutur"
+          width={144}
+          height={45}
+          style={{ display: 'block', height: 'auto', width: '144px' }}
+        />
+      </a>
+      <nav aria-label="Primary navigation">
+        {links.map(([label, id]) => (
+          <button key={id} onClick={() => go(id)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+      <button className="header-cta" onClick={() => go('book')}>
+        Book a call
+      </button>
+      <button className="menu" aria-expanded={open} onClick={() => setOpen(!open)}>
+        Menu
+      </button>
+      {open && (
+        <div className="mobile-menu">
+          {links.map(([label, id]) => (
+            <button key={id} onClick={() => go(id)}>
+              {label}
+            </button>
+          ))}
+          <button onClick={() => go('book')}>Book a call →</button>
+        </div>
+      )}
+    </header>
+  );
+}
