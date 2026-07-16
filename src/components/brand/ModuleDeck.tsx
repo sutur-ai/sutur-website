@@ -18,10 +18,10 @@ const shelfStep = 15;
 function cardState(index: number, progress: number) {
   const position = index + 1 - progress;
   const depth = Math.min(Math.abs(position), 4);
-  if (position >= 1) return { x: shelf + (position - 1) * shelfStep, rotate: -68, scale: .84, depth };
-  if (position > 0) return { x: shelf * position, rotate: -68 * position, scale: 1 - .16 * position, depth };
-  if (position > -1) return { x: shelf * position, rotate: -68 * position, scale: 1 + .16 * position, depth };
-  return { x: -shelf + (position + 1) * shelfStep, rotate: 68, scale: .84, depth };
+  if (position >= 1) return { x: shelf + (position - 1) * shelfStep, rotate: 0, scale: .92, depth };
+  if (position > 0) return { x: shelf * position, rotate: 0, scale: 1 - .08 * position, depth };
+  if (position > -1) return { x: shelf * position, rotate: 0, scale: 1 + .08 * position, depth };
+  return { x: -shelf + (position + 1) * shelfStep, rotate: 0, scale: .92, depth };
 }
 
 export function ModuleDeck() {
