@@ -1,6 +1,6 @@
 import { Header } from "@/components/sections/Header";
 import { SectionScroll } from "@/components/sections/SectionScroll";
-import { HeroOrb, KnowledgeDiagram } from "@/components/brand/Diagrams";
+import { KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
 import { Booking } from "@/components/booking/Booking";
 import { agentExamples, differentiators } from "@/content/services";
@@ -11,18 +11,18 @@ export default function Home() {
     <main id="top">
       <SectionScroll />
       <Header />
-      <section className="hero scroll-section surface-ink">
+      <section className="hero scroll-section surface-paper">
         <div className="hero-copy">
-          <p className="eyebrow">PASSIONATE ABOUT YOUR PROCESS</p>
+          <p className="eyebrow">A FRIENDS-BUILT STUDIO</p>
           <h1>
-            Your process deserves
-            <br />
-            <em>people who care.</em>
+            Odoo and AI, <em>the way we&apos;d want it</em> if we were in your
+            shoes.
           </h1>
           <p className="lead">
-            We&apos;re a young, passionate team — and we bring that energy to
-            every Odoo system and AI agent we build. Our goal is simple: your
-            operations get smoother, your team&apos;s work gets easier.
+            Sutur started as a conversation between friends who believe business
+            software should feel helpful, not heavy. We implement Odoo ERP and
+            build practical AI agents with the same care we&apos;d put into our
+            own operation.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">
@@ -32,9 +32,29 @@ export default function Home() {
               Explore solutions →
             </a>
           </div>
-          <p className="hero-caps">Odoo ERP · AI Agents · 1:1 Partnership</p>
+          <p className="partner">
+            <b>OP</b> Odoo Partner <small>Official badge file pending</small>
+          </p>
+          <div className="hero-differentiators">
+            {differentiators.slice(0, 3).map(([n, t, d]) => (
+              <span key={n}>
+                <b>{t}</b> <small>{d}</small>
+              </span>
+            ))}
+          </div>
         </div>
-        <HeroOrb />
+        <div className="hero-logos">
+          <img
+            src="/brand/sutur-logo-en.png"
+            alt="Sutur"
+            className="hero-logo-en"
+          />
+          <img
+            src="/brand/sutur-logo-ar.png"
+            alt="سطر"
+            className="hero-logo-ar"
+          />
+        </div>
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
         <div>
@@ -76,19 +96,6 @@ export default function Home() {
         <h2>Clear stages. A partner who stays close.</h2>
         <div className="timeline">
           {process.map(([n, t, d]) => (
-            <article key={n}>
-              <b>{n}</b>
-              <h3>{t}</h3>
-              <p>{d}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-      <section className="section why scroll-section surface-paper">
-        <p className="eyebrow">WHY SUTUR</p>
-        <h2>Built for the work behind a business that is moving forward.</h2>
-        <div className="why-grid">
-          {differentiators.map(([n, t, d]) => (
             <article key={n}>
               <b>{n}</b>
               <h3>{t}</h3>
