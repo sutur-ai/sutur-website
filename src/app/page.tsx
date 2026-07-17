@@ -19,11 +19,8 @@ export default function Home() {
           <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
         </div>
         <div className="hero-copy">
-          <p className="eyebrow">A PASSION PROJECT BETWEEN FRIENDS</p>
           <h1>
-            Our solution
-            <br />
-            <em>written your way.</em>
+            Our solution <em>written your way.</em>
           </h1>
           <p className="lead">
             We started Sutur because we love turning complicated work into

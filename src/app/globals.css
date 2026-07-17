@@ -147,6 +147,8 @@ nav button,
       transparent 25%
     ),
     var(--paper);
+  padding-left: max(32px, calc((100vw - 1500px) / 2));
+  padding-right: max(32px, calc((100vw - 1500px) / 2));
 }
 .eyebrow {
   font-size: 12px;
@@ -261,16 +263,20 @@ h1 em {
 .hero-copy {
   position: relative;
   z-index: 2;
-  width: min(900px, 100%);
+  width: min(1400px, 100%);
   text-align: center;
 }
+.hero-copy h1 {
+  font-size: clamp(2.8rem, 5.2vw, 5.9rem);
+  white-space: nowrap;
+}
 .hero-copy .lead {
-  max-width: 760px;
+  max-width: 1050px;
   margin-left: auto;
   margin-right: auto;
 }
 .hero-note {
-  max-width: 650px;
+  max-width: 900px;
   margin: 18px auto 0;
   color: rgba(255, 255, 255, 0.62);
   font-family: Fraunces, Georgia, serif;
@@ -306,10 +312,10 @@ h1 em {
 }
 .hero-signature {
   position: relative;
-  width: min(760px, 100%);
+  width: min(1100px, 100%);
   min-width: 0;
-  height: 155px;
-  flex: 0 0 155px;
+  height: 190px;
+  flex: 0 0 190px;
   isolation: isolate;
 }
 .signature-glow {
@@ -332,19 +338,19 @@ h1 em {
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.28));
 }
 .signature-logo-en {
-  left: 7%;
+  left: 3%;
   top: 2%;
 }
 .signature-logo-ar {
-  right: 7%;
-  top: 27%;
+  right: 3%;
+  top: 55%;
   height: clamp(76px, 7.2vw, 102px);
 }
 .signature-thread {
   position: absolute;
   left: 10%;
   right: 3%;
-  top: 58%;
+  top: 50%;
   height: 1px;
   z-index: 0;
   background: linear-gradient(90deg, transparent, rgba(240, 166, 80, 0.72), transparent);
@@ -1147,8 +1153,8 @@ footer b {
     font-size: clamp(11px, 1.45svh, 13px);
   }
   .hero-signature {
-    height: 155px;
-    flex-basis: 155px;
+    height: 190px;
+    flex-basis: 190px;
   }
   .hero-actions {
     gap: clamp(18px, 2vw, 28px);
@@ -1313,8 +1319,8 @@ footer b {
   }
   .hero-signature {
     width: min(100%, 620px);
-    height: 145px;
-    flex-basis: 145px;
+    height: 165px;
+    flex-basis: 165px;
     margin: 0 auto;
   }
   .signature-logo {
@@ -1325,6 +1331,7 @@ footer b {
   }
   .signature-logo-ar {
     right: 4%;
+    top: 57%;
     height: clamp(88px, 17vw, 118px);
   }
   .ops-visual {
@@ -1377,16 +1384,16 @@ footer b {
   .hero-principles {
     grid-template-columns: 1fr;
   }
-  h1 {
-    font-size: 3.25rem;
+  .hero-copy h1 {
+    font-size: clamp(1.65rem, 6.5vw, 3.25rem);
   }
   .ops-visual,
   .hero-orb {
     display: none;
   }
   .hero-signature {
-    height: 112px;
-    flex-basis: 112px;
+    height: 135px;
+    flex-basis: 135px;
   }
   .signature-logo {
     height: 54px;
@@ -1397,7 +1404,7 @@ footer b {
   }
   .signature-logo-ar {
     right: 0;
-    top: 27%;
+    top: 60%;
     height: 63px;
   }
   .hero {
