@@ -134,6 +134,35 @@
   }
 }
 
+@media (min-width: 1500px) {
+  .grid { gap: clamp(14px, 1.8svh, 22px); }
+  .module {
+    min-height: clamp(190px, 25svh, 245px);
+    padding: clamp(19px, 2.6svh, 26px);
+  }
+  .logo {
+    width: clamp(60px, 8svh, 76px);
+    height: clamp(60px, 8svh, 76px);
+  }
+  .logo img {
+    width: clamp(50px, 6.8svh, 64px);
+    height: clamp(50px, 6.8svh, 64px);
+  }
+  .number { font-size: 14px; }
+  .overline {
+    margin-top: clamp(8px, 1.5svh, 15px);
+    font-size: 13px;
+  }
+  .module h3 {
+    font-size: clamp(28px, min(2.6vw, 4svh), 38px);
+  }
+  .description {
+    max-width: 360px;
+    margin-top: clamp(8px, 1.3svh, 12px);
+    font-size: clamp(14px, 1.8svh, 17px);
+  }
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -12,25 +12,21 @@ export default function Home() {
       <SectionScroll />
       <Header />
       <section className="hero scroll-section surface-ink">
-        <div className="hero-signature" aria-label="Sutur in English and Arabic">
-          <div className="signature-glow" aria-hidden="true" />
-          <img className="signature-logo signature-logo-en" src="/brand/sutur-logo-en.png" alt="Sutur" />
-          <span className="signature-thread" aria-hidden="true" />
-          <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
-        </div>
         <div className="hero-copy">
+          <div className="hero-brand" aria-label="Sutur">
+            <img src="/brand/sutur-logo-en.png" alt="Sutur" />
+            <span aria-hidden="true" />
+            <img src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
+          </div>
+          <p className="hero-eyebrow">Odoo and practical AI, built around your team</p>
           <h1>
-            Our solution <em>written your way.</em>
+            Make complex work
+            <br />
+            <em>feel simple.</em>
           </h1>
           <p className="lead">
-            We started Sutur because we love turning complicated work into
-            something clearer, calmer, and genuinely useful. We build around
-            the way your team already thinks and works, using Odoo and practical
-            AI only where they make that work better.
-          </p>
-          <p className="hero-note">
-            You work directly with the people doing the thinking and building —
-            from the first conversation to long after launch.
+            We design clearer systems for the way your business already works —
+            and stay close from the first conversation through launch and beyond.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">
@@ -41,6 +37,15 @@ export default function Home() {
             </a>
           </div>
         </div>
+        <aside className="hero-summary" aria-label="How Sutur works">
+          <p>One thoughtful system, shaped around your operation.</p>
+          <ol>
+            <li><span>01</span>Understand the work</li>
+            <li><span>02</span>Simplify the process</li>
+            <li><span>03</span>Build what fits</li>
+          </ol>
+          <small>Direct access to the people doing the work.</small>
+        </aside>
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
         <div>
