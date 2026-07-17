@@ -33,6 +33,7 @@ describe("homepage section rhythm", () => {
       "ink",
       "paper",
       "ink",
+      "paper",
       "ink",
       "paper",
     ]);

@@ -417,25 +417,6 @@ section.scroll-section {
   background: rgba(255, 255, 255, 0.08);
   border-color: #ffffff2c;
 }
-.surface-ink .partner {
-  border-color: rgba(255, 255, 255, 0.18);
-}
-.surface-ink .partner small {
-  color: #c6bccb;
-}
-.surface-ink .hero-differentiators {
-  border-color: rgba(255, 255, 255, 0.14);
-}
-.surface-ink .hero-differentiators b {
-  color: var(--gold);
-}
-.surface-ink .hero-differentiators small {
-  color: #c6bccb;
-}
-.surface-ink .button {
-  border-color: rgba(245, 126, 32, 0.5);
-  box-shadow: 4px 4px 0 rgba(245, 126, 32, 0.35);
-}
 .surface-paper .agent-list article {
   background: rgba(255, 255, 255, 0.55);
   border-color: var(--line);
