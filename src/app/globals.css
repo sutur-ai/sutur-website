@@ -1225,7 +1225,7 @@ footer b {
     gap: 48px;
     padding: 0 max(72px, calc((100vw - 1764px) / 2));
   }
-  header .wordmark img { width: 216px !important; }
+  header .wordmark img { width: 64px !important; }
   nav { gap: 42px; }
   nav button,
   .menu { font-size: 18px; }

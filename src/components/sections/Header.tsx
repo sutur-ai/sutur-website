@@ -29,11 +29,11 @@ export function Header() {
     <header className={collapsed ? 'is-collapsed' : undefined}>
       <a className="wordmark" href="#top" aria-label="Sutur home">
         <img
-          src="/brand/sutur-wordmark.png"
+          src="/brand/sutur-favicon.png"
           alt="Sutur"
-          width={144}
-          height={45}
-          style={{ display: 'block', height: 'auto', width: '144px' }}
+          width={44}
+          height={53}
+          style={{ display: 'block', height: 'auto', width: '44px' }}
         />
       </a>
       <nav aria-label="Primary navigation">
