@@ -27,13 +27,13 @@ describe("homepage section rhythm", () => {
       ...page.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
     ].map(([, surface]) => surface);
 
-    // Hero + solution open as a continuous dark block (design intent), then alternate.
+    // Hero + solution open as a continuous dark block. The former "Why Sutur"
+    // section is intentionally gone; its ideas now live in the hero.
     expect(surfaces).toEqual([
       "ink",
       "ink",
       "paper",
       "ink",
-      "paper",
       "ink",
       "paper",
     ]);

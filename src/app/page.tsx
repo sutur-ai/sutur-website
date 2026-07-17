@@ -1,9 +1,9 @@
 import { Header } from "@/components/sections/Header";
 import { SectionScroll } from "@/components/sections/SectionScroll";
-import { HeroOrb, KnowledgeDiagram } from "@/components/brand/Diagrams";
+import { KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
 import { Booking } from "@/components/booking/Booking";
-import { agentExamples, differentiators } from "@/content/services";
+import { agentExamples } from "@/content/services";
 import { process } from "@/content/process";
 
 export default function Home() {
@@ -13,17 +13,22 @@ export default function Home() {
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
-          <p className="eyebrow">PASSIONATE ABOUT YOUR PROCESS</p>
+          <p className="eyebrow">BUILT BETWEEN FRIENDS. SHAPED WITH YOU.</p>
           <h1>
-            Your process deserves
+            We care about the
             <br />
-            <em>people who care.</em>
+            <em>way work feels.</em>
           </h1>
           <p className="lead">
-            We&apos;re a young, passionate team — and we bring that energy to
-            every Odoo system and AI agent we build. Our goal is simple: your
-            operations get smoother, your team&apos;s work gets easier.
+            Sutur started as a passion project between friends who enjoy taking
+            complicated work apart and putting it back together better. We use
+            Odoo and practical AI when they genuinely help — never just because
+            they are the fashionable answer.
           </p>
+          <div className="hero-principles" aria-label="How Sutur works">
+            <p><strong>Close by design.</strong> You work with the people doing the thinking and building.</p>
+            <p><strong>Made around your reality.</strong> No off-the-shelf theatre, no disappearing after launch.</p>
+          </div>
           <div className="hero-actions">
             <a className="button" href="#book">
               Book a discovery call
@@ -32,9 +37,16 @@ export default function Home() {
               Explore solutions →
             </a>
           </div>
-          <p className="hero-caps">Odoo ERP · AI Agents · 1:1 Partnership</p>
+          <p className="hero-caps">Thoughtful systems · Useful automation · A team that stays close</p>
         </div>
-        <HeroOrb />
+        <div className="hero-signature" aria-label="Sutur in English and Arabic">
+          <div className="signature-glow" aria-hidden="true" />
+          <span className="signature-note signature-note-top">one shared idea</span>
+          <img className="signature-logo signature-logo-en" src="/brand/sutur-logo-en.png" alt="Sutur" />
+          <span className="signature-thread" aria-hidden="true" />
+          <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
+          <span className="signature-note signature-note-bottom">written two ways</span>
+        </div>
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
         <div>
@@ -84,19 +96,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="section why scroll-section surface-paper">
-        <p className="eyebrow">WHY SUTUR</p>
-        <h2>Built for the work behind a business that is moving forward.</h2>
-        <div className="why-grid">
-          {differentiators.map(([n, t, d]) => (
-            <article key={n}>
-              <b>{n}</b>
-              <h3>{t}</h3>
-              <p>{d}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+
       <section className="section team scroll-section surface-ink" id="team">
         <div>
           <p className="eyebrow">THE TEAM</p>
