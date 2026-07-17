@@ -14,8 +14,8 @@ export const agentExamples = [
   ['03', 'Signal automation', 'Inventory alerts and accounting follow-through when attention is needed.'],
 ];
 export const differentiators = [
-  ['01', 'Built for real work', 'Systems that fit how your team actually operates — no cookie-cutter setups.'],
-  ['02', 'Small team, close attention', 'You talk to the people doing the work, from first call through follow-up.'],
-  ['03', 'Senior thinking, fair price', 'Deep Odoo expertise without the enterprise price tag or bloat.'],
-  ['04', 'We stick around', 'A full year of close follow-up after launch. Not a handoff — a partnership.'],
+  ['01', 'Current technical thinking', 'Practical systems shaped around how your business works today.'],
+  ['02', 'Efficient delivery', 'A focused scope, a clear sequence, and no unnecessary complexity.'],
+  ['03', 'Responsive partnership', 'One dedicated point of contact from discovery through follow-up.'],
+  ['04', 'Competitive pricing', 'Senior implementation thinking without enterprise overhead.'],
 ];

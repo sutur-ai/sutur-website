@@ -220,7 +220,7 @@ h1 em {
 .partner small {
   color: var(--ink-soft);
 }
-.hero-differentiators {
+.stats {
   border-top: 1px solid var(--line);
   margin-top: 30px;
   padding-top: 17px;
@@ -228,37 +228,101 @@ h1 em {
   gap: 20px;
   font-size: 12px;
 }
-.hero-differentiators span {
+.stats span {
   display: grid;
 }
-.hero-differentiators b {
+.stats b {
   font:
-    400 16px Fraunces,
+    400 24px Fraunces,
     serif;
   color: var(--violet);
 }
-.hero-differentiators small {
-  color: var(--ink-soft);
-  max-width: 160px;
-  line-height: 1.4;
-  margin-top: 2px;
+.hero.surface-ink {
+  background:
+    radial-gradient(circle at 68% 52%, rgba(245, 126, 32, 0.2), transparent 42%),
+    radial-gradient(circle at 14% 78%, rgba(144, 111, 177, 0.22), transparent 32%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0),
+    linear-gradient(135deg, var(--dark), var(--dark2));
+  background-size: auto, auto, 26px 26px, auto;
 }
-.hero-logos {
+.hero.surface-ink .button {
+  border-color: rgba(245, 126, 32, 0.5);
+  box-shadow: 4px 4px 0 rgba(245, 126, 32, 0.35);
+}
+.hero-caps {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  margin: 28px 0 0;
+}
+.hero-orb {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
+  height: 430px;
 }
-.hero-logo-en {
-  width: min(380px, 100%);
-  height: auto;
-  transform: translateX(-18px);
+.orb-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 38%,
+    rgba(245, 126, 32, 0.52),
+    rgba(59, 20, 71, 0.62),
+    transparent 68%
+  );
+  filter: blur(48px);
+  animation: orb-breathe 6s ease-in-out infinite;
 }
-.hero-logo-ar {
-  width: min(280px, 85%);
-  height: auto;
-  transform: translateX(22px);
+.orb-core {
+  position: relative;
+  z-index: 2;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--gold) 0%,
+    var(--orange) 22%,
+    var(--violet) 56%,
+    var(--dark) 86%
+  );
+  box-shadow:
+    0 0 55px 12px rgba(245, 126, 32, 0.16),
+    0 0 100px 24px rgba(59, 20, 71, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  animation: orb-breathe 7s ease-in-out infinite;
+}
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+}
+.orb-ring-1 {
+  width: 300px;
+  height: 300px;
+  border: 1px dashed rgba(144, 111, 177, 0.22);
+  animation: orb-spin 28s linear infinite;
+}
+.orb-ring-2 {
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(245, 126, 32, 0.1);
+  animation: orb-spin 42s linear infinite reverse;
+}
+@keyframes orb-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.09); }
+}
+@keyframes orb-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.hero h1 {
+  text-wrap: initial;
 }
 .ops-visual {
   height: 430px;
@@ -974,11 +1038,15 @@ footer b {
     gap: clamp(18px, 2vw, 28px);
     margin: clamp(14px, 2.6svh, 28px) 0;
   }
-  .hero-differentiators {
+  .stats {
     margin-top: clamp(12px, 2.5svh, 26px);
     padding-top: clamp(10px, 1.8svh, 17px);
   }
-  .hero-logos {
+  .hero-orb {
+    height: min(430px, 52svh);
+  }
+  .ops-visual {
+    height: min(430px, 52svh);
     transform: scale(clamp(0.72, calc(100svh / 900), 1));
   }
   .solution {
@@ -1153,7 +1221,7 @@ footer b {
   .people {
     max-width: 560px;
   }
-  .hero-differentiators {
+  .stats {
     flex-wrap: wrap;
   }
   .module-map {
@@ -1176,22 +1244,17 @@ footer b {
   h1 {
     font-size: 3.25rem;
   }
-  .hero-logos {
-    margin-top: 20px;
-  }
-  .hero-logo-en {
-    width: min(260px, 80%);
-  }
-  .hero-logo-ar {
-    width: min(200px, 65%);
+  .ops-visual,
+  .hero-orb {
+    display: none;
   }
   .hero {
     padding-bottom: 80px;
   }
-  .hero-differentiators {
+  .stats {
     gap: 12px;
   }
-  .hero-differentiators span {
+  .stats span {
     font-size: 11px;
   }
   .timeline {
