@@ -11,7 +11,7 @@ export default function Home() {
     <main id="top">
       <SectionScroll />
       <Header />
-      <section className="hero scroll-section surface-paper">
+      <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
           <p className="eyebrow">A FRIENDS-BUILT STUDIO</p>
           <h1>
