@@ -41,11 +41,10 @@ export default function Home() {
         </div>
         <div className="hero-signature" aria-label="Sutur in English and Arabic">
           <div className="signature-glow" aria-hidden="true" />
-          <span className="signature-note signature-note-top">one shared idea</span>
+          <p className="signature-line">Our solution, written your way.</p>
           <img className="signature-logo signature-logo-en" src="/brand/sutur-logo-en.png" alt="Sutur" />
           <span className="signature-thread" aria-hidden="true" />
           <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
-          <span className="signature-note signature-note-bottom">written two ways</span>
         </div>
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
