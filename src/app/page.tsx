@@ -12,23 +12,29 @@ export default function Home() {
       <SectionScroll />
       <Header />
       <section className="hero scroll-section surface-ink">
+        <div className="hero-signature" aria-label="Sutur in English and Arabic">
+          <div className="signature-glow" aria-hidden="true" />
+          <img className="signature-logo signature-logo-en" src="/brand/sutur-logo-en.png" alt="Sutur" />
+          <span className="signature-thread" aria-hidden="true" />
+          <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
+        </div>
         <div className="hero-copy">
-          <p className="eyebrow">BUILT BETWEEN FRIENDS. SHAPED WITH YOU.</p>
+          <p className="eyebrow">A PASSION PROJECT BETWEEN FRIENDS</p>
           <h1>
-            We care about the
+            Our solution
             <br />
-            <em>way work feels.</em>
+            <em>written your way.</em>
           </h1>
           <p className="lead">
-            Sutur started as a passion project between friends who enjoy taking
-            complicated work apart and putting it back together better. We use
-            Odoo and practical AI when they genuinely help — never just because
-            they are the fashionable answer.
+            We started Sutur because we love turning complicated work into
+            something clearer, calmer, and genuinely useful. We build around
+            the way your team already thinks and works, using Odoo and practical
+            AI only where they make that work better.
           </p>
-          <div className="hero-principles" aria-label="How Sutur works">
-            <p><strong>Close by design.</strong> You work with the people doing the thinking and building.</p>
-            <p><strong>Made around your reality.</strong> No off-the-shelf theatre, no disappearing after launch.</p>
-          </div>
+          <p className="hero-note">
+            You work directly with the people doing the thinking and building —
+            from the first conversation to long after launch.
+          </p>
           <div className="hero-actions">
             <a className="button" href="#book">
               Book a discovery call
@@ -37,14 +43,6 @@ export default function Home() {
               Explore solutions →
             </a>
           </div>
-          <p className="hero-caps">Thoughtful systems · Useful automation · A team that stays close</p>
-        </div>
-        <div className="hero-signature" aria-label="Sutur in English and Arabic">
-          <div className="signature-glow" aria-hidden="true" />
-          <p className="signature-line">Our solution, written your way.</p>
-          <img className="signature-logo signature-logo-en" src="/brand/sutur-logo-en.png" alt="Sutur" />
-          <span className="signature-thread" aria-hidden="true" />
-          <img className="signature-logo signature-logo-ar" src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
         </div>
       </section>
       <section className="section solution scroll-section surface-ink" id="solutions">
