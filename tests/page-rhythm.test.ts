@@ -27,13 +27,13 @@ describe("homepage section rhythm", () => {
       ...page.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
     ].map(([, surface]) => surface);
 
-    // Hero + solution open as a continuous dark block. The former "Why Sutur"
-    // section is intentionally gone; its ideas now live in the hero.
+    // Every section alternates from the opening ink hero through the final
+    // paper booking section.
     expect(surfaces).toEqual([
-      "ink",
       "ink",
       "paper",
       "ink",
+      "paper",
       "ink",
       "paper",
     ]);
@@ -77,13 +77,15 @@ describe("homepage section rhythm", () => {
     );
   });
 
-  it("turns any desktop wheel gesture into one fixed-duration section transition", () => {
+  it("retargets an in-flight desktop transition when a new wheel gesture arrives", () => {
     expect(page).toContain("<SectionScroll />");
     expect(sectionScroll).toMatch(/const TRANSITION_MS = 760/);
     expect(sectionScroll).toMatch(/requestAnimationFrame/);
     expect(sectionScroll).toMatch(/addEventListener\('wheel',[\s\S]*passive: false/);
     expect(sectionScroll).toMatch(/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
-    expect(sectionScroll).toMatch(/gestureLocked/);
+    expect(sectionScroll).toMatch(/let targetIndex = 0/);
+    expect(sectionScroll).toMatch(/animationRunning[\s\S]*cancelAnimationFrame\(animationFrame\)/);
+    expect(sectionScroll).not.toMatch(/gestureLocked/);
   });
 
   it("shows accessible animated cues for the available scroll directions", () => {

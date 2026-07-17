@@ -47,7 +47,7 @@ export default function Home() {
           <small>Direct access to the people doing the work.</small>
         </aside>
       </section>
-      <section className="section solution scroll-section surface-ink" id="solutions">
+      <section className="section solution scroll-section surface-paper" id="solutions">
         <div>
           <p className="eyebrow">POWERED BY ODOO</p>
           <h2>Centralize your business operations</h2>
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <ModuleGrid />
       </section>
-      <section className="section agents scroll-section surface-paper" id="agents">
+      <section className="section agents scroll-section surface-ink" id="agents">
         <div className="agents-intro">
           <p className="eyebrow">PRACTICAL AGENTS</p>
           <h2>
@@ -82,7 +82,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="section process scroll-section surface-ink" id="process">
+      <section className="section process scroll-section surface-paper" id="process">
         <p className="eyebrow">HOW WE WORK</p>
         <h2>Clear stages. A partner who stays close.</h2>
         <div className="timeline">

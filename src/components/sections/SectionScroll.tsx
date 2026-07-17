@@ -18,9 +18,9 @@ export function SectionScroll() {
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const desktop = window.matchMedia('(min-width: 901px)');
-    let gestureLocked = false;
     let animationRunning = false;
     let gestureQuiet = true;
+    let targetIndex = 0;
     let animationFrame = 0;
     let quietTimer = 0;
 
@@ -43,10 +43,7 @@ export function SectionScroll() {
       );
       setSectionCount(sections.length);
       setActiveIndex(current);
-    };
-
-    const releaseGesture = () => {
-      if (!animationRunning && gestureQuiet) gestureLocked = false;
+      if (!animationRunning) targetIndex = current;
     };
 
     const waitForQuiet = () => {
@@ -54,7 +51,6 @@ export function SectionScroll() {
       window.clearTimeout(quietTimer);
       quietTimer = window.setTimeout(() => {
         gestureQuiet = true;
-        releaseGesture();
       }, GESTURE_QUIET_MS);
     };
 
@@ -77,7 +73,6 @@ export function SectionScroll() {
         window.scrollTo(0, destination);
         animationRunning = false;
         document.documentElement.classList.remove('is-section-animating');
-        releaseGesture();
       };
 
       animationFrame = requestAnimationFrame(frame);
@@ -95,26 +90,30 @@ export function SectionScroll() {
       }
 
       event.preventDefault();
+      const isNewGesture = gestureQuiet;
       waitForQuiet();
-      if (gestureLocked) return;
+      if (!isNewGesture) return;
 
       const sections = targets();
       if (!sections.length) return;
 
       const positions = sections.map(targetTop);
-      const current = positions.reduce(
-        (closest, position, index) =>
-          Math.abs(position - window.scrollY) <
-          Math.abs(positions[closest] - window.scrollY)
-            ? index
-            : closest,
-        0,
-      );
+      const current = animationRunning
+        ? targetIndex
+        : positions.reduce(
+            (closest, position, index) =>
+              Math.abs(position - window.scrollY) <
+              Math.abs(positions[closest] - window.scrollY)
+                ? index
+                : closest,
+            0,
+          );
       const direction = event.deltaY > 0 ? 1 : -1;
       const next = Math.max(0, Math.min(current + direction, sections.length - 1));
 
       if (next === current) return;
-      gestureLocked = true;
+      targetIndex = next;
+      if (animationRunning) window.cancelAnimationFrame(animationFrame);
       animateTo(positions[next]);
     };
 
