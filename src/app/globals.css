@@ -771,6 +771,15 @@ section.scroll-section {
   min-width: 0;
   padding: 0 clamp(8px, 0.9vw, 14px);
 }
+.timeline-step::before {
+  content: "";
+  position: absolute;
+  top: var(--marker-size);
+  left: 50%;
+  width: 1px;
+  height: 22px;
+  background: var(--line);
+}
 .timeline-marker {
   width: var(--marker-size);
   height: var(--marker-size);
@@ -793,10 +802,36 @@ section.scroll-section {
   letter-spacing: 0.08em;
 }
 .timeline-copy {
+  width: 100%;
   max-width: 190px;
-  margin: 0 auto;
-  padding-top: 22px;
+  min-height: 184px;
+  margin: 22px auto 0;
+  padding: 20px 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--violet) 19%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, #fff 78%, var(--paper));
+  box-shadow: 0 14px 34px rgba(59, 20, 71, 0.08);
   text-align: center;
+}
+.timeline-reveal .timeline-copy {
+  opacity: 0;
+  transform: translate3d(-32px, 8px, 0) scale(0.98);
+  will-change: transform, opacity;
+}
+.timeline-reveal.is-visible .timeline-copy {
+  animation: timeline-card-enter 650ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.timeline-step:nth-child(2) .timeline-copy { animation-delay: 110ms; }
+.timeline-step:nth-child(3) .timeline-copy { animation-delay: 220ms; }
+.timeline-step:nth-child(4) .timeline-copy { animation-delay: 330ms; }
+.timeline-step:nth-child(5) .timeline-copy { animation-delay: 440ms; }
+.timeline-step:nth-child(6) .timeline-copy { animation-delay: 550ms; }
+.timeline-step:nth-child(7) .timeline-copy { animation-delay: 660ms; }
+@keyframes timeline-card-enter {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 .timeline h3 {
   margin: 0 0 10px;
@@ -1490,6 +1525,9 @@ footer b {
     min-height: 152px;
     padding: 0 0 42px;
   }
+  .timeline-step::before {
+    display: none;
+  }
   .timeline-marker {
     grid-column: 1;
     grid-row: 1;
@@ -1499,8 +1537,9 @@ footer b {
     grid-row: 1;
     width: 100%;
     max-width: 500px;
+    min-height: 0;
     margin: 0;
-    padding-top: 2px;
+    padding: 18px 20px;
     text-align: left;
   }
   .timeline-copy p {

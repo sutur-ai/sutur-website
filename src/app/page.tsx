@@ -1,10 +1,10 @@
 import { Header } from "@/components/sections/Header";
 import { SectionScroll } from "@/components/sections/SectionScroll";
+import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
 import { KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
 import { Booking } from "@/components/booking/Booking";
 import { agentExamples } from "@/content/services";
-import { process } from "@/content/process";
 
 export default function Home() {
   return (
@@ -85,19 +85,7 @@ export default function Home() {
       <section className="section process scroll-section surface-paper" id="process">
         <p className="eyebrow">OUR PROCESS TIMELINE</p>
         <h2>Clear stages. A partner who stays close.</h2>
-        <div className="timeline" role="list" aria-label="Our process timeline">
-          {process.map(([n, t, d]) => (
-            <article className="timeline-step" role="listitem" key={n}>
-              <div className="timeline-marker" aria-hidden="true">
-                <span>{n}</span>
-              </div>
-              <div className="timeline-copy">
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ProcessTimeline />
       </section>
 
       <section className="section team scroll-section surface-ink" id="team">
