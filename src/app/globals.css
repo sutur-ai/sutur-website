@@ -766,11 +766,20 @@ section.scroll-section {
   background: linear-gradient(90deg, var(--orange), var(--violet));
 }
 .timeline-step {
+  --accent: var(--violet);
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  padding: 0 clamp(8px, 0.9vw, 14px);
+  padding: 0 clamp(4px, 0.55vw, 9px);
 }
+.timeline-step:nth-child(2) { --accent: var(--orange); }
+.timeline-step:nth-child(3) { --accent: #a76a18; }
+.timeline-step:nth-child(4) { --accent: #1f6887; }
+.timeline-step:nth-child(5) { --accent: #3f735c; }
+.timeline-step:nth-child(6) { --accent: #8d3d59; }
+.timeline-step:nth-child(7) { --accent: #6b4f8f; }
 .timeline-step::before {
   content: "";
   position: absolute;
@@ -784,51 +793,39 @@ section.scroll-section {
   width: var(--marker-size);
   height: var(--marker-size);
   display: grid;
+  flex: 0 0 auto;
   place-items: center;
   margin: 0 auto;
-  border: 2px solid var(--violet);
+  border: 2px solid var(--accent);
   border-radius: 50%;
   background: var(--paper);
   box-shadow: 0 0 0 7px color-mix(in srgb, var(--paper) 82%, transparent);
-  color: var(--violet);
-}
-.timeline-step:first-child .timeline-marker,
-.timeline-step:last-child .timeline-marker {
-  border-color: var(--orange);
-  color: var(--orange);
+  color: var(--accent);
 }
 .timeline-marker span {
   font: 600 12px/1 var(--font-sans, sans-serif);
   letter-spacing: 0.08em;
 }
 .timeline-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: 190px;
   min-height: 184px;
+  min-width: 0;
   margin: 22px auto 0;
-  padding: 20px 16px 18px;
-  border: 1px solid color-mix(in srgb, var(--violet) 28%, transparent);
-  border-radius: 16px;
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--lav) 18%, var(--paper-warm)),
-    color-mix(in srgb, var(--violet) 9%, var(--paper))
-  );
-  box-shadow:
-    inset 0 3px 0 color-mix(in srgb, var(--violet) 62%, transparent),
-    0 14px 34px rgba(59, 20, 71, 0.1);
+  padding: 20px clamp(10px, 0.8vw, 16px) 18px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 21, 32, 0.2);
+  border-top: 4px solid var(--accent);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--accent), transparent 85%), transparent 38%),
+    rgba(250, 245, 236, 0.82);
+  box-shadow: 4px 4px 0 rgba(26, 21, 32, 0.1);
   text-align: center;
-}
-.timeline-step:nth-child(odd) .timeline-copy {
-  border-color: color-mix(in srgb, var(--orange) 34%, transparent);
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--orange) 15%, var(--paper-warm)),
-    color-mix(in srgb, var(--gold) 10%, var(--paper))
-  );
-  box-shadow:
-    inset 0 3px 0 color-mix(in srgb, var(--orange) 68%, transparent),
-    0 14px 34px rgba(245, 126, 32, 0.1);
 }
 .timeline-reveal .timeline-copy {
   opacity: 0;
@@ -851,16 +848,30 @@ section.scroll-section {
   }
 }
 .timeline h3 {
+  width: 100%;
   margin: 0 0 10px;
-  font-size: clamp(20px, 1.7vw, 26px);
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.08;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  word-spacing: 0.04em;
+  text-align: center;
+  text-wrap: balance;
 }
 .timeline p {
+  width: 100%;
   max-width: 20ch;
   margin-right: auto;
   margin-left: auto;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.55;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+  text-align: center;
+  text-wrap: pretty;
 }
 .why h2 {
   max-width: 750px;
@@ -1256,10 +1267,10 @@ footer b {
     margin-top: clamp(28px, 5svh, 58px);
   }
   .timeline-step {
-    padding: 0 clamp(12px, 1.4vw, 20px);
+    padding: 0 clamp(4px, 0.7vw, 10px);
   }
   .timeline h3 {
-    font-size: clamp(18px, 2.6svh, 24px);
+    font-size: clamp(17px, 2.1svh, 21px);
   }
   .why {
     align-content: center;
@@ -1420,8 +1431,8 @@ footer b {
     grid-template-columns: repeat(7, minmax(0, 1fr));
     margin-top: clamp(44px, 6svh, 72px);
   }
-  .timeline-step { padding: 0 24px; }
-  .timeline h3 { font-size: clamp(24px, 3.2svh, 32px); }
+  .timeline-step { padding: 0 12px; }
+  .timeline h3 { font-size: clamp(22px, 2.5svh, 28px); }
   .team { gap: clamp(90px, 10vw, 180px); }
   .people { gap: 24px; }
   .people article { padding: clamp(20px, 2.7svh, 28px); }
