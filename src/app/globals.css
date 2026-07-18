@@ -807,11 +807,28 @@ section.scroll-section {
   min-height: 184px;
   margin: 22px auto 0;
   padding: 20px 16px 18px;
-  border: 1px solid color-mix(in srgb, var(--violet) 19%, transparent);
+  border: 1px solid color-mix(in srgb, var(--violet) 28%, transparent);
   border-radius: 16px;
-  background: color-mix(in srgb, #fff 78%, var(--paper));
-  box-shadow: 0 14px 34px rgba(59, 20, 71, 0.08);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--lav) 18%, var(--paper-warm)),
+    color-mix(in srgb, var(--violet) 9%, var(--paper))
+  );
+  box-shadow:
+    inset 0 3px 0 color-mix(in srgb, var(--violet) 62%, transparent),
+    0 14px 34px rgba(59, 20, 71, 0.1);
   text-align: center;
+}
+.timeline-step:nth-child(odd) .timeline-copy {
+  border-color: color-mix(in srgb, var(--orange) 34%, transparent);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--orange) 15%, var(--paper-warm)),
+    color-mix(in srgb, var(--gold) 10%, var(--paper))
+  );
+  box-shadow:
+    inset 0 3px 0 color-mix(in srgb, var(--orange) 68%, transparent),
+    0 14px 34px rgba(245, 126, 32, 0.1);
 }
 .timeline-reveal .timeline-copy {
   opacity: 0;
