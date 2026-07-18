@@ -83,9 +83,9 @@ export default function Home() {
         </div>
       </section>
       <section className="section process scroll-section surface-paper" id="process">
-        <p className="eyebrow">HOW WE WORK</p>
+        <p className="eyebrow">OUR PROCESS TIMELINE</p>
         <h2>Clear stages. A partner who stays close.</h2>
-        <div className="timeline" role="list" aria-label="Our project roadmap">
+        <div className="timeline" role="list" aria-label="Our process timeline">
           {process.map(([n, t, d], index) => (
             <article className="timeline-step" role="listitem" key={n}>
               <div className="timeline-marker" aria-hidden="true">

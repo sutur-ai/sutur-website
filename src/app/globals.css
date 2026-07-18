@@ -758,7 +758,7 @@ section.scroll-section {
 .timeline-step {
   position: relative;
   min-width: 0;
-  padding-right: clamp(12px, 1.4vw, 22px);
+  padding: 0 clamp(8px, 0.9vw, 14px);
 }
 .timeline-marker {
   width: var(--marker-size);
@@ -767,6 +767,7 @@ section.scroll-section {
   z-index: 2;
   display: grid;
   place-items: center;
+  margin: 0 auto;
   color: var(--orange);
   filter: drop-shadow(0 7px 12px rgba(245, 126, 32, 0.16));
 }
@@ -792,8 +793,8 @@ section.scroll-section {
   position: absolute;
   z-index: 1;
   top: calc(var(--marker-size) * 0.13);
-  left: calc(var(--marker-size) * 0.72);
-  width: calc(100% - var(--marker-size) * 0.44);
+  left: calc(50% + var(--marker-size) * 0.36);
+  width: calc(100% - var(--marker-size) * 0.72);
   height: calc(var(--marker-size) * 0.72);
   overflow: visible;
 }
@@ -813,7 +814,9 @@ section.scroll-section {
 }
 .timeline-copy {
   max-width: 190px;
+  margin: 0 auto;
   padding-top: 18px;
+  text-align: center;
 }
 .timeline-copy b {
   display: block;
@@ -826,7 +829,9 @@ section.scroll-section {
   font-size: clamp(20px, 1.7vw, 26px);
 }
 .timeline p {
-  max-width: 18ch;
+  max-width: 20ch;
+  margin-right: auto;
+  margin-left: auto;
   color: var(--ink-soft);
   font-size: 15px;
   line-height: 1.55;
@@ -1518,11 +1523,15 @@ footer b {
   .timeline-copy {
     grid-column: 2;
     grid-row: 1;
+    width: 100%;
     max-width: 500px;
+    margin: 0;
     padding-top: 2px;
+    text-align: left;
   }
   .timeline-copy p {
     max-width: 42ch;
+    margin-left: 0;
   }
   .timeline-connector {
     top: calc(var(--marker-size) * 0.78);
