@@ -85,12 +85,37 @@ export default function Home() {
       <section className="section process scroll-section surface-paper" id="process">
         <p className="eyebrow">HOW WE WORK</p>
         <h2>Clear stages. A partner who stays close.</h2>
-        <div className="timeline">
-          {process.map(([n, t, d]) => (
-            <article key={n}>
-              <b>{n}</b>
-              <h3>{t}</h3>
-              <p>{d}</p>
+        <div className="timeline" role="list" aria-label="Our project roadmap">
+          {process.map(([n, t, d], index) => (
+            <article className="timeline-step" role="listitem" key={n}>
+              <div className="timeline-marker" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <path d="M10 8 C18 16, 22 27, 31 32 S48 48, 55 56" />
+                  <path d="M54 9 C47 18, 42 22, 34 31 S18 46, 9 55" />
+                </svg>
+              </div>
+              {index < process.length - 1 && (
+                <svg
+                  className="timeline-connector"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    className="connector-horizontal"
+                    d="M0 50 C20 18, 34 82, 52 48 S78 18, 100 52"
+                  />
+                  <path
+                    className="connector-vertical"
+                    d="M50 0 C18 20, 82 35, 48 52 S18 78, 52 100"
+                  />
+                </svg>
+              )}
+              <div className="timeline-copy">
+                <b>{n}</b>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </div>
             </article>
           ))}
         </div>

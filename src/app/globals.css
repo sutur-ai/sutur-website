@@ -749,29 +749,87 @@ section.scroll-section {
   max-width: 750px;
 }
 .timeline {
+  --marker-size: clamp(52px, 4.6vw, 70px);
   display: grid;
-  grid-template-columns: repeat(7, minmax(170px, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   margin-top: 70px;
   position: relative;
-  gap: 0;
-  border-top: 1px dashed var(--line);
 }
-.timeline:before {
-  content: "";
+.timeline-step {
+  position: relative;
+  min-width: 0;
+  padding-right: clamp(12px, 1.4vw, 22px);
+}
+.timeline-marker {
+  width: var(--marker-size);
+  height: var(--marker-size);
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  color: var(--orange);
+  filter: drop-shadow(0 7px 12px rgba(245, 126, 32, 0.16));
+}
+.timeline-marker svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.timeline-marker path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.timeline-step:nth-child(even) .timeline-marker {
+  transform: rotate(-5deg);
+  color: var(--violet);
+}
+.timeline-step:nth-child(3n) .timeline-marker {
+  transform: rotate(4deg) scale(0.94);
+}
+.timeline-connector {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: -1px;
-  border-top: 1px solid var(--orange);
-  width: 18%;
+  z-index: 1;
+  top: calc(var(--marker-size) * 0.13);
+  left: calc(var(--marker-size) * 0.72);
+  width: calc(100% - var(--marker-size) * 0.44);
+  height: calc(var(--marker-size) * 0.72);
+  overflow: visible;
 }
-.timeline article {
-  padding: 28px 20px 0;
-  border-right: 1px solid var(--line);
-  min-height: 210px;
+.timeline-connector path {
+  fill: none;
+  stroke: color-mix(in srgb, var(--violet) 68%, transparent);
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-dasharray: 1 8;
+  vector-effect: non-scaling-stroke;
+}
+.connector-vertical {
+  display: none;
+}
+.timeline-step:nth-child(even) .timeline-connector {
+  transform: scaleY(-1);
+}
+.timeline-copy {
+  max-width: 190px;
+  padding-top: 18px;
+}
+.timeline-copy b {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 15px;
+  letter-spacing: 0.12em;
 }
 .timeline h3 {
-  font-size: 24px;
+  margin: 0 0 10px;
+  font-size: clamp(20px, 1.7vw, 26px);
+}
+.timeline p {
+  max-width: 18ch;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.55;
 }
 .why h2 {
   max-width: 750px;
@@ -1166,9 +1224,8 @@ footer b {
   .timeline {
     margin-top: clamp(28px, 5svh, 58px);
   }
-  .timeline article {
-    min-height: 0;
-    padding: clamp(16px, 2.8svh, 26px) clamp(12px, 1.4vw, 20px) 0;
+  .timeline-step {
+    padding-right: clamp(12px, 1.4vw, 20px);
   }
   .timeline h3 {
     font-size: clamp(18px, 2.6svh, 24px);
@@ -1332,9 +1389,7 @@ footer b {
     grid-template-columns: repeat(7, minmax(0, 1fr));
     margin-top: clamp(44px, 6svh, 72px);
   }
-  .timeline article {
-    padding: clamp(22px, 3.2svh, 34px) 24px 0;
-  }
+  .timeline-step { padding-right: 24px; }
   .timeline h3 { font-size: clamp(24px, 3.2svh, 32px); }
   .team { gap: clamp(90px, 10vw, 180px); }
   .people { gap: 24px; }
@@ -1444,11 +1499,43 @@ footer b {
     padding-bottom: 90px;
   }
   .timeline {
-    grid-template-columns: repeat(2, 1fr);
+    --marker-size: 58px;
+    grid-template-columns: 1fr;
+    gap: 0;
     margin-top: 45px;
   }
-  .timeline article {
-    border-bottom: 1px solid var(--line);
+  .timeline-step {
+    display: grid;
+    grid-template-columns: var(--marker-size) minmax(0, 1fr);
+    column-gap: 24px;
+    min-height: 152px;
+    padding: 0 0 42px;
+  }
+  .timeline-marker {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .timeline-copy {
+    grid-column: 2;
+    grid-row: 1;
+    max-width: 500px;
+    padding-top: 2px;
+  }
+  .timeline-copy p {
+    max-width: 42ch;
+  }
+  .timeline-connector {
+    top: calc(var(--marker-size) * 0.78);
+    left: calc(var(--marker-size) * 0.12);
+    width: calc(var(--marker-size) * 0.76);
+    height: calc(100% - var(--marker-size) * 0.58);
+    transform: none !important;
+  }
+  .connector-horizontal {
+    display: none;
+  }
+  .connector-vertical {
+    display: block;
   }
   .why-grid {
     grid-template-columns: 1fr;
@@ -1504,8 +1591,8 @@ footer b {
   .stats span {
     font-size: 11px;
   }
-  .timeline {
-    grid-template-columns: 1fr;
+  .timeline-step {
+    column-gap: 18px;
   }
   .people {
     grid-template-columns: 1fr;
