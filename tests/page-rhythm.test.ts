@@ -34,10 +34,9 @@ describe("homepage section rhythm", () => {
   it("opens with human copy, no duplicate logo, and a left-shifted desktop orbit", () => {
     expect(page).not.toContain('className="hero-brand"');
     expect(css).not.toContain(".hero-brand");
-    expect(page).toMatch(/Spend less time[\s\S]*chasing work\./);
-    expect(page).toContain("Keep it moving.");
-    expect(page).toMatch(/Once the foundation works, we add practical agents/);
-    expect(css).toMatch(/\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*translateX\(clamp\(-72px,\s*-5vw,\s*-36px\)\)/s);
+    expect(page).toMatch(/Connect your[\s\S]*business\.[\s\S]*Automate the busywork\./);
+    expect(page).toMatch(/Once everything works[\s\S]*together, practical agents can handle/);
+    expect(css).toMatch(/\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*translateX\(clamp\(-132px,\s*-7\.5vw,\s*-64px\)\) scale\(1\.08\)[^}]*transform-origin:\s*center/s);
     expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*none/s);
   });
 

@@ -12,18 +12,18 @@ export default function Home() {
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
-          <p className="hero-eyebrow">Odoo, shaped around the way your team works</p>
+          <p className="hero-eyebrow">One connected system. Less manual work.</p>
           <h1>
-            Spend less time
+            Connect your
             <br />
-            chasing work.
+            business.
             <br />
-            <em>Keep it moving.</em>
+            <em>Automate the busywork.</em>
           </h1>
           <p className="lead">
-            We bring the scattered parts of your operation into one clear Odoo
-            system. Once the foundation works, we add practical agents where
-            they can genuinely save your team time.
+            We bring your operation into one Odoo setup. Once everything works
+            together, practical agents can handle the repetitive work your team
+            should not have to chase.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">

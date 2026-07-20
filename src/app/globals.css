@@ -1806,7 +1806,8 @@ section.scroll-section {
     linear-gradient(120deg, var(--dark), var(--dark2)) !important;
 }
 .hero > [aria-label="Sutur AI agent working across Odoo modules"] {
-  transform: translateX(clamp(-72px, -5vw, -36px));
+  transform: translateX(clamp(-132px, -7.5vw, -64px)) scale(1.08);
+  transform-origin: center;
 }
 .hero-copy h1 {
   max-width: 760px;
