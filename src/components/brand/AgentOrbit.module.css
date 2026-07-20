@@ -8,7 +8,7 @@
 .prompt {
   position: absolute;
   z-index: 6;
-  top: 0;
+  top: 72px;
   left: 50%;
   width: min(92%, 560px);
   min-height: 34px;
