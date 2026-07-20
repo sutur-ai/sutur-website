@@ -11,10 +11,10 @@ const links = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [showDock, setShowDock] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const updateHeader = () => setShowDock(window.scrollY > 520);
+    const updateHeader = () => setScrolled(window.scrollY > 96);
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
     return () => window.removeEventListener('scroll', updateHeader);
@@ -27,7 +27,7 @@ export function Header() {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${scrolled ? ' is-floating' : ''}`}>
         <a className="wordmark" href="#top" aria-label="Sutur home">
           <img src="/brand/sutur-logo-en.png" alt="Sutur" width={116} height={38} />
         </a>
@@ -50,11 +50,9 @@ export function Header() {
         )}
       </header>
       <button
-        className={`floating-cta${showDock ? ' is-visible' : ''}`}
+        className="floating-cta is-visible"
         type="button"
         onClick={() => go('book')}
-        aria-hidden={!showDock}
-        tabIndex={showDock ? 0 : -1}
       >
         <span aria-hidden="true" />
         Book a discovery call

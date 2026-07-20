@@ -42,14 +42,17 @@ describe("homepage section rhythm", () => {
     );
   });
 
-  it("reveals a compact discovery-call dock after the hero", () => {
-    expect(header).toMatch(/useEffect/);
-    expect(header).toMatch(/window\.scrollY > 520/);
-    expect(header).toContain("floating-cta");
-    expect(header).toContain("is-visible");
-    expect(header).toContain("aria-hidden={!showDock}");
+  it("keeps the discovery-call dock visible throughout the page", () => {
+    expect(header).toContain('className="floating-cta is-visible"');
     expect(css).toMatch(/\.floating-cta\s*{[^}]*position:\s*fixed/s);
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1/s);
+  });
+
+  it("turns the hero navigation into a compact floating top bar", () => {
+    expect(header).toMatch(/window\.scrollY > 96/);
+    expect(header).toContain("is-floating");
+    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*position:\s*fixed/s);
+    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*top:\s*12px/s);
   });
 
   it("restores natural section height on desktop and mobile", () => {
@@ -62,7 +65,7 @@ describe("homepage section rhythm", () => {
   });
 
   it("uses a quiet transparent top bar over the hero", () => {
-    expect(header).toContain('className="site-header"');
+    expect(header).toContain("site-header${scrolled ? ' is-floating' : ''}");
     expect(header).toContain('aria-label="Primary navigation"');
     expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*absolute/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*background:\s*transparent/s);
