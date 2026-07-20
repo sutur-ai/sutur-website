@@ -97,11 +97,16 @@ describe("homepage section rhythm", () => {
     expect(header).toContain('className="wordmark-divider"');
     expect(css).toMatch(/\.site-header nav button,\s*\.site-header \.menu\s*{[^}]*font-size:\s*16px/s);
     expect(css).toMatch(/\.site-header \.header-cta\s*{[^}]*font-size:\s*15px/s);
+    expect(css).toContain("header .wordmark img { width: auto !important; }");
+    expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*width:\s*auto[^}]*height:\s*28px/s);
   });
 
-  it("reduces the mobile menu panel and text to sixty percent", () => {
+  it("keeps mobile branding fixed while using a full-width compact menu", () => {
     expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.mobile-menu\s*{[^}]*width:\s*60%[^}]*min-height:\s*auto/s,
+      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.wordmark img,\s*\.site-header\.is-floating \.wordmark img\s*{[^}]*width:\s*auto[^}]*height:\s*21px[^}]*transition:\s*none/s,
+    );
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.mobile-menu\s*{[^}]*left:\s*0[^}]*right:\s*0[^}]*width:\s*100%[^}]*min-height:\s*auto/s,
     );
     expect(css).toMatch(/\.site-header \.mobile-menu button\s*{[^}]*font-size:\s*clamp\(1\.2rem,\s*6vw,\s*2\.1rem\)/s);
   });

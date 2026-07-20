@@ -1324,7 +1324,7 @@ footer b {
     gap: 48px;
     padding: 0 max(72px, calc((100vw - 1764px) / 2));
   }
-  header .wordmark img { width: 64px !important; }
+  header .wordmark img { width: auto !important; }
   nav { gap: 42px; }
   nav button,
   .menu { font-size: 18px; }
@@ -1943,7 +1943,8 @@ footer {
     height: 56px;
     padding: 0 14px;
   }
-  .site-header .wordmark img {
+  .site-header .wordmark img,
+  .site-header.is-floating .wordmark img {
     width: auto;
     height: 21px;
     transition: none;
@@ -1956,9 +1957,9 @@ footer {
   }
   .site-header .mobile-menu {
     top: 68px;
-    left: auto;
+    left: 0;
     right: 0;
-    width: 60%;
+    width: 100%;
     min-height: auto;
     padding: 22px 14px;
     gap: 8px;
