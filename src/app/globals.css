@@ -1689,8 +1689,12 @@ body {
   color: var(--ink);
 }
 .site-header {
-  position: absolute;
-  inset: 0 0 auto;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  right: auto;
+  width: 100%;
+  transform: translateX(-50%);
   z-index: 30;
   height: 76px;
   padding: 0 max(32px, calc((100vw - 1312px) / 2));
@@ -1703,10 +1707,7 @@ body {
     box-shadow 240ms ease;
 }
 .site-header.is-floating {
-  position: fixed;
   top: 12px;
-  left: 50%;
-  right: auto;
   width: min(920px, calc(100% - 48px));
   height: 54px;
   padding: 0 16px;
@@ -1721,7 +1722,11 @@ body {
   display: block;
   width: 104px;
   height: auto;
-  filter: brightness(0) invert(1);
+  filter: none;
+  transition: width 240ms ease;
+}
+.site-header.is-floating .wordmark img {
+  width: 92px;
 }
 .site-header nav {
   gap: 30px;

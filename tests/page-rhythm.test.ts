@@ -48,11 +48,14 @@ describe("homepage section rhythm", () => {
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1/s);
   });
 
-  it("turns the hero navigation into a compact floating top bar", () => {
+  it("shrinks the centered top bar without changing its x-axis anchor", () => {
     expect(header).toMatch(/window\.scrollY > 96/);
     expect(header).toContain("is-floating");
-    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*position:\s*fixed/s);
-    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*top:\s*12px/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*left:\s*50%/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*transform:\s*translateX\(-50%\)/s);
+    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*width:\s*min\(920px/s);
+    expect(css).not.toMatch(/\.site-header\.is-floating\s*{[^}]*left:\s*50%/s);
   });
 
   it("restores natural section height on desktop and mobile", () => {
@@ -67,8 +70,9 @@ describe("homepage section rhythm", () => {
   it("uses a quiet transparent top bar over the hero", () => {
     expect(header).toContain("site-header${scrolled ? ' is-floating' : ''}");
     expect(header).toContain('aria-label="Primary navigation"');
-    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*absolute/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*background:\s*transparent/s);
+    expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*filter:\s*none/s);
   });
 
   it("exposes an accessible mobile navigation control", () => {
