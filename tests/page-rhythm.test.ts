@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const page = readFileSync(
@@ -13,14 +13,6 @@ const header = readFileSync(
   new URL("../src/components/sections/Header.tsx", import.meta.url),
   "utf8",
 );
-const sectionScrollUrl = new URL(
-  "../src/components/sections/SectionScroll.tsx",
-  import.meta.url,
-);
-const sectionScroll = existsSync(sectionScrollUrl)
-  ? readFileSync(sectionScrollUrl, "utf8")
-  : "";
-
 describe("homepage section rhythm", () => {
   it("alternates light and dark surfaces across every content section", () => {
     const surfaces = [
@@ -39,66 +31,47 @@ describe("homepage section rhythm", () => {
     ]);
   });
 
-  it("snaps viewport scrolling to sections with smooth motion", () => {
-    expect(css).toMatch(/html\s*{[^}]*scroll-snap-type:\s*y mandatory/s);
-    expect(css).toMatch(
-      /\.scroll-section[^{]*{[^}]*scroll-snap-align:\s*start/s,
-    );
-    expect(css).toMatch(
-      /\.scroll-section[^{]*{[^}]*scroll-snap-stop:\s*always/s,
-    );
-    expect(css).toMatch(/html\s*{[^}]*scroll-behavior:\s*smooth/s);
+  it("uses natural page scrolling rather than forcing viewport snap", () => {
+    expect(css).toMatch(/\/\* 2026 editorial refresh[\s\S]*html\s*{[^}]*scroll-snap-type:\s*none/s);
+    expect(page).not.toContain("<SectionScroll />");
   });
 
-  it("disables mandatory snapping when reduced motion is requested", () => {
+  it("keeps reduced-motion users out of decorative animation", () => {
     expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*html\s*{[^}]*scroll-snap-type:\s*none/s,
+      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*scroll-behavior:\s*auto\s*!important/s,
     );
   });
 
-  it("collapses the desktop header after leaving the top of the page", () => {
+  it("reveals a compact discovery-call dock after the hero", () => {
     expect(header).toMatch(/useEffect/);
-    expect(header).toMatch(/window\.scrollY/);
-    expect(header).toMatch(/is-collapsed/);
+    expect(header).toMatch(/window\.scrollY > 520/);
+    expect(header).toContain("floating-cta");
+    expect(header).toContain("is-visible");
+    expect(header).toContain("aria-hidden={!showDock}");
+    expect(css).toMatch(/\.floating-cta\s*{[^}]*position:\s*fixed/s);
+    expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1/s);
+  });
+
+  it("restores natural section height on desktop and mobile", () => {
     expect(css).toMatch(
-      /header\.is-collapsed\s*{[^}]*transform:\s*translateY\(-100%\)/s,
+      /\.hero\.scroll-section,\s*section\.scroll-section\s*{[^}]*height:\s*auto/s,
+    );
+    expect(css).toMatch(
+      /\.hero\.scroll-section,\s*section\.scroll-section\s*{[^}]*overflow:\s*visible/s,
     );
   });
 
-  it("constrains desktop sections to one viewport and restores natural mobile flow", () => {
-    expect(css).toMatch(
-      /@media\s*\(min-width:\s*901px\)[\s\S]*section\.scroll-section\s*{[^}]*height:\s*100svh/s,
-    );
-    expect(css).toMatch(
-      /@media\s*\(min-width:\s*901px\)[\s\S]*\.hero\.scroll-section\s*{[^}]*height:\s*calc\(100svh\s*-\s*82px\)/s,
-    );
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*section\.scroll-section\s*{[^}]*height:\s*auto/s,
-    );
+  it("uses a quiet transparent top bar over the hero", () => {
+    expect(header).toContain('className="site-header"');
+    expect(header).toContain('aria-label="Primary navigation"');
+    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*absolute/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*background:\s*transparent/s);
   });
 
-  it("retargets an in-flight desktop transition when a new wheel gesture arrives", () => {
-    expect(page).toContain("<SectionScroll />");
-    expect(sectionScroll).toMatch(/const TRANSITION_MS = 760/);
-    expect(sectionScroll).toMatch(/requestAnimationFrame/);
-    expect(sectionScroll).toMatch(/addEventListener\('wheel',[\s\S]*passive: false/);
-    expect(sectionScroll).toMatch(/matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
-    expect(sectionScroll).toMatch(/let targetIndex = 0/);
-    expect(sectionScroll).toMatch(/animationRunning[\s\S]*cancelAnimationFrame\(animationFrame\)/);
-    expect(sectionScroll).not.toMatch(/gestureLocked/);
-  });
-
-  it("shows accessible animated cues for the available scroll directions", () => {
-    expect(sectionScroll).toContain('className="section-cue section-cue-up"');
-    expect(sectionScroll).toContain('className="section-cue section-cue-down"');
-    expect(sectionScroll).toContain('aria-label="Previous section"');
-    expect(sectionScroll).toContain('aria-label="Next section"');
-    expect(sectionScroll).toMatch(/dispatchEvent\([\s\S]*new WheelEvent/);
-    expect(sectionScroll).toContain('<svg');
-    expect(sectionScroll).toContain('className="section-cue-line"');
-    expect(css).toMatch(/\.section-cue\s*{[^}]*background:\s*transparent/s);
-    expect(css).toMatch(/\.section-cue\s*{[^}]*border:\s*0/s);
-    expect(css).toMatch(/@keyframes\s+cue-down/);
-    expect(css).toMatch(/@keyframes\s+cue-up/);
+  it("exposes an accessible mobile navigation control", () => {
+    expect(header).toContain('aria-expanded={open}');
+    expect(header).toContain('aria-controls="mobile-navigation"');
+    expect(header).toContain('id="mobile-navigation"');
+    expect(header).toContain("open ? 'Close' : 'Menu'");
   });
 });

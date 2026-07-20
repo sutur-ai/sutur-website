@@ -1,5 +1,4 @@
 import { Header } from "@/components/sections/Header";
-import { SectionScroll } from "@/components/sections/SectionScroll";
 import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
 import { KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
@@ -9,7 +8,6 @@ import { agentExamples } from "@/content/services";
 export default function Home() {
   return (
     <main id="top">
-      <SectionScroll />
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
