@@ -34,7 +34,10 @@ describe("homepage section rhythm", () => {
   it("opens with human copy, no duplicate logo, and a left-shifted desktop orbit", () => {
     expect(page).not.toContain('className="hero-brand"');
     expect(css).not.toContain(".hero-brand");
-    expect(page).toMatch(/Connect your[\s\S]*business\.[\s\S]*Automate the busywork\./);
+    expect(page).toContain("Connect your business.");
+    expect(page).toContain("<em>Automate the busywork.</em>");
+    expect(css).toMatch(/@media\s*\(min-width:\s*1500px\)[\s\S]*\.hero-copy h1\s*{[^}]*max-width:\s*none[^}]*white-space:\s*nowrap/s);
+    expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero-copy h1\s*{[^}]*white-space:\s*normal/s);
     expect(page).toMatch(/Once everything works[\s\S]*together, practical agents can handle/);
     expect(css).toMatch(/\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*translateX\(clamp\(-132px,\s*-7\.5vw,\s*-64px\)\) scale\(1\.08\)[^}]*transform-origin:\s*center/s);
     expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*none/s);

@@ -14,9 +14,7 @@ export default function Home() {
         <div className="hero-copy">
           <p className="hero-eyebrow">One connected system. Less manual work.</p>
           <h1>
-            Connect your
-            <br />
-            business.
+            Connect your business.
             <br />
             <em>Automate the busywork.</em>
           </h1>

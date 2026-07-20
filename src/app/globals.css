@@ -1891,6 +1891,12 @@ section.scroll-section {
 footer {
   background: var(--dark);
 }
+@media (min-width: 1500px) {
+  .hero-copy h1 {
+    max-width: none;
+    white-space: nowrap;
+  }
+}
 @media (max-width: 900px) {
   .site-header,
   .site-header.is-collapsed {
@@ -1959,6 +1965,7 @@ footer {
   }
   .hero-copy h1 {
     font-size: clamp(3.5rem, 15vw, 6rem);
+    white-space: normal;
   }
   .floating-cta {
     width: calc(100% - 32px);
