@@ -135,9 +135,9 @@ nav button,
 .hero {
   min-height: 690px;
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+  grid-template-columns: minmax(370px, 0.9fr) minmax(390px, 1.1fr);
   align-items: center;
-  gap: clamp(64px, 9vw, 140px);
+  gap: clamp(24px, 4vw, 64px);
   overflow: hidden;
   padding-left: max(44px, calc((100vw - 1176px) / 2));
   padding-right: max(44px, calc((100vw - 1176px) / 2));
@@ -1202,7 +1202,7 @@ footer b {
     font-size: clamp(15px, 1.8svh, 18px);
   }
   .hero {
-    gap: clamp(48px, 7vw, 96px);
+    gap: clamp(24px, 4vw, 64px);
   }
   .hero-principles {
     margin-top: clamp(12px, 2.2svh, 24px);

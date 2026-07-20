@@ -2,6 +2,7 @@ import { Header } from "@/components/sections/Header";
 import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
 import { KnowledgeDiagram } from "@/components/brand/Diagrams";
 import { ModuleGrid } from "@/components/brand/ModuleGrid";
+import { AgentOrbit } from "@/components/brand/AgentOrbit";
 import { Booking } from "@/components/booking/Booking";
 import { agentExamples } from "@/content/services";
 
@@ -35,15 +36,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <aside className="hero-summary" aria-label="How Sutur works">
-          <p>One thoughtful system, shaped around your operation.</p>
-          <ol>
-            <li><span>01</span>Understand the work</li>
-            <li><span>02</span>Simplify the process</li>
-            <li><span>03</span>Build what fits</li>
-          </ol>
-          <small>Direct access to the people doing the work.</small>
-        </aside>
+        <AgentOrbit />
       </section>
       <section className="section solution scroll-section surface-paper" id="solutions">
         <div>
