@@ -12,7 +12,6 @@ export default function Home() {
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
-          <p className="hero-eyebrow">One connected system. Less manual work.</p>
           <h1>
             Connect your business.
             <br />
