@@ -8,15 +8,16 @@
 .prompt {
   position: absolute;
   z-index: 6;
-  top: 72px;
+  top: 42px;
   left: 50%;
-  width: min(92%, 560px);
+  width: min(88%, 500px);
   min-height: 34px;
   margin: 0;
   transform: translateX(-50%);
   color: #faf5ec;
   font: 400 clamp(16px, 1.6vw, 21px)/1.35 Fraunces, Georgia, serif;
   text-align: center;
+  text-wrap: balance;
 }
 .prompt::after {
   content: "";

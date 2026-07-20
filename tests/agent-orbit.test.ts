@@ -59,8 +59,10 @@ describe("agent orbit hero", () => {
     expect(completion).toBeGreaterThan(green);
   });
 
-  it("keeps the desktop prompt close to the orbit", () => {
-    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*72px/);
+  it("reserves a two-line desktop prompt zone without overlapping the orbit", () => {
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*42px/);
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*width:\s*min\(88%,\s*500px\)/);
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*text-wrap:\s*balance/);
     expect(styles).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.prompt\s*{[^}]*top:\s*8px/);
   });
 
