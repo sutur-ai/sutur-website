@@ -42,6 +42,18 @@ describe("agent orbit hero", () => {
     expect(styles).toContain(".badgeDone");
   });
 
+  it("counts badges down faster than the full working exchange", () => {
+    expect(component).toContain("const BADGE_DURATION_RATIO = 0.55");
+    expect(component).toContain("const badgeCountdown = countBadge(");
+    expect(component).toContain("workDuration * BADGE_DURATION_RATIO");
+    expect(component).toContain("Promise.all([badgeCountdown, sustainTwoLaneTraffic(scenario.route, workDuration)])");
+  });
+
+  it("makes the ghost a larger central anchor on desktop and mobile", () => {
+    expect(styles).toMatch(/\.agent\s*{[\s\S]*width:\s*min\(18%,\s*112px\)/);
+    expect(styles).toMatch(/@media\s*\(max-width:\s*480px\)[\s\S]*\.agent\s*{[^}]*width:\s*20%/);
+  });
+
   it("keeps decorative motion disabled for reduced-motion users", () => {
     expect(styles).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   });

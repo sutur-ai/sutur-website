@@ -68,7 +68,7 @@
   z-index: 4;
   left: 50%;
   top: 55%;
-  width: min(14.5%, 92px);
+  width: min(18%, 112px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   display: grid;
@@ -178,7 +178,7 @@
   .orbit { height: 430px; }
   .prompt { font-size: 15px; }
   .field { width: 96%; }
-  .agent { width: 16%; }
+  .agent { width: 20%; }
   .node { width: 50px; }
   .label { font-size: 8px; }
 }

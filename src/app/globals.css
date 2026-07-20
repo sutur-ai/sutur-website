@@ -1920,9 +1920,17 @@ footer {
 @media (max-width: 900px) {
   .site-header,
   .site-header.is-collapsed {
-    height: 68px;
-    padding: 0 22px;
+    top: 8px;
+    width: calc(100% - 16px);
+    height: 56px;
+    padding: 0 14px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 9px;
+    background: rgba(19,16,25,.93);
+    box-shadow: 0 12px 34px rgba(19,16,25,.2);
+    backdrop-filter: blur(16px);
     color: #fffaf3;
+    transition: none;
   }
   .site-header.is-floating {
     top: 8px;
@@ -1930,7 +1938,10 @@ footer {
     height: 56px;
     padding: 0 14px;
   }
-  .site-header .wordmark img { width: 94px; }
+  .site-header .wordmark img {
+    width: 92px;
+    transition: none;
+  }
   .site-header .mobile-menu {
     top: 68px;
     min-height: calc(100svh - 68px);

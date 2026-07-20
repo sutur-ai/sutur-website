@@ -58,6 +58,15 @@ describe("homepage section rhythm", () => {
     expect(css).not.toMatch(/\.site-header\.is-floating\s*{[^}]*left:\s*50%/s);
   });
 
+  it("starts mobile with the compact floating bar and no size transition", () => {
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header,\s*\.site-header\.is-collapsed\s*{[^}]*top:\s*8px[^}]*width:\s*calc\(100% - 16px\)[^}]*height:\s*56px[^}]*transition:\s*none/s,
+    );
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header\.is-floating\s*{[^}]*top:\s*8px[^}]*width:\s*calc\(100% - 16px\)[^}]*height:\s*56px/s,
+    );
+  });
+
   it("restores natural section height on desktop and mobile", () => {
     expect(css).toMatch(
       /\.hero\.scroll-section,\s*section\.scroll-section\s*{[^}]*height:\s*auto/s,

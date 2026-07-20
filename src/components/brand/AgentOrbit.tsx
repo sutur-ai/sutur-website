@@ -40,6 +40,7 @@ const SCENARIOS: Scenario[] = [
 const PACKET_SPEED = 76;
 const TRAFFIC_INTERVAL = 120;
 const LANE_OFFSET = 1.15;
+const BADGE_DURATION_RATIO = 0.55;
 const sleep = (milliseconds: number) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
 export function AgentOrbit() {
@@ -195,11 +196,15 @@ export function AgentOrbit() {
       setWorking(true);
       const countSteps = Math.max(1, scenario.badge.from - scenario.badge.to);
       const workDuration = Math.max(2800, Math.min(5200, countSteps * 160));
+      const badgeCountdown = countBadge(
+        scenario,
+        workDuration * BADGE_DURATION_RATIO,
+      );
       for (let index = 0; index < scenario.route.length - 1; index += 1) {
         await emitPacket(scenario.route[index], scenario.route[index + 1]);
         if (!(await waits(230))) return;
       }
-      await Promise.all([countBadge(scenario, workDuration), sustainTwoLaneTraffic(scenario.route, workDuration)]);
+      await Promise.all([badgeCountdown, sustainTwoLaneTraffic(scenario.route, workDuration)]);
       const completingModule = scenario.route.at(-1);
       if (completingModule && completingModule !== "Agent") await emitPacket(completingModule, "Agent");
       setBadge({ module: scenario.badge.module, value: scenario.badge.to, done: true });
