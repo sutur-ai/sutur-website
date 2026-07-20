@@ -12,20 +12,18 @@ export default function Home() {
       <Header />
       <section className="hero scroll-section surface-ink">
         <div className="hero-copy">
-          <div className="hero-brand" aria-label="Sutur">
-            <img src="/brand/sutur-logo-en.png" alt="Sutur" />
-            <span aria-hidden="true" />
-            <img src="/brand/sutur-logo-ar.png" alt="سطور" lang="ar" />
-          </div>
-          <p className="hero-eyebrow">Odoo and practical AI, built around your team</p>
+          <p className="hero-eyebrow">Odoo, shaped around the way your team works</p>
           <h1>
-            Make complex work
+            Spend less time
             <br />
-            <em>feel simple.</em>
+            chasing work.
+            <br />
+            <em>Keep it moving.</em>
           </h1>
           <p className="lead">
-            We design clearer systems for the way your business already works —
-            and stay close from the first conversation through launch and beyond.
+            We bring the scattered parts of your operation into one clear Odoo
+            system. Once the foundation works, we add practical agents where
+            they can genuinely save your team time.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">

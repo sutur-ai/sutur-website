@@ -31,6 +31,16 @@ describe("homepage section rhythm", () => {
     ]);
   });
 
+  it("opens with human copy, no duplicate logo, and a left-shifted desktop orbit", () => {
+    expect(page).not.toContain('className="hero-brand"');
+    expect(css).not.toContain(".hero-brand");
+    expect(page).toMatch(/Spend less time[\s\S]*chasing work\./);
+    expect(page).toContain("Keep it moving.");
+    expect(page).toMatch(/Once the foundation works, we add practical agents/);
+    expect(css).toMatch(/\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*translateX\(clamp\(-72px,\s*-5vw,\s*-36px\)\)/s);
+    expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*none/s);
+  });
+
   it("uses natural page scrolling rather than forcing viewport snap", () => {
     expect(css).toMatch(/\/\* 2026 editorial refresh[\s\S]*html\s*{[^}]*scroll-snap-type:\s*none/s);
     expect(page).not.toContain("<SectionScroll />");

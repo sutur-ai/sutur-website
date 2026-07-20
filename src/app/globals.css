@@ -256,25 +256,6 @@ h1 em {
   font-size: clamp(16px, 1.5vw, 19px);
   line-height: 1.65;
 }
-.hero-brand {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: clamp(42px, 7svh, 72px);
-}
-.hero-brand img {
-  display: block;
-  width: auto;
-  height: 32px;
-}
-.hero-brand img:last-child {
-  height: 38px;
-}
-.hero-brand span {
-  width: 1px;
-  height: 24px;
-  background: rgba(255, 255, 255, 0.22);
-}
 .hero-eyebrow {
   margin: 0;
   color: var(--orange);
@@ -1354,10 +1335,6 @@ footer b {
     font-size: 1.75rem;
     line-height: 1.65;
   }
-  .hero-brand { margin-bottom: clamp(48px, 6svh, 68px); }
-  .hero-brand img { height: 48px; }
-  .hero-brand img:last-child { height: 57px; }
-  .hero-brand span { height: 36px; }
   .hero-eyebrow,
   .eyebrow { font-size: 16px; }
   .hero .hero-actions {
@@ -1520,9 +1497,6 @@ footer b {
     min-height: auto;
     gap: 56px;
   }
-  .hero-brand {
-    margin-bottom: 46px;
-  }
   .hero-copy h1 {
     font-size: clamp(3.3rem, 10vw, 5.4rem);
   }
@@ -1630,9 +1604,6 @@ footer b {
   .ops-visual,
   .hero-orb {
     display: none;
-  }
-  .hero-brand {
-    margin-bottom: 38px;
   }
   .hero-eyebrow {
     line-height: 1.5;
@@ -1834,11 +1805,8 @@ section.scroll-section {
     radial-gradient(circle at 84% 20%, rgba(245,126,32,.1), transparent 28%),
     linear-gradient(120deg, var(--dark), var(--dark2)) !important;
 }
-.hero-brand {
-  margin-bottom: 54px;
-}
-.hero-brand img {
-  filter: brightness(0) invert(1);
+.hero > [aria-label="Sutur AI agent working across Odoo modules"] {
+  transform: translateX(clamp(-72px, -5vw, -36px));
 }
 .hero-copy h1 {
   max-width: 760px;
@@ -1980,6 +1948,9 @@ footer {
     padding-top: 126px !important;
     padding-bottom: 96px !important;
   }
+  .hero > [aria-label="Sutur AI agent working across Odoo modules"] {
+    transform: none;
+  }
   .hero-copy,
   .hero-summary {
     width: 100%;
@@ -1997,7 +1968,6 @@ footer {
   }
 }
 @media (max-width: 480px) {
-  .hero-brand { margin-bottom: 40px; }
   .hero-summary { margin-top: 16px; }
   .section,
   .booking-section {
