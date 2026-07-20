@@ -1720,13 +1720,18 @@ body {
 }
 .site-header .wordmark img {
   display: block;
-  width: 104px;
-  height: auto;
+  width: auto;
+  height: 28px;
   filter: none;
-  transition: width 240ms ease;
+  transition: height 240ms ease;
 }
 .site-header.is-floating .wordmark img {
-  width: 92px;
+  height: 24px;
+}
+.site-header .wordmark-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,.35);
 }
 .site-header nav {
   gap: 30px;
@@ -1736,7 +1741,7 @@ body {
   color: inherit;
   text-transform: none;
   letter-spacing: -0.01em;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
   padding: 14px 4px;
 }
@@ -1764,7 +1769,7 @@ body {
   background: var(--paper-warm);
   color: var(--ink);
   padding: 9px 14px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
 .floating-cta {
@@ -1939,21 +1944,35 @@ footer {
     padding: 0 14px;
   }
   .site-header .wordmark img {
-    width: 92px;
+    width: auto;
+    height: 21px;
     transition: none;
+  }
+  .site-header .wordmark {
+    gap: 7px;
+  }
+  .site-header .wordmark-divider {
+    height: 18px;
   }
   .site-header .mobile-menu {
     top: 68px;
-    min-height: calc(100svh - 68px);
-    padding: 36px 24px;
+    left: auto;
+    right: 0;
+    width: 60%;
+    min-height: auto;
+    padding: 22px 14px;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 9px;
     background: rgba(19,16,25,.98);
+    box-shadow: 0 16px 40px rgba(0,0,0,.28);
   }
   .site-header .mobile-menu button {
     display: flex;
     justify-content: space-between;
-    padding: 14px 0;
+    padding: 8px 0;
     border-bottom: 1px solid rgba(255,255,255,.12);
-    font-size: clamp(2rem, 10vw, 3.5rem);
+    font-size: clamp(1.2rem, 6vw, 2.1rem);
   }
   .hero {
     grid-template-columns: minmax(0, 1fr);

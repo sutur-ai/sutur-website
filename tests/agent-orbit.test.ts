@@ -42,11 +42,18 @@ describe("agent orbit hero", () => {
     expect(styles).toContain(".badgeDone");
   });
 
-  it("counts badges down faster than the full working exchange", () => {
+  it("counts down after one instruction packet, during traffic, then reports after green", () => {
     expect(component).toContain("const BADGE_DURATION_RATIO = 0.55");
-    expect(component).toContain("const badgeCountdown = countBadge(");
-    expect(component).toContain("workDuration * BADGE_DURATION_RATIO");
-    expect(component).toContain("Promise.all([badgeCountdown, sustainTwoLaneTraffic(scenario.route, workDuration)])");
+    const instruction = component.indexOf("await emitPacket(scenario.route[0], scenario.route[1])");
+    const countdown = component.indexOf("const badgeCountdown = countBadge(");
+    const traffic = component.indexOf("sustainTwoLaneTraffic(scenario.route, workDuration)", countdown);
+    const green = component.indexOf("setBadge({ module: scenario.badge.module, value: scenario.badge.to, done: true })");
+    const completion = component.indexOf('await emitPacket(completingModule, "Agent")');
+    expect(instruction).toBeGreaterThan(-1);
+    expect(countdown).toBeGreaterThan(instruction);
+    expect(traffic).toBeGreaterThan(countdown);
+    expect(green).toBeGreaterThan(traffic);
+    expect(completion).toBeGreaterThan(green);
   });
 
   it("makes the ghost a larger central anchor on desktop and mobile", () => {

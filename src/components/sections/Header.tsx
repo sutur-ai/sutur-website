@@ -30,6 +30,8 @@ export function Header() {
       <header className={`site-header${scrolled ? ' is-floating' : ''}`}>
         <a className="wordmark" href="#top" aria-label="Sutur home">
           <img src="/brand/sutur-logo-en.png" alt="Sutur" width={116} height={38} />
+          <span className="wordmark-divider" aria-hidden="true" />
+          <img src="/brand/sutur-logo-ar.png" alt="سطور" width={116} height={38} />
         </a>
         <nav aria-label="Primary navigation">
           {links.map(([label, id]) => (

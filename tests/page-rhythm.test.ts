@@ -90,4 +90,19 @@ describe("homepage section rhythm", () => {
     expect(header).toContain('id="mobile-navigation"');
     expect(header).toContain("open ? 'Close' : 'Menu'");
   });
+
+  it("uses bilingual branding and larger top-bar controls", () => {
+    expect(header).toContain('/brand/sutur-logo-en.png');
+    expect(header).toContain('/brand/sutur-logo-ar.png');
+    expect(header).toContain('className="wordmark-divider"');
+    expect(css).toMatch(/\.site-header nav button,\s*\.site-header \.menu\s*{[^}]*font-size:\s*16px/s);
+    expect(css).toMatch(/\.site-header \.header-cta\s*{[^}]*font-size:\s*15px/s);
+  });
+
+  it("reduces the mobile menu panel and text to sixty percent", () => {
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.mobile-menu\s*{[^}]*width:\s*60%[^}]*min-height:\s*auto/s,
+    );
+    expect(css).toMatch(/\.site-header \.mobile-menu button\s*{[^}]*font-size:\s*clamp\(1\.2rem,\s*6vw,\s*2\.1rem\)/s);
+  });
 });
