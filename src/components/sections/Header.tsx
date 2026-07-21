@@ -3,9 +3,7 @@
 import { useEffect, useState } from 'react';
 
 const links = [
-  ['Solutions', 'solutions'],
-  ['AI agents', 'agents'],
-  ['Process', 'process'],
+  ['What we build', 'capabilities'],
   ['Team', 'team'],
 ];
 

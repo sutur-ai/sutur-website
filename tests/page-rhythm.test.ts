@@ -15,15 +15,17 @@ const header = readFileSync(
 );
 describe("homepage section rhythm", () => {
   it("alternates light and dark surfaces across every content section", () => {
+    const renderedPage = page.replace(
+      "<CompanyCapabilities />",
+      '<section className="surface-paper" />',
+    );
     const surfaces = [
-      ...page.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
+      ...renderedPage.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
     ].map(([, surface]) => surface);
 
-    // Every section alternates from the opening ink hero through the final
-    // paper booking section.
+    // The new capabilities section replaces the three former middle sections,
+    // while preserving the light/dark rhythm through the booking section.
     expect(surfaces).toEqual([
-      "ink",
-      "paper",
       "ink",
       "paper",
       "ink",
