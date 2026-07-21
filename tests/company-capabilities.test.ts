@@ -45,14 +45,53 @@ describe('company capabilities section', () => {
     expect(component.match(/role="listitem"/g)).toHaveLength(1);
   });
 
+  it('uses each glass window as the full visual edge at a larger size', () => {
+    expect(styles).toMatch(/\.visual\s*{[^}]*height:\s*320px/s);
+    expect(styles).toMatch(/\.visual\s*{[^}]*backdrop-filter:\s*blur\(/s);
+    expect(styles).toMatch(/\.productWindow\s*{[^}]*inset:\s*0/s);
+    expect(styles).toMatch(/\.productWindow\s*{[^}]*border:\s*0/s);
+    expect(styles).not.toContain('inset: 15px');
+  });
+
   it('renders the Odoo home launcher in translucent macOS-style window chrome', () => {
     expect(component).toContain('function WindowChrome');
     expect(component).toContain('className={styles.windowControls}');
+    expect(component).toContain('className={styles.odooTopbar}');
     expect(component).toContain('className={styles.appLauncher}');
-    for (const app of ['Discuss', 'Calendar', 'CRM', 'Sales', 'Accounting', 'Inventory', 'Purchase', 'Manufacturing']) {
+    for (const app of [
+      'Discuss',
+      'Calendar',
+      'Appointments',
+      'Contacts',
+      'CRM',
+      'Sales',
+      'Dashboards',
+      'Point of Sale',
+      'Accounting',
+      'Website',
+      'Purchase',
+      'Inventory',
+      'Manufacturing',
+      'Settings',
+    ]) {
       expect(component).toContain(`>${app}<`);
     }
-    expect(styles).toMatch(/\.productWindow\s*{[^}]*backdrop-filter:\s*blur\(/s);
+  });
+
+  it('stacks the capabilities before the product windows become compressed', () => {
+    expect(styles).toContain('@media (max-width: 1050px) {\n  .capabilityGrid');
+  });
+
+  it('keeps code and chat information legible inside the enlarged windows', () => {
+    expect(styles).toMatch(/\.windowChrome\s*{[^}]*height:\s*36px/s);
+    expect(styles).toMatch(/\.codeEditor\s*{[^}]*font:\s*7px\//s);
+    expect(styles).toMatch(/\.chatMessage\s*{[^}]*font-size:\s*8px/s);
+  });
+
+  it('scales product mockup detail up on wide desktop screens', () => {
+    expect(styles).toMatch(/@media \(min-width: 1500px\)[\s\S]*?\.appIcon\s*{[^}]*width:\s*46px/s);
+    expect(styles).toMatch(/@media \(min-width: 1500px\)[\s\S]*?\.codeEditor\s*{[^}]*font-size:\s*9px/s);
+    expect(styles).toMatch(/@media \(min-width: 1500px\)[\s\S]*?\.chatMessage\s*{[^}]*font-size:\s*9\.5px/s);
   });
 
   it('renders a code editor with a file tree and visible diff lines', () => {

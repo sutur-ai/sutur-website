@@ -70,19 +70,24 @@
 
 .visual {
   position: relative;
-  height: 252px;
+  height: 320px;
   margin-bottom: 34px;
   overflow: hidden;
-  border: 1px solid rgba(59, 20, 71, 0.18);
-  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
   background:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 82% 12%, rgba(245, 126, 32, 0.2), transparent 34%),
-    radial-gradient(circle at 18% 86%, rgba(144, 111, 177, 0.28), transparent 38%),
-    #1a1420;
-  background-size: 30px 30px, 30px 30px, auto, auto, auto;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    radial-gradient(circle at 86% 4%, rgba(245, 126, 32, 0.14), transparent 34%),
+    radial-gradient(circle at 12% 92%, rgba(144, 111, 177, 0.2), transparent 42%),
+    linear-gradient(145deg, rgba(46, 28, 53, 0.92), rgba(22, 14, 29, 0.9));
+  background-size: 32px 32px, 32px 32px, auto, auto, auto;
+  -webkit-backdrop-filter: blur(14px) saturate(112%);
+  backdrop-filter: blur(14px) saturate(112%);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -1px rgba(255, 255, 255, 0.025),
+    0 16px 34px rgba(38, 18, 43, 0.14);
   transition: transform 260ms ease, box-shadow 260ms ease;
 }
 
@@ -99,7 +104,9 @@
 .capability:hover .visual,
 .capability:focus-within .visual {
   transform: translateY(-5px);
-  box-shadow: 0 18px 34px rgba(59, 20, 71, 0.1);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.12),
+    0 22px 42px rgba(59, 20, 71, 0.18);
 }
 
 .capabilityCopy {
@@ -183,24 +190,20 @@
 
 .productWindow {
   position: absolute;
-  inset: 15px;
+  inset: 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 13px;
-  background: rgba(34, 24, 40, 0.76);
-  -webkit-backdrop-filter: blur(18px) saturate(125%);
-  backdrop-filter: blur(18px) saturate(125%);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.055),
-    0 18px 34px rgba(5, 2, 8, 0.28);
+  border: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.012);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
   color: rgba(255, 255, 255, 0.9);
 }
 
 .windowChrome {
   display: flex;
   align-items: center;
-  height: 30px;
-  padding: 0 11px;
+  height: 36px;
+  padding: 0 13px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   background: rgba(255, 255, 255, 0.018);
 }
@@ -208,19 +211,19 @@
 .windowChrome > span {
   margin-left: auto;
   color: rgba(255, 255, 255, 0.46);
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .windowControls {
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
 
 .windowControls i {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #ff6b57;
 }
@@ -230,67 +233,125 @@
 
 /* Odoo visual */
 .odooHome {
-  height: calc(100% - 30px);
-  padding: 12px 13px 11px;
+  height: calc(100% - 36px);
   background:
-    radial-gradient(circle at 80% 8%, rgba(245, 126, 32, 0.1), transparent 32%),
-    linear-gradient(145deg, rgba(89, 52, 94, 0.3), rgba(23, 17, 29, 0.1));
+    radial-gradient(circle at 4% 2%, rgba(0, 87, 105, 0.5), transparent 62%),
+    radial-gradient(circle at 96% 52%, rgba(59, 20, 71, 0.48), transparent 58%),
+    rgba(5, 7, 18, 0.42);
 }
 
-.odooBrand {
+.odooTopbar {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 9px;
+  height: 34px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.018));
 }
 
-.odooBrand b {
-  color: #c9a6d1;
-  font-size: 13px;
+.odooTopbar > b {
+  color: #d4afd9;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.05em;
 }
 
-.odooBrand span {
-  color: rgba(255, 255, 255, 0.42);
+.odooProfile {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.odooProfile span {
+  display: grid;
+  width: 12px;
+  height: 12px;
+  place-items: center;
+  border-radius: 50%;
+  background: #c42c68;
+  color: white;
   font-size: 6px;
+  font-weight: 700;
+}
+
+.odooProfile small {
+  font-size: 7px;
+}
+
+.searchGlyph {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 50%;
+}
+
+.searchGlyph::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  width: 4px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.52);
+  transform: rotate(45deg);
+}
+
+.odooProfile .profileGlyph {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 6px;
+  background: linear-gradient(145deg, #9147a3, #5a2d6a);
+  color: white;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
 }
 
 .appLauncher {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px 6px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-content: center;
+  height: calc(100% - 34px);
+  padding: 13px 12px 16px;
+  gap: 12px 5px;
 }
 
 .odooApp {
   display: grid;
   justify-items: center;
-  gap: 3px;
+  gap: 5px;
   min-width: 0;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 7px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 8px;
   text-align: center;
 }
 
 .appIcon {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   place-items: center;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 7px 14px rgba(4, 1, 6, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.2),
+    0 8px 16px rgba(2, 1, 5, 0.22);
   color: white;
-  font-size: 10px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 700;
 }
 
 .appIcon img {
-  width: 27px;
-  height: 27px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
 }
 
@@ -302,11 +363,85 @@
   background: linear-gradient(145deg, var(--orange), #c75928);
 }
 
+.appointmentsIcon {
+  position: relative;
+  background: linear-gradient(145deg, #06cdbd, #067e92);
+}
+
+.appointmentsIcon small {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  display: grid;
+  width: 11px;
+  height: 11px;
+  place-items: center;
+  border-radius: 50%;
+  background: #153b55;
+  font-size: 7px;
+}
+
+.contactsIcon {
+  background: linear-gradient(145deg, #12d5bf, #087886);
+}
+
+.dashboardIcon {
+  grid-template-columns: repeat(3, 7px);
+  align-items: end;
+  gap: 2px;
+  background: linear-gradient(145deg, #30465b, #172c40);
+}
+
+.dashboardIcon small {
+  width: 7px;
+  height: 12px;
+  border-radius: 2px;
+  background: #d94d91;
+}
+
+.dashboardIcon small:nth-child(2) {
+  height: 20px;
+  background: #f57e20;
+}
+
+.dashboardIcon small:nth-child(3) {
+  height: 16px;
+  background: #16d0b5;
+}
+
+.posIcon {
+  background: linear-gradient(145deg, #f3aa36, #ad397e);
+  font-size: 8px;
+}
+
+.settingsIcon {
+  position: relative;
+  background: linear-gradient(145deg, #ad397e, #57356d);
+}
+
+.settingsIcon small,
+.settingsIcon b {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.settingsIcon small {
+  width: 19px;
+  height: 19px;
+  border: 5px dotted rgba(255, 255, 255, 0.9);
+}
+
+.settingsIcon b {
+  width: 7px;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
 /* Custom development visual */
 .editorShell {
   display: grid;
-  grid-template-columns: 82px minmax(0, 1fr);
-  height: calc(100% - 30px);
+  grid-template-columns: 88px minmax(0, 1fr);
+  height: calc(100% - 36px);
   background: rgba(11, 8, 15, 0.24);
 }
 
@@ -314,31 +449,31 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: 10px 7px;
+  padding: 12px 8px;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(9, 7, 12, 0.2);
   color: rgba(255, 255, 255, 0.5);
-  font-size: 6px;
+  font-size: 7px;
 }
 
 .fileTree strong {
   margin-bottom: 8px;
   color: rgba(255, 255, 255, 0.72);
-  font-size: 6px;
+  font-size: 7px;
   letter-spacing: 0.08em;
 }
 
 .fileTree span,
 .fileTree i {
   overflow: hidden;
-  padding: 3px 4px;
+  padding: 4px;
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .fileTree i {
-  padding-left: 11px;
+  padding-left: 12px;
 }
 
 .fileTree .activeFile {
@@ -355,12 +490,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 25px;
-  padding: 0 9px;
+  height: 30px;
+  padding: 0 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background: rgba(255, 255, 255, 0.025);
   color: rgba(255, 255, 255, 0.7);
-  font: 6px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 7px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .editorTab i {
@@ -370,14 +505,14 @@
 
 .codeEditor {
   display: grid;
-  padding: 7px 0;
+  padding: 10px 0;
   color: rgba(235, 223, 239, 0.8);
-  font: 5.7px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font: 7px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 .codeLine {
   display: grid;
-  grid-template-columns: 18px 9px minmax(0, 1fr);
+  grid-template-columns: 22px 11px minmax(0, 1fr);
   min-width: 0;
   padding: 1px 5px 1px 0;
   border-left: 2px solid transparent;
@@ -422,8 +557,8 @@
 /* Agent visual */
 .chatApp {
   display: grid;
-  grid-template-rows: 34px minmax(0, 1fr) 27px;
-  height: calc(100% - 30px);
+  grid-template-rows: 42px minmax(0, 1fr) 34px;
+  height: calc(100% - 36px);
   background:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
@@ -434,22 +569,22 @@
 .chatHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 10px;
+  gap: 10px;
+  padding: 0 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background: rgba(255, 255, 255, 0.025);
 }
 
 .chatHeader > i {
   display: grid;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   place-items: center;
   flex: 0 0 auto;
-  border-radius: 7px;
+  border-radius: 8px;
   background: linear-gradient(145deg, var(--orange), var(--gold));
   color: var(--ink);
-  font: 600 12px/1 Fraunces, Georgia, serif;
+  font: 600 14px/1 Fraunces, Georgia, serif;
   font-style: normal;
 }
 
@@ -460,40 +595,40 @@
 
 .chatHeader b {
   color: rgba(255, 255, 255, 0.88);
-  font-size: 7px;
+  font-size: 8.5px;
 }
 
 .chatHeader small {
   color: #77c996;
-  font-size: 6px;
+  font-size: 7px;
 }
 
 .chatMessages {
   display: grid;
   align-content: center;
-  gap: 4px;
+  gap: 6px;
   min-height: 0;
-  padding: 6px 8px;
+  padding: 8px 10px;
 }
 
 .chatMessage {
   display: grid;
-  gap: 1px;
-  max-width: 84%;
-  padding: 5px 7px 4px;
+  gap: 2px;
+  max-width: 88%;
+  padding: 6px 8px 5px;
   border: 1px solid rgba(255, 255, 255, 0.075);
   border-radius: 8px 8px 8px 3px;
   background: rgba(255, 255, 255, 0.065);
   box-shadow: 0 5px 12px rgba(4, 2, 7, 0.16);
   color: rgba(255, 255, 255, 0.78);
-  font-size: 6.2px;
-  line-height: 1.3;
+  font-size: 8px;
+  line-height: 1.35;
 }
 
 .chatMessage small {
   justify-self: end;
   color: rgba(255, 255, 255, 0.3);
-  font-size: 5px;
+  font-size: 6px;
 }
 
 .userMessage {
@@ -512,30 +647,89 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 8px 7px;
-  padding: 5px 5px 5px 9px;
+  margin: 0 10px 8px;
+  padding: 6px 6px 6px 11px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.045);
   color: rgba(255, 255, 255, 0.28);
-  font-size: 6px;
+  font-size: 7px;
 }
 
 .chatComposer i {
   display: grid;
-  width: 17px;
-  height: 17px;
+  width: 21px;
+  height: 21px;
   place-items: center;
   border-radius: 50%;
   background: var(--orange);
   color: var(--ink);
-  font-size: 9px;
+  font-size: 11px;
   font-style: normal;
 }
 
 @media (min-width: 1500px) {
   .visual {
-    height: 300px;
+    height: 380px;
+  }
+
+  .appLauncher {
+    gap: 16px 10px;
+  }
+
+  .odooApp {
+    font-size: 9px;
+  }
+
+  .appIcon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .appIcon img {
+    width: 39px;
+    height: 39px;
+  }
+
+  .editorShell {
+    grid-template-columns: 116px minmax(0, 1fr);
+  }
+
+  .fileTree,
+  .fileTree strong,
+  .editorTab {
+    font-size: 9px;
+  }
+
+  .codeEditor {
+    font-size: 9px;
+  }
+
+  .codeLine {
+    grid-template-columns: 28px 14px minmax(0, 1fr);
+  }
+
+  .chatHeader b {
+    font-size: 10px;
+  }
+
+  .chatHeader small {
+    font-size: 8px;
+  }
+
+  .chatMessages {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .chatMessage {
+    padding: 8px 10px 7px;
+    font-size: 9.5px;
+  }
+
+  .chatMessage small {
+    font-size: 7px;
   }
 
   .capabilityCopy {
@@ -562,9 +756,13 @@
     padding-right: 22px;
     padding-left: 22px;
   }
+
+  .visual {
+    height: 290px;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
   .capabilityGrid {
     grid-template-columns: 1fr;
   }
@@ -582,7 +780,7 @@
   }
 
   .visual {
-    height: 250px;
+    height: 300px;
     margin: 0;
   }
 
@@ -603,7 +801,7 @@
   }
 
   .visual {
-    height: 260px;
+    height: 320px;
   }
 
   .capabilityCopy {

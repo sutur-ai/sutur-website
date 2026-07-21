@@ -52,9 +52,14 @@ function CapabilityVisual({ kind }: { kind: VisualKind }) {
         <div className={styles.productWindow}>
           <WindowChrome title="Odoo · Apps" />
           <div className={styles.odooHome}>
-            <div className={styles.odooBrand}>
+            <div className={styles.odooTopbar}>
               <b>odoo</b>
-              <span>Good evening, Sutur</span>
+              <div className={styles.odooProfile}>
+                <i className={styles.searchGlyph} />
+                <span>4</span>
+                <small>Sutur Workspace</small>
+                <i className={styles.profileGlyph}>A</i>
+              </div>
             </div>
             <div className={styles.appLauncher}>
               <div className={styles.odooApp}>
@@ -66,6 +71,14 @@ function CapabilityVisual({ kind }: { kind: VisualKind }) {
                 <span>Calendar</span>
               </div>
               <div className={styles.odooApp}>
+                <i className={`${styles.appIcon} ${styles.appointmentsIcon}`}>31<small>✓</small></i>
+                <span>Appointments</span>
+              </div>
+              <div className={styles.odooApp}>
+                <i className={`${styles.appIcon} ${styles.contactsIcon}`}>ID</i>
+                <span>Contacts</span>
+              </div>
+              <div className={styles.odooApp}>
                 <i className={styles.appIcon}><img src="/brand/odoo-modules/crm.png" alt="" /></i>
                 <span>CRM</span>
               </div>
@@ -74,8 +87,20 @@ function CapabilityVisual({ kind }: { kind: VisualKind }) {
                 <span>Sales</span>
               </div>
               <div className={styles.odooApp}>
+                <i className={`${styles.appIcon} ${styles.dashboardIcon}`}><small /><small /><small /></i>
+                <span>Dashboards</span>
+              </div>
+              <div className={styles.odooApp}>
+                <i className={`${styles.appIcon} ${styles.posIcon}`}>POS</i>
+                <span>Point of Sale</span>
+              </div>
+              <div className={styles.odooApp}>
                 <i className={styles.appIcon}><img src="/brand/odoo-modules/accounting.png" alt="" /></i>
                 <span>Accounting</span>
+              </div>
+              <div className={styles.odooApp}>
+                <i className={styles.appIcon}><img src="/brand/odoo-modules/ecommerce.png" alt="" /></i>
+                <span>Website</span>
               </div>
               <div className={styles.odooApp}>
                 <i className={styles.appIcon}><img src="/brand/odoo-modules/inventory.png" alt="" /></i>
@@ -88,6 +113,10 @@ function CapabilityVisual({ kind }: { kind: VisualKind }) {
               <div className={styles.odooApp}>
                 <i className={styles.appIcon}><img src="/brand/odoo-modules/manufacturing.png" alt="" /></i>
                 <span>Manufacturing</span>
+              </div>
+              <div className={styles.odooApp}>
+                <i className={`${styles.appIcon} ${styles.settingsIcon}`}><small /><b /></i>
+                <span>Settings</span>
               </div>
             </div>
           </div>
