@@ -1,10 +1,7 @@
 import { Header } from "@/components/sections/Header";
-import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
-import { KnowledgeDiagram } from "@/components/brand/Diagrams";
-import { ModuleGrid } from "@/components/brand/ModuleGrid";
 import { AgentOrbit } from "@/components/brand/AgentOrbit";
+import { CompanyCapabilities } from "@/components/sections/CompanyCapabilities";
 import { Booking } from "@/components/booking/Booking";
-import { agentExamples } from "@/content/services";
 
 export default function Home() {
   return (
@@ -26,53 +23,14 @@ export default function Home() {
             <a className="button" href="#book">
               Book a discovery call
             </a>
-            <a className="arrow-link" href="#solutions">
+            <a className="arrow-link" href="#capabilities">
               Explore solutions →
             </a>
           </div>
         </div>
         <AgentOrbit />
       </section>
-      <section className="section solution scroll-section surface-paper" id="solutions">
-        <div>
-          <p className="eyebrow">POWERED BY ODOO</p>
-          <h2>Centralize your business operations</h2>
-          <p className="lead">
-            One system for the work that keeps your business moving.
-          </p>
-        </div>
-        <ModuleGrid />
-      </section>
-      <section className="section agents scroll-section surface-ink" id="agents">
-        <div className="agents-intro">
-          <p className="eyebrow">PRACTICAL AGENTS</p>
-          <h2>
-            Give your team a faster path to the answers already inside the
-            business.
-          </h2>
-          <p className="lead">
-            We start with useful internal knowledge — then add assistants and
-            automation where the process is ready for them.
-          </p>
-        </div>
-        <div className="agents-grid">
-          <KnowledgeDiagram />
-          <div className="agent-list">
-            {agentExamples.map(([n, t, d]) => (
-              <article key={n}>
-                <b>{n}</b>
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="section process scroll-section surface-paper" id="process">
-        <p className="eyebrow">OUR PROCESS TIMELINE</p>
-        <h2>Clear stages. A partner who stays close.</h2>
-        <ProcessTimeline />
-      </section>
+      <CompanyCapabilities />
 
       <section className="section team scroll-section surface-ink" id="team">
         <div>
