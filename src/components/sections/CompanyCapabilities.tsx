@@ -143,37 +143,6 @@ export function CompanyCapabilities() {
         </p>
       </div>
 
-      <div
-        className={styles.architecture}
-        role="img"
-        aria-label="Sutur connects business systems and knowledge to clear decisions and completed work"
-      >
-        <div className={styles.architectureTopline}>
-          <span>YOUR BUSINESS, CONNECTED END TO END</span>
-          <span><i /> Context stays with the work</span>
-        </div>
-        <div className={styles.architectureBody}>
-          <div className={styles.sourceNodes}>
-            <span>CRM</span>
-            <span>Accounting</span>
-            <span>Inventory</span>
-            <span>Documents</span>
-          </div>
-          <span className={`${styles.flowLine} ${styles.flowLineIn}`} />
-          <div className={styles.suturCore}>
-            <b>S</b>
-            <span>SUTUR CONTEXT</span>
-            <small>Odoo · Custom systems · AI agents</small>
-          </div>
-          <span className={`${styles.flowLine} ${styles.flowLineOut}`} />
-          <div className={styles.outcomeNodes}>
-            <span>Answer with evidence <b>↗</b></span>
-            <span>Next step prepared <b>↗</b></span>
-            <span>Follow-through handled <b>↗</b></span>
-          </div>
-        </div>
-      </div>
-
       <div className={styles.capabilityGrid} role="list">
         {capabilities.map((capability) => (
           <article className={styles.capability} role="listitem" key={capability.number}>

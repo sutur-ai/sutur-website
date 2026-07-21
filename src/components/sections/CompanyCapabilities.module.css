@@ -15,7 +15,6 @@
 }
 
 .intro,
-.architecture,
 .capabilityGrid {
   position: relative;
   z-index: 1;
@@ -44,175 +43,6 @@
   color: var(--ink-soft);
   font-size: clamp(16px, 1.35vw, 19px);
   line-height: 1.68;
-}
-
-.architecture {
-  min-height: 320px;
-  margin-top: clamp(62px, 8vw, 104px);
-  padding: 26px 30px 34px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.11);
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(245, 126, 32, 0.14), transparent 18%),
-    radial-gradient(circle at 82% 24%, rgba(144, 111, 177, 0.2), transparent 28%),
-    linear-gradient(135deg, #131019, #211728 58%, #18131e);
-  box-shadow: 0 28px 70px rgba(26, 21, 32, 0.18);
-  color: var(--paper-warm);
-  isolation: isolate;
-}
-
-.architecture::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.14;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: radial-gradient(circle at center, black, transparent 78%);
-}
-
-.architectureTopline {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-}
-
-.architectureTopline span:last-child {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  letter-spacing: 0;
-  text-transform: none;
-  font-weight: 500;
-}
-
-.architectureTopline i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--orange);
-  box-shadow: 0 0 0 5px rgba(245, 126, 32, 0.12);
-}
-
-.architectureBody {
-  display: grid;
-  grid-template-columns: minmax(155px, 0.8fr) minmax(60px, 0.35fr) minmax(240px, 1fr) minmax(60px, 0.35fr) minmax(210px, 0.9fr);
-  align-items: center;
-  min-height: 230px;
-  gap: 12px;
-}
-
-.sourceNodes {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.sourceNodes span,
-.outcomeNodes span {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.055);
-  color: rgba(255, 255, 255, 0.74);
-  backdrop-filter: blur(8px);
-}
-
-.sourceNodes span {
-  padding: 11px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  text-align: center;
-}
-
-.flowLine {
-  position: relative;
-  display: block;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(144, 111, 177, 0.25), var(--orange));
-}
-
-.flowLine::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--orange);
-  box-shadow: 0 0 0 5px rgba(245, 126, 32, 0.1);
-  transform: translate(50%, -50%);
-}
-
-.flowLineOut {
-  background: linear-gradient(90deg, var(--orange), rgba(144, 111, 177, 0.4));
-}
-
-.suturCore {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 5px;
-  padding: 24px 22px;
-  border: 1px solid rgba(245, 126, 32, 0.24);
-  border-radius: 16px;
-  background: rgba(19, 16, 25, 0.78);
-  box-shadow:
-    0 0 0 12px rgba(245, 126, 32, 0.025),
-    0 18px 48px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-.suturCore b {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  margin-bottom: 5px;
-  border-radius: 16px;
-  background: linear-gradient(145deg, var(--orange), var(--gold));
-  color: var(--ink);
-  font: 600 30px/1 Fraunces, Georgia, serif;
-}
-
-.suturCore span {
-  color: var(--paper-warm);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.suturCore small {
-  color: rgba(255, 255, 255, 0.46);
-  font-size: 11px;
-}
-
-.outcomeNodes {
-  display: grid;
-  gap: 9px;
-}
-
-.outcomeNodes span {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-}
-
-.outcomeNodes b {
-  color: var(--orange);
-  font-weight: 500;
 }
 
 .capabilityGrid {
@@ -667,14 +497,6 @@
 }
 
 @media (min-width: 1500px) {
-  .architecture {
-    min-height: 380px;
-  }
-
-  .architectureBody {
-    min-height: 290px;
-  }
-
   .visual {
     height: 300px;
   }
@@ -697,14 +519,6 @@
 
   .summary {
     max-width: 650px;
-  }
-
-  .architectureBody {
-    grid-template-columns: 1fr 38px 1fr 38px 1.2fr;
-  }
-
-  .sourceNodes {
-    grid-template-columns: 1fr;
   }
 
   .capability {
@@ -740,64 +554,9 @@
   }
 }
 
-@media (max-width: 800px) {
-  .architecture {
-    padding: 22px;
-  }
-
-  .architectureTopline span:last-child {
-    display: none;
-  }
-
-  .architectureBody {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 24px 0 4px;
-  }
-
-  .sourceNodes {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .flowLine {
-    width: 1px;
-    height: 28px;
-    margin: 0 auto;
-    background: linear-gradient(180deg, rgba(144, 111, 177, 0.25), var(--orange));
-  }
-
-  .flowLine::after {
-    top: auto;
-    right: 50%;
-    bottom: 0;
-    transform: translate(50%, 50%);
-  }
-
-  .outcomeNodes {
-    width: min(100%, 390px);
-    margin: 0 auto;
-  }
-}
-
 @media (max-width: 600px) {
   .intro h2 br {
     display: none;
-  }
-
-  .architecture {
-    min-height: 0;
-    margin-right: -10px;
-    margin-left: -10px;
-    padding: 18px;
-    border-radius: 14px;
-  }
-
-  .architectureTopline {
-    font-size: 9px;
-  }
-
-  .suturCore {
-    padding: 20px 14px;
   }
 
   .capability {

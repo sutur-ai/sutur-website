@@ -13,6 +13,10 @@ const header = readFileSync(
   new URL('../src/components/sections/Header.tsx', import.meta.url),
   'utf8',
 );
+const styles = readFileSync(
+  new URL('../src/components/sections/CompanyCapabilities.module.css', import.meta.url),
+  'utf8',
+);
 
 describe('company capabilities section', () => {
   it('replaces the three former homepage sections with one focused section', () => {
@@ -32,7 +36,16 @@ describe('company capabilities section', () => {
     expect(component).toContain("label: 'Odoo ERP implementation'");
     expect(component).toContain("label: 'Custom development'");
     expect(component).toContain("label: 'AI agent architecture'");
+    expect(component.match(/visual: '(?:erp|custom|agent)'/g)).toHaveLength(3);
+    expect(component).toContain('<CapabilityVisual kind={capability.visual} />');
+    expect(styles).toMatch(/\.capabilityGrid\s*{[^}]*grid-template-columns:\s*repeat\(3,/s);
     expect(component.match(/role="listitem"/g)).toHaveLength(1);
+  });
+
+  it('omits the full-width architecture figure', () => {
+    expect(component).not.toContain('YOUR BUSINESS, CONNECTED END TO END');
+    expect(component).not.toContain('className={styles.architecture}');
+    expect(styles).not.toMatch(/\.architecture(?:[\s:{])/);
   });
 
   it('keeps navigation and calls to action pointed at live section IDs', () => {
