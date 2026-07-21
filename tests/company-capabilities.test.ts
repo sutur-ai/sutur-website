@@ -39,7 +39,40 @@ describe('company capabilities section', () => {
     expect(component.match(/visual: '(?:erp|custom|agent)'/g)).toHaveLength(3);
     expect(component).toContain('<CapabilityVisual kind={capability.visual} />');
     expect(styles).toMatch(/\.capabilityGrid\s*{[^}]*grid-template-columns:\s*repeat\(3,/s);
+    for (const visualClass of ['erpVisual', 'customVisual', 'agentVisual']) {
+      expect(styles).toContain(`.${visualClass}`);
+    }
     expect(component.match(/role="listitem"/g)).toHaveLength(1);
+  });
+
+  it('renders the Odoo home launcher in translucent macOS-style window chrome', () => {
+    expect(component).toContain('function WindowChrome');
+    expect(component).toContain('className={styles.windowControls}');
+    expect(component).toContain('className={styles.appLauncher}');
+    for (const app of ['Discuss', 'Calendar', 'CRM', 'Sales', 'Accounting', 'Inventory', 'Purchase', 'Manufacturing']) {
+      expect(component).toContain(`>${app}<`);
+    }
+    expect(styles).toMatch(/\.productWindow\s*{[^}]*backdrop-filter:\s*blur\(/s);
+  });
+
+  it('renders a code editor with a file tree and visible diff lines', () => {
+    expect(component).toContain('className={styles.fileTree}');
+    expect(component).toContain('purchase_order.py');
+    expect(component).toContain('inventory_sync.py');
+    expect(component).toContain('className={`${styles.codeLine} ${styles.removedLine}`}');
+    expect(component).toContain('className={`${styles.codeLine} ${styles.addedLine}`}');
+    expect(component).toContain('resolve_supplier');
+    expect(component).toContain('validate_quantity');
+  });
+
+  it('renders a business-agent chat with multiple prompts and compact replies', () => {
+    expect(component).toContain('className={styles.chatMessages}');
+    expect(component).toContain('Create a purchase order from Supplier X for 350 units of the Brown Winter Jacket.');
+    expect(component).toContain('Draft PO P00042 created');
+    expect(component).toContain('What else needs attention today?');
+    expect(component).toContain('Two items are below safety stock.');
+    expect(component.match(/styles\.userMessage/g)).toHaveLength(2);
+    expect(component.match(/styles\.agentMessage/g)).toHaveLength(2);
   });
 
   it('omits the full-width architecture figure', () => {
