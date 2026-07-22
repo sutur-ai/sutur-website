@@ -245,19 +245,11 @@ export function AgentOrbit() {
       <p className={styles.prompt}>{prompt}</p>
       <div className={styles.ambient} aria-hidden="true" />
       <div className={`${styles.agent} ${working ? styles.working : ""}`} aria-label="Sutur AI agent">
-        <svg className={styles.ghost} viewBox="0 0 100 100" aria-hidden="true">
-          <g fill="#EAD1E5">
-            <path d="M26 76V40c0-14.8 8.2-23 22-23h4c13.8 0 22 8.2 22 23v36l-8-8.5-8 8.5-8-8.5-8 8.5-8-8.5-8 8.5Z" />
-            <path d="M26 38H15c-4 0-7 2.3-7 6s3 6 7 6h21V38H26Z" />
-            <path d="M74 42h11c4 0 7 2.3 7 6s-3 6-7 6H64V42h10Z" />
-          </g>
-          <g className={styles.eyes} fill="#F57E20">
-            <rect x="39" y="39" width="7" height="7" rx="1" />
-            <rect x="54" y="39" width="7" height="7" rx="1" />
-          </g>
-          <rect className={styles.mouthIdle} x="46" y="51" width="8" height="10" rx="2" fill="#906FB1" />
-          <path className={styles.mouthSmirk} d="M43.5 54.5c3 4.8 9.8 5.2 14.2-1.8" fill="none" stroke="#906FB1" strokeWidth="3.2" strokeLinecap="square" />
-        </svg>
+        <img
+          className={styles.agentMark}
+          src="/brand/design-system/sutur-icon-soft.png"
+          alt=""
+        />
       </div>
       <div ref={fieldRef} className={`${styles.field} ${hasFocus ? styles.hasFocus : ""}`}>
         <svg ref={signalRef} className={styles.signals} viewBox="0 0 100 100" aria-hidden="true" />

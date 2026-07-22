@@ -13,8 +13,13 @@ const header = readFileSync(
   new URL("../src/components/sections/Header.tsx", import.meta.url),
   "utf8",
 );
-describe("homepage section rhythm", () => {
-  it("alternates light and dark surfaces across every content section", () => {
+const layout = readFileSync(
+  new URL("../src/app/layout.tsx", import.meta.url),
+  "utf8",
+);
+
+describe("homepage design-system theme", () => {
+  it("keeps the intended light and deep section rhythm", () => {
     const renderedPage = page.replace(
       "<CompanyCapabilities />",
       '<section className="surface-paper" />',
@@ -23,105 +28,75 @@ describe("homepage section rhythm", () => {
       ...renderedPage.matchAll(/<section className="[^"]*surface-(paper|ink)[^"]*"/g),
     ].map(([, surface]) => surface);
 
-    // The new capabilities section replaces the three former middle sections,
-    // while preserving the light/dark rhythm through the booking section.
-    expect(surfaces).toEqual([
-      "ink",
-      "paper",
-      "ink",
-      "paper",
-    ]);
+    expect(surfaces).toEqual(["ink", "paper", "ink", "paper"]);
   });
 
-  it("opens with human copy, no duplicate logo, and a left-shifted desktop orbit", () => {
-    expect(page).not.toContain('className="hero-brand"');
-    expect(css).not.toContain(".hero-brand");
+  it("defines the four source palette colors exactly", () => {
+    expect(css).toContain("--deep-interface: #3b1447");
+    expect(css).toContain("--soft-signal: #ead1e5");
+    expect(css).toContain("--active-orange: #f57e20");
+    expect(css).toContain("--data-violet: #906fb1");
+  });
+
+  it("uses the Montserrat Gotham substitute for display and body type", () => {
+    expect(css).toContain("family=Montserrat:wght@400;500;600;700;900");
+    expect(css).toContain('--font-display: "Montserrat", "Gotham"');
+    expect(css).toContain('--font-body: "Montserrat", "Gotham"');
+    expect(css).toMatch(/h1,\s*h2,\s*h3\s*{[^}]*font-weight:\s*900/s);
+  });
+
+  it("keeps the site flat-first with no CSS gradients", () => {
+    expect(css).not.toContain("gradient(");
+    expect(css).toMatch(/\.surface-ink\s*{[^}]*background:\s*var\(--deep-interface\)/s);
+    expect(css).toMatch(/\.surface-paper\s*{[^}]*background:\s*var\(--surface-page\)/s);
+  });
+
+  it("uses sharp orange signal squares and brand radii", () => {
+    expect(css).toMatch(/\.eyebrow::before,[\s\S]*width:\s*9px[\s\S]*height:\s*9px[\s\S]*background:\s*var\(--active-orange\)/s);
+    expect(css).toContain("--radius-lg: 20px");
+    expect(css).toContain("--radius-pill: 999px");
+    expect(css).toMatch(/\.card-front::after\s*{[^}]*background:\s*var\(--active-orange\)/s);
+  });
+
+  it("opens with the existing human copy and a branded interactive orbit", () => {
     expect(page).toContain("Connect your business.");
     expect(page).toContain("<em>Automate the busywork.</em>");
-    expect(css).toMatch(/@media\s*\(min-width:\s*1500px\)[\s\S]*\.hero-copy h1\s*{[^}]*max-width:\s*none[^}]*white-space:\s*nowrap/s);
-    expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero-copy h1\s*{[^}]*white-space:\s*normal/s);
-    expect(page).toMatch(/Once everything works[\s\S]*together, practical agents can handle/);
-    expect(css).toMatch(/\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*translateX\(clamp\(-132px,\s*-7\.5vw,\s*-64px\)\) scale\(1\.08\)[^}]*transform-origin:\s*center/s);
-    expect(css).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.hero > \[aria-label="Sutur AI agent working across Odoo modules"\]\s*{[^}]*transform:\s*none/s);
+    expect(page).toContain("<AgentOrbit />");
+    expect(page).not.toContain('className="hero-brand"');
+    expect(css).toMatch(/\.hero\s*{[^}]*background:\s*var\(--deep-interface\)/s);
   });
 
-  it("uses natural page scrolling rather than forcing viewport snap", () => {
-    expect(css).toMatch(/\/\* 2026 editorial refresh[\s\S]*html\s*{[^}]*scroll-snap-type:\s*none/s);
+  it("uses natural scrolling and reduced-motion fallbacks", () => {
+    expect(css).not.toContain("scroll-snap-type");
     expect(page).not.toContain("<SectionScroll />");
+    expect(css).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*scroll-behavior:\s*auto/s);
   });
 
-  it("keeps reduced-motion users out of decorative animation", () => {
-    expect(css).toMatch(
-      /@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*scroll-behavior:\s*auto\s*!important/s,
-    );
-  });
-
-  it("keeps the discovery-call dock visible throughout the page", () => {
-    expect(header).toContain('className="floating-cta is-visible"');
-    expect(css).toMatch(/\.floating-cta\s*{[^}]*position:\s*fixed/s);
+  it("reveals the floating discovery control only after the page is scrolled", () => {
+    expect(header).toContain("window.scrollY > 96");
+    expect(header).toContain("className={`floating-cta${scrolled ? ' is-visible' : ''}`}");
+    expect(css).toMatch(/\.floating-cta\s*{[^}]*opacity:\s*0/s);
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1/s);
   });
 
-  it("shrinks the centered top bar without changing its x-axis anchor", () => {
-    expect(header).toMatch(/window\.scrollY > 96/);
-    expect(header).toContain("is-floating");
-    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*left:\s*50%/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*transform:\s*translateX\(-50%\)/s);
-    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*width:\s*min\(920px/s);
-    expect(css).not.toMatch(/\.site-header\.is-floating\s*{[^}]*left:\s*50%/s);
-  });
-
-  it("starts mobile with the compact floating bar and no size transition", () => {
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header,\s*\.site-header\.is-collapsed\s*{[^}]*top:\s*8px[^}]*width:\s*calc\(100% - 16px\)[^}]*height:\s*56px[^}]*transition:\s*none/s,
-    );
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header\.is-floating\s*{[^}]*top:\s*8px[^}]*width:\s*calc\(100% - 16px\)[^}]*height:\s*56px/s,
-    );
-  });
-
-  it("restores natural section height on desktop and mobile", () => {
-    expect(css).toMatch(
-      /\.hero\.scroll-section,\s*section\.scroll-section\s*{[^}]*height:\s*auto/s,
-    );
-    expect(css).toMatch(
-      /\.hero\.scroll-section,\s*section\.scroll-section\s*{[^}]*overflow:\s*visible/s,
-    );
-  });
-
-  it("uses a quiet transparent top bar over the hero", () => {
+  it("uses a fixed deep header that condenses into a pill", () => {
     expect(header).toContain("site-header${scrolled ? ' is-floating' : ''}");
-    expect(header).toContain('aria-label="Primary navigation"');
-    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed/s);
-    expect(css).toMatch(/\.site-header\s*{[^}]*background:\s*transparent/s);
-    expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*filter:\s*none/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
+    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*border-radius:\s*var\(--radius-pill\)/s);
   });
 
-  it("exposes an accessible mobile navigation control", () => {
+  it("uses the supplied bilingual brand assets and branded favicon", () => {
+    expect(header).toContain("/brand/design-system/sutur-wordmark-soft.png");
+    expect(header).toContain("/brand/design-system/sutur-wordmark-arabic-soft.png");
+    expect(header).toContain('className="wordmark-divider"');
+    expect(page).toContain("/brand/design-system/sutur-wordmark-soft.png");
+    expect(layout).toContain("/brand/design-system/sutur-icon-deep.png");
+  });
+
+  it("keeps mobile navigation accessible and compact", () => {
     expect(header).toContain('aria-expanded={open}');
     expect(header).toContain('aria-controls="mobile-navigation"');
     expect(header).toContain('id="mobile-navigation"');
-    expect(header).toContain("open ? 'Close' : 'Menu'");
-  });
-
-  it("uses bilingual branding and larger top-bar controls", () => {
-    expect(header).toContain('/brand/sutur-logo-en.png');
-    expect(header).toContain('/brand/sutur-logo-ar.png');
-    expect(header).toContain('className="wordmark-divider"');
-    expect(css).toMatch(/\.site-header nav button,\s*\.site-header \.menu\s*{[^}]*font-size:\s*16px/s);
-    expect(css).toMatch(/\.site-header \.header-cta\s*{[^}]*font-size:\s*15px/s);
-    expect(css).toContain("header .wordmark img { width: auto !important; }");
-    expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*width:\s*auto[^}]*height:\s*28px/s);
-  });
-
-  it("keeps mobile branding fixed while using a full-width compact menu", () => {
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.wordmark img,\s*\.site-header\.is-floating \.wordmark img\s*{[^}]*width:\s*auto[^}]*height:\s*21px[^}]*transition:\s*none/s,
-    );
-    expect(css).toMatch(
-      /@media\s*\(max-width:\s*900px\)[\s\S]*\.site-header \.mobile-menu\s*{[^}]*left:\s*0[^}]*right:\s*0[^}]*width:\s*100%[^}]*min-height:\s*auto/s,
-    );
-    expect(css).toMatch(/\.site-header \.mobile-menu button\s*{[^}]*font-size:\s*clamp\(1\.2rem,\s*6vw,\s*2\.1rem\)/s);
+    expect(css).toMatch(/@media\s*\(max-width:\s*760px\)[\s\S]*\.site-header \.mobile-menu\s*{[^}]*width:\s*100%/s);
   });
 });

@@ -12,7 +12,7 @@ const styles = readFileSync(
 );
 
 describe("agent orbit hero", () => {
-  it("replaces the static hero summary with the interactive agent orbit", () => {
+  it("keeps the interactive agent orbit in the hero", () => {
     expect(page).toContain('import { AgentOrbit } from "@/components/brand/AgentOrbit"');
     expect(page).toContain("<AgentOrbit />");
     expect(page).not.toContain('className="hero-summary"');
@@ -29,49 +29,53 @@ describe("agent orbit hero", () => {
     expect(component).toContain("`M ${startX} ${startY} L ${endX} ${endY}`");
     expect(component).toContain('emitPacket(from, to, LANE_OFFSET, "orange")');
     expect(component).toContain('emitPacket(to, from, LANE_OFFSET, "purple")');
-    expect(component).toContain("sustainTwoLaneTraffic");
   });
 
-  it("exposes working, focus, label, badge, and smirk states", () => {
+  it("uses the supplied SUTUR icon as the central agent anchor", () => {
+    expect(component).toContain('/brand/design-system/sutur-icon-soft.png');
+    expect(component).toContain('className={styles.agentMark}');
+    expect(component).not.toContain('className={styles.ghost}');
+    expect(styles).toMatch(/\.agentMark\s*{[^}]*object-fit:\s*contain/s);
+    expect(styles).toMatch(/\.working\s*{[^}]*border-color:\s*var\(--active-orange\)/s);
+  });
+
+  it("exposes focus, processing, label, and completion states", () => {
     expect(component).toContain("setWorking(true)");
     expect(component).toContain("setWorking(false)");
-    expect(styles).toContain(".working .mouthIdle");
-    expect(styles).toContain(".working .mouthSmirk");
     expect(styles).toContain(".hasFocus .node:not(.engaged)");
-    expect(styles).toContain(".processing .label");
+    expect(styles).toContain(".node.processing .nodeFace");
+    expect(styles).toContain(".node.processing .label");
     expect(styles).toContain(".badgeDone");
   });
 
-  it("ends packet traffic when the red countdown reaches its final number", () => {
-    expect(component).not.toContain("BADGE_DURATION_RATIO");
+  it("ends packet traffic when the countdown reaches its final number", () => {
     const instruction = component.indexOf("await emitPacket(scenario.route[0], scenario.route[1])");
     const countdown = component.indexOf("const badgeCountdown = countBadge(");
-    const countdownDuration = component.indexOf("workDuration,", countdown);
     const traffic = component.indexOf("sustainTwoLaneTraffic(scenario.route, workDuration)", countdown);
-    const green = component.indexOf("setBadge({ module: scenario.badge.module, value: scenario.badge.to, done: true })");
     const completion = component.indexOf('await emitPacket(completingModule, "Agent")');
     expect(instruction).toBeGreaterThan(-1);
     expect(countdown).toBeGreaterThan(instruction);
-    expect(countdownDuration).toBeGreaterThan(countdown);
-    expect(countdownDuration).toBeLessThan(traffic);
     expect(traffic).toBeGreaterThan(countdown);
-    expect(green).toBeGreaterThan(traffic);
-    expect(completion).toBeGreaterThan(green);
+    expect(completion).toBeGreaterThan(traffic);
   });
 
-  it("reserves a two-line desktop prompt zone without overlapping the orbit", () => {
-    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*42px/);
+  it("reserves a balanced prompt zone above the orbit", () => {
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*40px/);
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*width:\s*min\(88%,\s*500px\)/);
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*text-wrap:\s*balance/);
-    expect(styles).toMatch(/@media\s*\(max-width:\s*900px\)[\s\S]*\.prompt\s*{[^}]*top:\s*8px/);
+    expect(styles).toMatch(/@media\s*\(max-width:\s*1040px\)[\s\S]*\.prompt\s*{[^}]*top:\s*8px/);
   });
 
-  it("makes the ghost a larger central anchor on desktop and mobile", () => {
-    expect(styles).toMatch(/\.agent\s*{[\s\S]*width:\s*min\(18%,\s*112px\)/);
-    expect(styles).toMatch(/@media\s*\(max-width:\s*480px\)[\s\S]*\.agent\s*{[^}]*width:\s*20%/);
+  it("uses brand colors, segmented node shapes, and no gradients", () => {
+    expect(styles).not.toContain("gradient(");
+    expect(styles).toContain("var(--soft-signal)");
+    expect(styles).toContain("var(--active-orange)");
+    expect(styles).toContain("var(--data-violet)");
+    expect(styles).toMatch(/\.n1 \.nodeFace,[\s\S]*border-radius:\s*999px 999px/s);
   });
 
   it("keeps decorative motion disabled for reduced-motion users", () => {
     expect(styles).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+    expect(styles).toMatch(/\.field,[\s\S]*animation:\s*none !important/s);
   });
 });
