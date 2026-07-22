@@ -36,12 +36,12 @@ export function Booking() {
         aria-label="Flip Sutur booking card"
       >
         <div className="business-card card-front">
-          <p>DISCOVERY / 30 MINUTES</p>
+          <p>Discovery / 30 minutes</p>
           <h3>Let&apos;s make the operating system clearer.</h3>
           <span>Tap to book →</span>
         </div>
         <div className="business-card card-back">
-          <p>YOUR NEXT STEP</p>
+          <p>Your next step</p>
           <h3>A free, focused discovery call.</h3>
           <button
             onClick={(e) => {
@@ -76,7 +76,7 @@ export function Booking() {
 
             {sent ? (
               <div className="success">
-                <p className="eyebrow">REQUEST RECEIVED</p>
+                <p className="eyebrow">Request received</p>
                 <h3>Thank you.</h3>
                 <p>
                   This is a mock request stored nowhere. We&apos;ll connect it to
@@ -86,7 +86,7 @@ export function Booking() {
               </div>
             ) : (
               <form onSubmit={handleSubmit(submit)}>
-                <p className="eyebrow">BOOK A CALL</p>
+                <p className="eyebrow">Book a call</p>
                 <h3>Tell us what needs to connect.</h3>
                 <label>
                   Name

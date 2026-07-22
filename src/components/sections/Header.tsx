@@ -27,9 +27,19 @@ export function Header() {
     <>
       <header className={`site-header${scrolled ? ' is-floating' : ''}`}>
         <a className="wordmark" href="#top" aria-label="Sutur home">
-          <img src="/brand/sutur-logo-en.png" alt="Sutur" width={116} height={38} />
+          <img
+            src="/brand/design-system/sutur-wordmark-soft.png"
+            alt="sutur"
+            width={124}
+            height={45}
+          />
           <span className="wordmark-divider" aria-hidden="true" />
-          <img src="/brand/sutur-logo-ar.png" alt="سطور" width={116} height={38} />
+          <img
+            src="/brand/design-system/sutur-wordmark-arabic-soft.png"
+            alt="سطور"
+            width={106}
+            height={50}
+          />
         </a>
         <nav aria-label="Primary navigation">
           {links.map(([label, id]) => (
@@ -50,7 +60,7 @@ export function Header() {
         )}
       </header>
       <button
-        className="floating-cta is-visible"
+        className={`floating-cta${scrolled ? ' is-visible' : ''}`}
         type="button"
         onClick={() => go('book')}
       >

@@ -34,7 +34,7 @@ export default function Home() {
 
       <section className="section team scroll-section surface-ink" id="team">
         <div>
-          <p className="eyebrow">THE TEAM</p>
+          <p className="eyebrow">The team</p>
           <h2>The people will be introduced here.</h2>
           <p className="lead">
             Names, roles, and biographies are intentionally held as placeholders
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
       </section>
       <section className="booking-section scroll-section surface-paper" id="book">
-        <p className="eyebrow">START WITH A CONVERSATION</p>
+        <p className="eyebrow">Start with a conversation</p>
         <h2>What would a clearer operation make possible?</h2>
         <p className="lead">
           A free discovery call. No integration is connected in this local mock.
@@ -66,14 +66,18 @@ export default function Home() {
       </section>
       <footer className="scroll-section">
         <div>
-          <a className="wordmark" href="#top">
-            <i />
-            Sutur
+          <a className="wordmark" href="#top" aria-label="sutur home">
+            <img
+              src="/brand/design-system/sutur-wordmark-soft.png"
+              alt="sutur"
+              width={128}
+              height={46}
+            />
           </a>
           <p>Tailored Odoo and practical AI agents for clearer operations.</p>
         </div>
         <div>
-          <b>CONTACT</b>
+          <b>Contact</b>
           <p>
             hello@sutur.example
             <br />
@@ -81,7 +85,7 @@ export default function Home() {
           </p>
         </div>
         <div>
-          <b>LEGAL</b>
+          <b>Legal</b>
           <p>
             Privacy <small>pending</small>
             <br />
