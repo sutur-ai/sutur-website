@@ -44,32 +44,6 @@ export default function Home() {
 
       <WhyUs />
 
-      <section className="section team scroll-section surface-ink" id="team">
-        <div>
-          <h2>A local team, close to the operation<SignalDot /></h2>
-          <p className="lead">
-            Sutur combines ERP implementation, custom software, and agent
-            architecture in one accountable build team, from the first workflow
-            map through rollout and refinement.
-          </p>
-          <Link className="text-link" href="/about">Our story <ArrowIcon /></Link>
-        </div>
-        <div className="people" aria-label="Team functions">
-          <article>
-            <b>01</b>
-            <div aria-hidden="true" />
-            <h3>Implementation</h3>
-            <p>Odoo, operations, and rollout</p>
-          </article>
-          <article>
-            <b>02</b>
-            <div aria-hidden="true" />
-            <h3>Engineering</h3>
-            <p>Custom systems and practical agents</p>
-          </article>
-        </div>
-      </section>
-
       <Reviews />
 
       <FaqSection />

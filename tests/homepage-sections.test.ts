@@ -10,7 +10,7 @@ function readIfExists(path: string) {
 }
 
 describe('homepage narrative sections', () => {
-  it('replaces the agent demo with a simple Why us statement inside orange quote marks', () => {
+  it('frames the lighter Why us statement with corner quote marks', () => {
     const whyUs = readIfExists('../src/components/sections/WhyUs.tsx');
 
     expect(page).toContain("import { WhyUs } from '@/components/sections/WhyUs'");
@@ -20,25 +20,39 @@ describe('homepage narrative sections', () => {
     expect(whyUs).toContain('Why us<SignalDot />');
     expect(whyUs).toContain('<blockquote className="why-us-quote">');
     expect(whyUs).toContain('We start with how your team actually works');
+    expect(whyUs).toContain('why-us-quote-mark is-open');
+    expect(whyUs).toContain('why-us-quote-mark is-close');
+    expect(css).toMatch(/\.why-us blockquote p\s*{[^}]*font-weight:\s*var\(--weight-bold\)/s);
     expect(css).toMatch(/\.why-us-quote-mark\s*{[^}]*color:\s*var\(--active-orange\)/s);
-    expect(css).toMatch(/@media \(max-width:\s*680px\)[\s\S]*\.why-us blockquote\.why-us-quote\s*{[^}]*grid-template-columns:\s*1fr/s);
-    expect(css).toMatch(/@media \(max-width:\s*680px\)[\s\S]*\.why-us-quote-mark:last-child\s*{[^}]*justify-self:\s*end/s);
+    expect(css).toMatch(/\.why-us-quote-mark\.is-open\s*{[^}]*top:\s*0[^}]*left:\s*0/s);
+    expect(css).toMatch(/\.why-us-quote-mark\.is-close\s*{[^}]*right:\s*0[^}]*bottom:\s*0/s);
   });
 
-  it('adds an honest Reviews section without invented ratings or identities', () => {
+  it('removes the homepage Team section and adds three explicit placeholder reviews', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
-    const team = page.indexOf('className="section team scroll-section surface-ink"');
+    const whyUs = page.indexOf('<WhyUs />');
     const reviewSection = page.indexOf('<Reviews />');
     const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
 
     expect(page).toContain("import { Reviews } from '@/components/sections/Reviews'");
-    expect(reviewSection).toBeGreaterThan(team);
+    expect(page).not.toContain('className="section team scroll-section surface-ink"');
+    expect(reviewSection).toBeGreaterThan(whyUs);
     expect(booking).toBeGreaterThan(reviewSection);
     expect(reviews).toContain('id="reviews"');
     expect(reviews).toContain('Reviews<SignalDot />');
-    expect(reviews).toContain('We only publish feedback with client approval');
-    expect(reviews).toContain('Client references are available on request');
-    expect(reviews).not.toMatch(/★★★★★|five stars|—\s*[A-Z][a-z]+\s+[A-Z][a-z]+/);
+    expect(reviews).toContain('These are layout placeholders');
+    expect(reviews).toContain('const reviews = [');
+    expect(reviews).toContain("featured: true");
+    expect(reviews).toContain('review-card${review.featured ? \' is-featured\' : \'\'}');
+    expect(reviews).toContain('className="review-avatar"');
+    expect(reviews).toContain('className="review-company"');
+    expect(reviews).toContain('className="review-position"');
+    expect(reviews.match(/name: '/g)).toHaveLength(3);
+    expect(reviews.match(/company: '/g)).toHaveLength(3);
+    expect(reviews.match(/position: '/g)).toHaveLength(3);
+    expect(reviews.match(/review: '/g)).toHaveLength(3);
+    expect(reviews).not.toMatch(/★★★★★|five stars/);
+    expect(css).toMatch(/\.review-card\.is-featured\s*{[^}]*transform:\s*scale\(1\.04\)/s);
   });
 
   it('adds an accessible Q&A section immediately before booking', () => {

@@ -38,7 +38,6 @@ describe('website design-system theme', () => {
     const hero = page.indexOf('className="hero scroll-section surface-ink"');
     const capabilities = page.indexOf('<CompanyCapabilities />');
     const whyUs = page.indexOf('<WhyUs />');
-    const team = page.indexOf('className="section team scroll-section surface-ink"');
     const reviews = page.indexOf('<Reviews />');
     const questions = page.indexOf('<FaqSection />');
     const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
@@ -47,8 +46,8 @@ describe('website design-system theme', () => {
     expect(hero).toBeGreaterThan(-1);
     expect(capabilities).toBeGreaterThan(hero);
     expect(whyUs).toBeGreaterThan(capabilities);
-    expect(team).toBeGreaterThan(whyUs);
-    expect(reviews).toBeGreaterThan(team);
+    expect(page).not.toContain('className="section team scroll-section surface-ink"');
+    expect(reviews).toBeGreaterThan(whyUs);
     expect(questions).toBeGreaterThan(reviews);
     expect(booking).toBeGreaterThan(questions);
     expect(footer).toBeGreaterThan(booking);
@@ -98,7 +97,8 @@ describe('website design-system theme', () => {
   it('opens with the approved human copy and preserves the branded interactive orbit', () => {
     expect(page).toContain('Connect your business<SignalDot />');
     expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
-    expect(css).toMatch(/\.hero-copy h1 em\s*{[^}]*font-weight:\s*var\(--weight-black\)/s);
+    expect(css).toMatch(/\.hero-copy h1\s*{[^}]*font-weight:\s*var\(--weight-bold\)/s);
+    expect(css).toMatch(/\.hero-copy h1 em\s*{[^}]*font-weight:\s*inherit/s);
     expect(page).toContain('<AgentOrbit />');
     expect(page).not.toContain('className="hero-brand"');
     expect(page).toContain('surface-ink');
@@ -108,7 +108,6 @@ describe('website design-system theme', () => {
     expect(existsSync(new URL('../src/components/ui/SignalDot.tsx', import.meta.url))).toBe(true);
     expect(page).toContain('Connect your business<SignalDot />');
     expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
-    expect(page).toContain('A local team, close to the operation<SignalDot />');
     expect(page).toContain('What would a clearer operation make possible<SignalDot />');
     expect(capabilitiesComponent).toContain('One connected business<SignalDot />');
     expect(capabilitiesComponent).toContain('<em>Three ways to move it forward<SignalDot /></em>');
