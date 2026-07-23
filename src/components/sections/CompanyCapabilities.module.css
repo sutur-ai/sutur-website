@@ -46,7 +46,7 @@
 .intro h2 em {
   color: var(--data-violet);
   font-style: normal;
-  font-weight: var(--weight-black);
+  font-weight: var(--weight-bold);
 }
 
 .summary {
@@ -103,6 +103,7 @@
 
 .agentVisual {
   isolation: isolate;
+  container-type: inline-size;
   border-color: var(--border);
   background: var(--surface-soft);
 }
@@ -138,14 +139,14 @@
   border-radius: 50%;
   color: var(--data-violet);
   font-size: 0.625rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .capabilityLabel p {
   margin: 0;
   color: var(--data-violet);
   font-size: var(--type-label);
-  font-weight: 900;
+  font-weight: var(--weight-bold);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -174,7 +175,7 @@
   padding-top: 1.625rem;
   color: var(--deep-interface);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
 }
 
@@ -262,7 +263,7 @@
 .odooTopbar > b {
   color: var(--soft-signal);
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   letter-spacing: -0.04em;
 }
 
@@ -281,7 +282,7 @@
   background: var(--active-orange);
   color: var(--text-on-orange);
   font-size: 0.375rem;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .odooProfile small {
@@ -317,7 +318,7 @@
   color: var(--white);
   font-size: 0.5625rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .appLauncher {
@@ -351,91 +352,13 @@
   color: var(--deep-interface);
   font-size: 0.6875rem;
   font-style: normal;
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 .appIcon img {
   width: 2rem;
   height: 2rem;
   object-fit: contain;
-}
-
-.discussIcon,
-.settingsIcon {
-  background: var(--data-violet);
-  color: var(--white);
-}
-
-.calendarIcon,
-.posIcon {
-  background: var(--active-orange);
-  color: var(--text-on-orange);
-}
-
-.appointmentsIcon,
-.contactsIcon,
-.dashboardIcon {
-  position: relative;
-  background: var(--soft-signal);
-  color: var(--deep-interface);
-}
-
-.appointmentsIcon small {
-  position: absolute;
-  right: 0.1875rem;
-  bottom: 0.1875rem;
-  display: grid;
-  width: 0.6875rem;
-  height: 0.6875rem;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--deep-interface);
-  color: var(--soft-signal);
-  font-size: 0.4375rem;
-}
-
-.dashboardIcon {
-  grid-template-columns: repeat(3, 0.4375rem);
-  align-items: flex-end;
-  gap: 0.125rem;
-}
-
-.dashboardIcon small {
-  width: 0.4375rem;
-  height: 0.75rem;
-  background: var(--data-violet);
-}
-
-.dashboardIcon small:nth-child(2) {
-  height: 1.25rem;
-  background: var(--active-orange);
-}
-
-.dashboardIcon small:nth-child(3) {
-  height: 1rem;
-  background: var(--deep-interface);
-}
-
-.posIcon {
-  font-size: 0.5rem;
-}
-
-.settingsIcon small,
-.settingsIcon b {
-  position: absolute;
-  border-radius: 50%;
-}
-
-.settingsIcon small {
-  width: 1.1875rem;
-  height: 1.1875rem;
-  border: 5px dotted rgb(var(--white-rgb) / 0.9);
-}
-
-.settingsIcon b {
-  width: 0.4375rem;
-  height: 0.4375rem;
-  background: var(--white);
 }
 
 /* Custom development editor */
@@ -559,19 +482,821 @@
   color: var(--data-violet);
 }
 
+/* Sutur Agent workflow */
+.agentDesktop {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--deep-interface);
+  color: var(--soft-signal);
+  opacity: 0;
+  transform: scale(0.975);
+  transform-origin: center;
+  transition:
+    opacity 320ms var(--ease-out) 180ms,
+    transform 420ms var(--ease-out) 180ms;
+}
+
+.agentActive .agentDesktop {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.agentDesktopChrome {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  height: clamp(1.75rem, 8cqi, 2.25rem);
+  padding: 0 clamp(0.5rem, 2.8cqi, 0.875rem);
+  gap: clamp(0.5rem, 2.5cqi, 0.875rem);
+  border-bottom: 1px solid var(--border-on-deep);
+  background: var(--deep-interface-active);
+}
+
+.agentDesktopChrome p,
+.agentIdentity p,
+.agentActionHeader p,
+.agentMeeting p,
+.agentDraft p,
+.agentThinking p,
+.agentPromptBubble p {
+  margin: 0;
+}
+
+.agentDesktopChrome p {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 0.375rem;
+}
+
+.agentDesktopChrome strong {
+  color: var(--soft-signal);
+  font-size: clamp(0.5rem, 2.15cqi, 0.6875rem);
+}
+
+.agentDesktopChrome p span {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.46);
+  font-size: clamp(0.375rem, 1.55cqi, 0.5rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentOnline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--soft-signal);
+  font-size: clamp(0.375rem, 1.55cqi, 0.5rem);
+  font-style: normal;
+  font-weight: var(--weight-bold);
+}
+
+.agentOnline::before {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--active-orange);
+  content: "";
+  box-shadow: 0 0 0 3px rgb(var(--active-orange-rgb) / 0.12);
+}
+
+.agentConversation {
+  display: flex;
+  height: calc(100% - clamp(1.75rem, 8cqi, 2.25rem));
+  flex-direction: column;
+  padding: clamp(0.4375rem, 2.6cqi, 0.875rem);
+  background: var(--deep-interface-hover);
+}
+
+.agentIdentity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: clamp(0.375rem, 1.8cqi, 0.625rem);
+}
+
+.agentIdentity > span {
+  display: grid;
+  width: clamp(1.375rem, 6cqi, 1.875rem);
+  height: clamp(1.375rem, 6cqi, 1.875rem);
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--data-violet);
+  color: var(--white);
+  font-size: clamp(0.5rem, 2.3cqi, 0.75rem);
+  font-weight: var(--weight-bold);
+}
+
+.agentIdentity p {
+  display: grid;
+  min-width: 0;
+}
+
+.agentIdentity strong {
+  font-size: clamp(0.5rem, 2cqi, 0.6875rem);
+}
+
+.agentIdentity small {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.48);
+  font-size: clamp(0.375rem, 1.55cqi, 0.5rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentPromptBubble {
+  width: 92%;
+  min-height: clamp(3.625rem, 18cqi, 4.5rem);
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: clamp(0.4375rem, 2.3cqi, 0.75rem);
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.13);
+  border-radius: 0.75rem 0.75rem 0.1875rem 0.75rem;
+  background: rgb(var(--soft-signal-rgb) / 0.08);
+}
+
+.agentPromptBubble small {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--active-orange);
+  font-size: clamp(0.375rem, 1.45cqi, 0.46875rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.agentPromptBubble p {
+  color: rgb(var(--soft-signal-rgb) / 0.88);
+  font-size: clamp(0.46875rem, 1.95cqi, 0.6875rem);
+  line-height: 1.38;
+}
+
+.agentPromptBubble p > i {
+  display: inline-block;
+  width: 1px;
+  height: 0.9em;
+  margin-left: 2px;
+  background: var(--active-orange);
+  vertical-align: -0.08em;
+}
+
+.agentPromptBubble p > i:not(.agentCaret) {
+  opacity: 0;
+}
+
+.agentCaret {
+  animation: agent-caret 700ms steps(1, end) infinite;
+}
+
+.agentThinking,
+.agentActionCard {
+  width: calc(100% - clamp(2.5rem, 14cqi, 4.25rem));
+  margin-top: clamp(0.375rem, 2cqi, 0.6875rem);
+}
+
+.agentThinking {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgb(var(--soft-signal-rgb) / 0.5);
+  font-size: clamp(0.40625rem, 1.65cqi, 0.5625rem);
+}
+
+.agentThinking > span {
+  display: flex;
+  gap: 0.1875rem;
+}
+
+.agentThinking i {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: var(--data-violet);
+  animation: agent-thinking 900ms ease-in-out infinite;
+}
+
+.agentThinking i:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.agentThinking i:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.agentActionCard {
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgb(var(--data-violet-rgb) / 0.42);
+  border-radius: 0.625rem;
+  background: rgb(var(--deep-interface-rgb) / 0.72);
+  animation: agent-card-in 320ms var(--ease-out) both;
+}
+
+.agentActionHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: clamp(1.75rem, 7cqi, 2.375rem);
+  padding: clamp(0.3125rem, 1.5cqi, 0.5rem);
+  gap: clamp(0.375rem, 1.8cqi, 0.625rem);
+  border-bottom: 1px solid var(--border-on-deep);
+}
+
+.agentActionHeader img {
+  width: clamp(1rem, 4.3cqi, 1.5rem);
+  height: clamp(1rem, 4.3cqi, 1.5rem);
+  object-fit: contain;
+}
+
+.agentActionHeader p {
+  display: grid;
+  min-width: 0;
+}
+
+.agentActionHeader strong {
+  color: var(--soft-signal);
+  font-size: clamp(0.4375rem, 1.75cqi, 0.59375rem);
+}
+
+.agentActionHeader span {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.48);
+  font-size: clamp(0.34375rem, 1.35cqi, 0.4375rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentSpinner {
+  width: clamp(0.625rem, 2.7cqi, 0.875rem);
+  height: clamp(0.625rem, 2.7cqi, 0.875rem);
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.2);
+  border-top-color: var(--active-orange);
+  border-radius: 50%;
+  animation: agent-spin 760ms linear infinite;
+}
+
+.agentMeetingList,
+.agentDraftList {
+  display: grid;
+  gap: 1px;
+  padding: clamp(0.1875rem, 1cqi, 0.375rem);
+}
+
+.agentMeeting,
+.agentDraft {
+  min-width: 0;
+  opacity: 0;
+  animation: agent-row-in 300ms var(--ease-out) forwards;
+  animation-delay: calc(var(--item-index) * 150ms + 120ms);
+}
+
+.agentMeeting {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: clamp(1.125rem, 4.8cqi, 1.625rem);
+  padding: 0 clamp(0.25rem, 1.2cqi, 0.4375rem);
+  gap: 0.375rem;
+  background: rgb(var(--soft-signal-rgb) / 0.035);
+}
+
+.agentMeeting time {
+  color: var(--active-orange);
+  font: var(--weight-bold) clamp(0.34375rem, 1.35cqi, 0.46875rem)/1 var(--font-mono);
+}
+
+.agentMeeting p,
+.agentDraft p {
+  display: grid;
+  min-width: 0;
+}
+
+.agentMeeting strong,
+.agentDraft strong {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.82);
+  font-size: clamp(0.375rem, 1.5cqi, 0.5rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentMeeting span,
+.agentDraft small {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.4);
+  font-size: clamp(0.3125rem, 1.2cqi, 0.40625rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentMeeting > i {
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 50%;
+  background: var(--data-violet);
+  box-shadow: 0 0 0 3px rgb(var(--data-violet-rgb) / 0.12);
+}
+
+.agentDraftCard {
+  border-color: rgb(var(--active-orange-rgb) / 0.38);
+}
+
+.agentDraft {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: clamp(1.25rem, 5.2cqi, 1.75rem);
+  padding: 0 clamp(0.25rem, 1.2cqi, 0.4375rem);
+  gap: 0.375rem;
+  background: rgb(var(--soft-signal-rgb) / 0.035);
+}
+
+.agentDraft > span {
+  display: grid;
+  width: clamp(0.875rem, 3.8cqi, 1.25rem);
+  height: clamp(0.875rem, 3.8cqi, 1.25rem);
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(var(--data-violet-rgb) / 0.24);
+  color: var(--soft-signal);
+  font-size: clamp(0.3125rem, 1.2cqi, 0.40625rem);
+  font-weight: var(--weight-bold);
+}
+
+.agentDraft > i {
+  color: var(--active-orange);
+  font-size: clamp(0.3125rem, 1.15cqi, 0.40625rem);
+  font-style: normal;
+  font-weight: var(--weight-bold);
+}
+
+.agentResultWindows {
+  display: grid;
+  width: calc(100% - clamp(2.5rem, 14cqi, 4.25rem));
+  min-height: clamp(5.75rem, 31cqi, 8rem);
+  flex: 0 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(0.375rem, 2cqi, 0.6875rem);
+  gap: clamp(0.25rem, 1.25cqi, 0.5rem);
+}
+
+.agentAppWindow {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgb(var(--data-violet-rgb) / 0.42);
+  border-radius: 0.5625rem;
+  background: rgb(var(--deep-interface-rgb) / 0.88);
+  box-shadow: 0 0.5rem 1.25rem rgb(var(--deep-active-rgb) / 0.2);
+  opacity: 0;
+  transform: translateY(0.5rem) scale(0.94);
+  transform-origin: bottom center;
+  transition:
+    opacity 260ms var(--ease-out) 500ms,
+    transform 360ms var(--ease-out) 500ms;
+}
+
+.agentAppWindowOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.agentGmailWindow {
+  border-color: rgb(var(--active-orange-rgb) / 0.4);
+}
+
+.agentAppWindow header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  min-height: clamp(1.5rem, 6.2cqi, 2rem);
+  padding: clamp(0.25rem, 1.1cqi, 0.375rem);
+  gap: clamp(0.25rem, 1.2cqi, 0.4375rem);
+  border-bottom: 1px solid var(--border-on-deep);
+  background: rgb(var(--soft-signal-rgb) / 0.04);
+}
+
+.agentAppWindow header img {
+  width: clamp(0.875rem, 3.7cqi, 1.25rem);
+  height: clamp(0.875rem, 3.7cqi, 1.25rem);
+  object-fit: contain;
+}
+
+.agentAppWindow header p {
+  display: grid;
+  min-width: 0;
+  margin: 0;
+}
+
+.agentAppWindow header strong {
+  color: var(--soft-signal);
+  font-size: clamp(0.40625rem, 1.55cqi, 0.53125rem);
+}
+
+.agentAppWindow header span {
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.45);
+  font-size: clamp(0.3125rem, 1.15cqi, 0.40625rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentAppWindow > div {
+  display: grid;
+  gap: 1px;
+  padding: clamp(0.125rem, 0.8cqi, 0.25rem);
+}
+
+.agentAppWindow [data-agent-window-row] {
+  display: grid;
+  min-width: 0;
+  min-height: clamp(1.125rem, 4.6cqi, 1.5rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: center;
+  padding: 0 clamp(0.1875rem, 0.9cqi, 0.3125rem);
+  gap: 0 0.25rem;
+  background: rgb(var(--soft-signal-rgb) / 0.035);
+}
+
+.agentAppWindow time {
+  overflow: hidden;
+  color: var(--soft-signal);
+  font: var(--weight-bold) clamp(0.3125rem, 1.2cqi, 0.40625rem)/1 var(--font-mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentAppWindow time i {
+  padding: 0 0.1875rem;
+  color: var(--active-orange);
+  font-style: normal;
+}
+
+.agentAppWindow [data-agent-window-row] > span,
+.agentAppWindow [data-agent-window-row] > small {
+  min-width: 0;
+  overflow: hidden;
+  color: rgb(var(--soft-signal-rgb) / 0.45);
+  font-size: clamp(0.28125rem, 1.05cqi, 0.375rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentAppWindow [data-agent-window-row] > span,
+.agentAppWindow [data-agent-window-row] > small {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+.agentAppWindow [data-agent-window-row] > b {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  color: var(--active-orange);
+  font-size: clamp(0.28125rem, 1.05cqi, 0.375rem);
+}
+
+.agentGmailWindow [data-agent-window-row] > span {
+  grid-row: 1;
+  color: rgb(var(--soft-signal-rgb) / 0.82);
+  font-size: clamp(0.3125rem, 1.2cqi, 0.40625rem);
+  font-weight: var(--weight-bold);
+}
+
+.agentGmailWindow [data-agent-window-row] > small {
+  grid-row: 2;
+}
+
+.agentValidatedApps {
+  display: flex;
+  position: absolute;
+  z-index: 5;
+  right: clamp(0.75rem, 3.6cqi, 1.25rem);
+  bottom: clamp(0.75rem, 3.6cqi, 1.25rem);
+  align-items: flex-end;
+  gap: clamp(0.1875rem, 0.9cqi, 0.3125rem);
+  pointer-events: none;
+}
+
+.agentValidatedApp {
+  display: grid;
+  position: relative;
+  width: clamp(1.625rem, 7cqi, 2.25rem);
+  aspect-ratio: 1;
+  place-items: center;
+  clip-path: polygon(50% 0, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  background: rgb(var(--white-rgb) / 0.96);
+  filter: drop-shadow(0 0.35rem 0.55rem rgb(var(--deep-active-rgb) / 0.3));
+  opacity: 0;
+  transform: translateY(0.75rem) scale(0.55);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 440ms cubic-bezier(0.2, 1.45, 0.35, 1);
+}
+
+.agentValidatedApp[data-agent-app="teams"] {
+  transition-delay: 0ms;
+}
+
+.agentValidatedApp[data-agent-app="gmail"] {
+  margin-bottom: clamp(0.1875rem, 1cqi, 0.375rem);
+  transition-delay: 110ms;
+}
+
+.agentValidatedAppsVisible .agentValidatedApp {
+  opacity: 1;
+  transform: translateY(clamp(-0.625rem, -2cqi, -0.375rem)) scale(1);
+}
+
+.agentValidatedApp img {
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+}
+
+.agentValidatedApp [data-agent-app-badge] {
+  display: grid;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: clamp(0.6875rem, 2.8cqi, 0.875rem);
+  height: clamp(0.6875rem, 2.8cqi, 0.875rem);
+  place-items: center;
+  border: 1px solid rgb(var(--white-rgb) / 0.9);
+  border-radius: 50%;
+  background: #e5484d;
+  color: var(--white);
+  font-size: clamp(0.375rem, 1.35cqi, 0.46875rem);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+}
+
+.agentCursor {
+  position: absolute;
+  z-index: 7;
+  right: 30%;
+  bottom: 34%;
+  width: clamp(0.875rem, 3.8cqi, 1.25rem);
+  overflow: visible;
+  fill: var(--soft-signal);
+  filter: drop-shadow(0 2px 3px rgb(var(--deep-active-rgb) / 0.5));
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, 0) scale(0.82);
+  transition:
+    right 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    bottom 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+
+.agentCursor path {
+  stroke: var(--deep-interface);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.agentCursor[data-agent-cursor="ready"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.agentCursor[data-agent-cursor="teams"] {
+  right: clamp(2.25rem, 11.5cqi, 3.25rem);
+  bottom: clamp(1.1rem, 5cqi, 1.6rem);
+  opacity: 1;
+  animation: agent-cursor-click 1500ms var(--ease-out) both;
+}
+
+.agentCursor[data-agent-cursor="gmail"] {
+  right: clamp(0.75rem, 3.8cqi, 1.25rem);
+  bottom: clamp(1.1rem, 6cqi, 1.75rem);
+  opacity: 1;
+  animation: agent-cursor-click 1500ms var(--ease-out) both;
+}
+
+.agentAppDockLabel {
+  position: absolute;
+  z-index: 2;
+  right: clamp(2.75rem, 13cqi, 4.5rem);
+  bottom: clamp(0.5rem, 2.5cqi, 0.875rem);
+  color: rgb(var(--soft-signal-rgb) / 0.48);
+  font-size: clamp(0.34375rem, 1.35cqi, 0.46875rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.06em;
+  opacity: 0;
+  text-transform: uppercase;
+  transition: opacity 240ms var(--ease-out) 620ms;
+}
+
+.agentActive .agentAppDockLabel {
+  opacity: 1;
+}
+
+@container (max-width: 22rem) {
+  .agentDesktopChrome p span,
+  .agentIdentity,
+  .agentAppDockLabel {
+    display: none;
+  }
+
+  .agentConversation {
+    padding: 0.375rem;
+  }
+
+  .agentPromptBubble {
+    width: 100%;
+    min-height: 3.25rem;
+    max-height: 3.625rem;
+    padding: 0.375rem 0.4375rem;
+    overflow: hidden;
+  }
+
+  .agentPromptBubble small {
+    margin-bottom: 0.125rem;
+  }
+
+  .agentThinking,
+  .agentActionCard,
+  .agentResultWindows {
+    width: calc(100% - 2.25rem);
+    margin-top: 0.3125rem;
+  }
+
+  .agentResultWindows {
+    min-height: 5.25rem;
+    gap: 0.1875rem;
+  }
+
+  .agentAppWindow header span {
+    display: none;
+  }
+
+  .agentActionHeader {
+    min-height: 1.5rem;
+    padding: 0.25rem;
+  }
+
+  .agentActionHeader span {
+    display: none;
+  }
+
+  .agentMeetingList,
+  .agentDraftList {
+    padding: 0.125rem;
+  }
+
+  .agentMeeting,
+  .agentDraft {
+    min-height: 1.0625rem;
+  }
+
+  .agentDraft > i {
+    display: none;
+  }
+}
+
+@container (max-width: 16rem) {
+  .agentPromptBubble {
+    min-height: 2.75rem;
+    max-height: 2.75rem;
+    padding: 0.25rem 0.375rem;
+  }
+
+  .agentPromptBubble small {
+    display: none;
+  }
+
+  .agentDraft small {
+    display: none;
+  }
+
+  .agentDraftList {
+    gap: 0;
+    padding: 0;
+  }
+
+  .agentActionHeader {
+    min-height: 1.375rem;
+  }
+
+  .agentMeeting,
+  .agentDraft {
+    min-height: 0.9375rem;
+  }
+
+  .agentDraft > span {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .agentResultWindows {
+    width: calc(100% - 1.75rem);
+    min-height: 4.625rem;
+    gap: 0.125rem;
+  }
+
+  .agentAppWindow header {
+    min-height: 1.25rem;
+    padding: 0.1875rem;
+  }
+
+  .agentAppWindow [data-agent-window-row] {
+    min-height: 0.9375rem;
+    padding: 0 0.125rem;
+  }
+
+  .agentAppWindow [data-agent-window-row] > small {
+    display: none;
+  }
+}
+
+@keyframes agent-cursor-click {
+  0%, 54% { transform: scale(1); }
+  62% { transform: scale(0.72); }
+  72%, 100% { transform: scale(1); }
+}
+
+@keyframes agent-caret {
+  0%, 48% { opacity: 1; }
+  49%, 100% { opacity: 0; }
+}
+
+@keyframes agent-thinking {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+@keyframes agent-card-in {
+  from { opacity: 0; transform: translateY(0.375rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes agent-row-in {
+  from { opacity: 0; transform: translateX(-0.375rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes agent-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Alex's chrome-free, edge-to-edge Sutur integration honeycomb */
 .integrationField {
-  display: grid;
+  position: absolute;
+  z-index: 3;
+  inset: 0;
   width: 100%;
   height: 100%;
-  place-items: center;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .integrationGrid {
   display: block;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(calc(100% - clamp(1rem, 5cqi, 2.5rem)), 34rem);
+  height: auto;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+  transform: translate(-50%, -50%);
+  transform-origin: center;
+  transition:
+    top 720ms var(--ease-out),
+    left 720ms var(--ease-out),
+    width 720ms var(--ease-out),
+    transform 720ms var(--ease-out),
+    filter 720ms var(--ease-out);
+}
+
+.integrationCell {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 720ms var(--ease-out),
+    opacity 420ms var(--ease-out);
+  transition-delay: var(--stack-exit-delay);
+}
+
+.agentActive .integrationGrid {
+  top: calc(100% - 0.5rem);
+  left: calc(100% - 0.5rem);
+  width: clamp(9rem, 52cqi, 16rem);
+  filter: drop-shadow(0 0.5rem 0.75rem rgb(var(--deep-interface-rgb) / 0.22));
+  transform: translate(-100%, -100%);
+}
+
+.agentActive .integrationCell {
+  opacity: 0.9;
+  transform: translate(var(--stack-x), var(--stack-y)) scale(0.46);
+  transition-delay: var(--stack-enter-delay);
 }
 
 .integrationHex {
@@ -579,7 +1304,9 @@
   stroke: rgb(var(--deep-interface-rgb) / 0.16);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
-  transition: fill var(--motion-medium) var(--ease-out), stroke var(--motion-medium) var(--ease-out);
+  transition:
+    fill var(--motion-medium) var(--ease-out),
+    stroke var(--motion-medium) var(--ease-out);
 }
 
 .coreHex {
@@ -593,14 +1320,12 @@
   filter: drop-shadow(0 3px 5px rgb(var(--deep-active-rgb) / 0.08));
 }
 
-.capability:hover .integrationHex,
-.capability:focus-within .integrationHex {
+.agentActive .integrationHex {
   fill: rgb(var(--white-rgb) / 0.56);
   stroke: rgb(var(--deep-interface-rgb) / 0.24);
 }
 
-.capability:hover .coreHex,
-.capability:focus-within .coreHex {
+.agentActive .coreHex {
   fill: var(--deep-interface-hover);
   stroke: var(--active-orange-hover);
 }
@@ -690,6 +1415,17 @@
   }
 }
 
+@media (max-width: 840px) {
+  .capability {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .visual.agentVisual {
+    height: clamp(14rem, 52vw, 20rem);
+  }
+}
+
 @media (max-width: 680px) {
   .section::before,
   .section::after {
@@ -742,7 +1478,36 @@
   .capability,
   .visual,
   .capability a span,
-  .integrationHex {
+  .integrationHex,
+  .integrationGrid,
+  .integrationCell,
+  .agentDesktop,
+  .agentAppDockLabel,
+  .agentAppWindow,
+  .agentValidatedApp,
+  .agentCursor {
     transition: none;
+  }
+
+  .agentCaret,
+  .agentThinking i,
+  .agentActionCard,
+  .agentMeeting,
+  .agentDraft,
+  .agentSpinner,
+  .agentCursor {
+    animation: none;
+  }
+
+  .agentMeeting,
+  .agentDraft {
+    opacity: 1;
+    transform: none;
+  }
+
+  .agentAppWindowOpen,
+  .agentValidatedAppsVisible .agentValidatedApp {
+    opacity: 1;
+    transform: none;
   }
 }
