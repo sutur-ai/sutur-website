@@ -9,6 +9,10 @@ const header = readFileSync(
   new URL('../src/components/sections/Header.tsx', import.meta.url),
   'utf8',
 );
+const navigation = readFileSync(
+  new URL('../src/components/sections/navigation.ts', import.meta.url),
+  'utf8',
+);
 const bookingComponent = readFileSync(
   new URL('../src/components/booking/Booking.tsx', import.meta.url),
   'utf8',
@@ -31,8 +35,6 @@ const moduleCss = readFileSync(
 );
 
 const fullCss = [theme, css, capabilitiesCss, orbitCss, moduleCss].join('\n');
-const pageRoutes = ['product', 'solutions', 'pricing', 'about', 'insights', 'contact'];
-
 describe('website design-system theme', () => {
   it('keeps the intended light and deep homepage rhythm', () => {
     const hero = page.indexOf('className="hero scroll-section surface-ink"');
@@ -104,7 +106,7 @@ describe('website design-system theme', () => {
     expect(page).toContain('surface-ink');
   });
 
-  it('renders display punctuation and list dots as orange square signals', () => {
+  it('renders display punctuation as orange square signals', () => {
     expect(existsSync(new URL('../src/components/ui/SignalDot.tsx', import.meta.url))).toBe(true);
     expect(page).toContain('Connect your business<SignalDot />');
     expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
@@ -117,8 +119,6 @@ describe('website design-system theme', () => {
     expect(bookingComponent).toContain('Your email app is opening<SignalDot />');
     expect(bookingComponent).toContain('Tell us what needs to connect<SignalDot />');
     expect(css).toMatch(/\.signal-dot\s*{[^}]*display:\s*inline-block[^}]*width:\s*0\.16em[^}]*height:\s*0\.16em[^}]*background:\s*var\(--active-orange\)/s);
-    expect(css).toMatch(/\.check-list li::before\s*{[^}]*width:\s*0\.4rem[^}]*height:\s*0\.4rem[^}]*background:\s*var\(--active-orange\)/s);
-    expect(css).not.toMatch(/\.check-list li::before\s*{[^}]*content:\s*["']·["']/s);
   });
 
   it('uses natural scrolling and complete reduced-motion fallbacks', () => {
@@ -134,26 +134,27 @@ describe('website design-system theme', () => {
     expect(header).toContain("const [showFloatingCta, setShowFloatingCta] = useState(false)");
     expect(header).toContain('currentScrollY > 96');
     expect(header).not.toContain('afterPrimaryContent');
-    expect(header).toContain("setShowFloatingCta(!footerIsVisible && pathname !== '/contact')");
+    expect(header).toContain('setShowFloatingCta(!footerIsVisible)');
     expect(header).toContain("floating-cta${showFloatingCta ? ' is-visible' : ''}");
     expect(header).toContain('src="/brand/design-system/sutur-icon-soft.png"');
     expect(header).toContain('Book a call');
-    expect(header).toContain('href="/contact"');
+    expect(header).toContain('href="#book"');
     expect(css).toMatch(/\.floating-cta > img\s*{[^}]*object-fit:\s*contain/s);
     expect(css).toMatch(/\.floating-cta\s*{[^}]*right:\s*auto[^}]*left:\s*50%[^}]*transform:\s*translate\(-50%,\s*0\.75rem\)/s);
     expect(css).toMatch(/\.floating-cta\s*{[^}]*opacity:\s*0[^}]*pointer-events:\s*none/s);
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto[^}]*transform:\s*translate\(-50%,\s*0\)/s);
   });
 
-  it('uses the deck navigation and keeps the header fixed while it condenses into a pill', () => {
+  it('uses one-word homepage section navigation and keeps the header fixed while it condenses into a pill', () => {
     for (const link of [
-      "['Product', '/product']",
-      "['Solutions', '/solutions']",
-      "['Pricing', '/pricing']",
-      "['About', '/about']",
+      "['Capabilities', '#capabilities']",
+      "['Why', '#why-us']",
+      "['Reviews', '#reviews']",
+      "['Questions', '#questions']",
     ]) {
-      expect(header).toContain(link);
+      expect(navigation).toContain(link);
     }
+    expect(header).toContain('href="#book">Book</a>');
     expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*width:\s*min\(82rem, max\(58rem, 70vw\), calc\(100% - 2rem\)\)/s);
     expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*width:\s*min\(64rem, max\(52rem, 58vw\), calc\(100% - 3rem\)\)/s);
@@ -178,11 +179,6 @@ describe('website design-system theme', () => {
     expect(orbitCss).toContain('width: min(100%, var(--hero-visual-max))');
   });
 
-  it('ships every route specified by the design deck', () => {
-    for (const route of pageRoutes) {
-      expect(existsSync(new URL(`../src/app/${route}/page.tsx`, import.meta.url))).toBe(true);
-    }
-  });
 
   it('uses the larger English wordmark and agent-mark favicon', () => {
     expect(header).toContain('/brand/design-system/sutur-wordmark-soft.png');

@@ -1,47 +1,27 @@
-import Link from 'next/link';
-
-const primary = [
-  ['Product', '/product'],
-  ['Solutions', '/solutions'],
-  ['Pricing', '/pricing'],
-  ['About', '/about'],
-] as const;
-
-const resources = [
-  ['Insights', '/insights'],
-  ['Contact', '/contact'],
-] as const;
+import { sectionLinks } from '@/components/sections/navigation';
 
 export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div>
-        <Link className="wordmark" href="/" aria-label="Sutur home">
+        <a className="wordmark" href="#top" aria-label="Sutur home">
           <img
             src="/brand/design-system/sutur-wordmark-soft.png"
             alt="sutur"
             width={128}
             height={46}
           />
-        </Link>
+        </a>
         <p>Tailored Odoo and practical AI agents for clearer operations.</p>
       </div>
 
       <div>
-        <h2>Explore</h2>
+        <h2>Navigate</h2>
         <nav className="footer-links" aria-label="Footer navigation">
-          {primary.map(([label, href]) => (
-            <Link key={href} href={href}>{label}</Link>
+          {sectionLinks.map(([label, href]) => (
+            <a key={href} href={href}>{label}</a>
           ))}
-        </nav>
-      </div>
-
-      <div>
-        <h2>Resources</h2>
-        <nav className="footer-links" aria-label="Footer resources">
-          {resources.map(([label, href]) => (
-            <Link key={href} href={href}>{label}</Link>
-          ))}
+          <a href="#book">Book</a>
         </nav>
       </div>
 

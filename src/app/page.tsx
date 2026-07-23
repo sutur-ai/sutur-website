@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { AgentOrbit } from '@/components/brand/AgentOrbit';
@@ -27,9 +26,9 @@ export default function Home() {
             agents handle the repetitive work your team should not have to chase.
           </p>
           <div className="hero-actions">
-            <Link className="button" href="/contact">
+            <a className="button" href="#book">
               Book a discovery call <ArrowIcon />
-            </Link>
+            </a>
             <a className="button-secondary" href="#capabilities">
               Explore solutions
             </a>

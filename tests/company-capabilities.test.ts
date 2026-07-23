@@ -10,6 +10,10 @@ const header = readFileSync(
   new URL('../src/components/sections/Header.tsx', import.meta.url),
   'utf8',
 );
+const navigation = readFileSync(
+  new URL('../src/components/sections/navigation.ts', import.meta.url),
+  'utf8',
+);
 const styles = readFileSync(
   new URL('../src/components/sections/CompanyCapabilities.module.css', import.meta.url),
   'utf8',
@@ -131,10 +135,8 @@ describe('company capabilities section', () => {
 
   it('keeps capability and global navigation pointed at live destinations', () => {
     expect(page).toContain('href="#capabilities"');
-    expect(header).toContain("['Product', '/product']");
-    expect(header).toContain("['Solutions', '/solutions']");
-    expect(header).toContain("['Pricing', '/pricing']");
-    expect(header).toContain("['About', '/about']");
+    expect(navigation).toContain("['Capabilities', '#capabilities']");
+    expect(header).toContain('sectionLinks.map');
     expect(component).toContain('href="#book"');
   });
 });

@@ -1,19 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { sectionLinks } from '@/components/sections/navigation';
 import { ArrowIcon, MenuIcon } from '@/components/ui/icons';
 
-const links = [
-  ['Product', '/product'],
-  ['Solutions', '/solutions'],
-  ['Pricing', '/pricing'],
-  ['About', '/about'],
-] as const;
-
 export function Header() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showFloatingCta, setShowFloatingCta] = useState(false);
@@ -28,7 +19,7 @@ export function Header() {
 
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 96);
-      setShowFloatingCta(!footerIsVisible && pathname !== '/contact');
+      setShowFloatingCta(!footerIsVisible);
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
@@ -37,9 +28,7 @@ export function Header() {
       window.removeEventListener('scroll', updateHeader);
       window.removeEventListener('resize', updateHeader);
     };
-  }, [pathname]);
-
-  useEffect(() => setOpen(false), [pathname]);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -56,30 +45,24 @@ export function Header() {
   return (
     <>
       <header className={`site-header${scrolled ? ' is-floating' : ''}`}>
-        <Link className="wordmark" href="/" aria-label="Sutur home">
+        <a className="wordmark" href="#top" aria-label="Sutur home">
           <img
             src="/brand/design-system/sutur-wordmark-soft.png"
             alt="sutur"
             width={124}
             height={45}
           />
-        </Link>
+        </a>
 
         <nav aria-label="Primary navigation">
-          {links.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={pathname === href ? 'page' : undefined}
-            >
+          {sectionLinks.map(([label, href]) => (
+            <a key={href} href={href}>
               {label}
-            </Link>
+            </a>
           ))}
         </nav>
 
-        <Link className="header-cta" href="/contact">
-          Book a call
-        </Link>
+        <a className="header-cta" href="#book">Book</a>
 
         <button
           ref={menuButtonRef}
@@ -95,24 +78,21 @@ export function Header() {
 
         {open && (
           <div className="mobile-menu" id="mobile-navigation">
-            {links.map(([label, href]) => (
-              <Link key={href} href={href}>
+            {sectionLinks.map(([label, href]) => (
+              <a key={href} href={href} onClick={() => setOpen(false)}>
                 {label} <ArrowIcon />
-              </Link>
+              </a>
             ))}
-            <Link href="/insights">
-              Insights <ArrowIcon />
-            </Link>
-            <Link href="/contact">
-              Book a call <ArrowIcon />
-            </Link>
+            <a href="#book" onClick={() => setOpen(false)}>
+              Book <ArrowIcon />
+            </a>
           </div>
         )}
       </header>
 
-      <Link
+      <a
         className={`floating-cta${showFloatingCta ? ' is-visible' : ''}`}
-        href="/contact"
+        href="#book"
       >
         <img
           src="/brand/design-system/sutur-icon-soft.png"
@@ -122,7 +102,7 @@ export function Header() {
         />
         <span>Book a call</span>
         <b><ArrowIcon /></b>
-      </Link>
+      </a>
     </>
   );
 }
