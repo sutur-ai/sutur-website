@@ -38,7 +38,6 @@ export function AgentActionDemo() {
   return (
     <section className="section agent-action surface-ink" aria-labelledby="agent-action-title">
       <div className="agent-action-copy">
-        <p className="eyebrow">An agent in action</p>
         <h2 id="agent-action-title">Busywork moves. Control stays with your team.</h2>
         <p className="lead">
           A practical agent can assemble context and prepare the next step without

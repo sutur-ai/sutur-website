@@ -51,12 +51,12 @@
   --weight-book: 400;
   --weight-medium: 600;
   --weight-black: 900;
-  --type-display: clamp(4rem, 7.4vw, 7.5rem);
-  --type-page-title: clamp(3.6rem, 6vw, 6.5rem);
-  --type-section: clamp(2.8rem, 5.2vw, 5.5rem);
-  --type-heading: clamp(2rem, 3vw, 2.75rem);
-  --type-card-heading: clamp(1.65rem, 2.2vw, 2.25rem);
-  --type-body-large: clamp(1.05rem, 1.35vw, 1.25rem);
+  --type-display: clamp(3.5rem, 5.2vw, 6.25rem);
+  --type-page-title: clamp(3.25rem, 4.7vw, 5.75rem);
+  --type-section: clamp(2.5rem, 4.2vw, 4.75rem);
+  --type-heading: clamp(1.875rem, 2.4vw, 2.5rem);
+  --type-card-heading: clamp(1.5rem, 1.8vw, 2rem);
+  --type-body-large: clamp(1rem, 1.15vw, 1.2rem);
   --type-body: 1rem;
   --type-small: 0.8125rem;
   --type-label: clamp(0.75rem, 0.8vw, 0.875rem);
@@ -79,14 +79,14 @@
   --space-9: 10rem;    /* 160 */
 
   /* Layout */
-  --content-width: 90rem; /* 1440px */
-  --page-gutter: clamp(1.5rem, 6vw, 7.5rem);
-  --section-space: clamp(var(--space-8), 10vw, var(--space-9));
+  --content-width: 120rem; /* Uses the full width of large desktop canvases. */
+  --page-gutter: clamp(1.25rem, 4vw, 5rem);
+  --section-space: clamp(5rem, 8vw, 8rem);
   --grid-gutter: 1.5rem;
   --header-height: 5.25rem;
   --header-floating-height: 3.625rem;
-  --hero-min-height: 55rem;
-  --hero-visual-max: 38.75rem;
+  --hero-min-height: clamp(42rem, 92svh, 55rem);
+  --hero-visual-max: 46rem;
   --capability-visual-height: 20rem;
   --capability-visual-height-wide: 23.75rem;
   --booking-card-width: 31.25rem;
@@ -126,7 +126,7 @@
 
 @media (max-width: 1024px) {
   :root {
-    --page-gutter: clamp(1.5rem, 5vw, 4rem);
+    --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
     --hero-min-height: auto;
     --section-space: clamp(var(--space-7), 12vw, var(--space-8));
   }

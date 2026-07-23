@@ -116,7 +116,7 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto/s);
   });
 
-  it('uses the deck navigation and a non-overlapping header that condenses into a pill', () => {
+  it('uses the deck navigation and keeps the header fixed while it condenses into a pill', () => {
     for (const link of [
       "['Product', '/product']",
       "['Solutions', '/solutions']",
@@ -125,8 +125,26 @@ describe('website design-system theme', () => {
     ]) {
       expect(header).toContain(link);
     }
-    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*absolute[^}]*background:\s*var\(--deep-interface\)/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
     expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*border-radius:\s*var\(--radius-pill\)/s);
+  });
+
+  it('removes decorative micro-titles and the hero module coverage strip', () => {
+    expect(page).not.toContain('Tailored Odoo · Practical AI agents');
+    expect(page).not.toContain('module-coverage');
+    expect(css).not.toContain('.module-coverage');
+    expect(css).not.toContain('.hero-eyebrow');
+    expect(css).not.toContain('.page-kicker');
+    expect(css).not.toContain('.eyebrow');
+  });
+
+  it('scales desktop content and typography fluidly with bounded clamps', () => {
+    expect(theme).toContain('--content-width: 120rem');
+    expect(theme).toContain('--page-gutter: clamp(1.25rem, 4vw, 5rem)');
+    expect(theme).toContain('--type-display: clamp(3.5rem, 5.2vw, 6.25rem)');
+    expect(theme).toContain('--hero-min-height: clamp(42rem, 92svh, 55rem)');
+    expect(css).toContain('padding-inline: max(var(--page-gutter), calc((100vw - var(--content-width)) / 2))');
+    expect(orbitCss).toContain('width: min(100%, var(--hero-visual-max))');
   });
 
   it('ships every route specified by the design deck', () => {

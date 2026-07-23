@@ -56,7 +56,6 @@ export default function ProductPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="The connected system"
         title={<>One connected business. <em>Three ways forward.</em></>}
         description="The operating foundation, the software that fits, and the intelligence layer above them — designed as one buildable system."
       />
@@ -71,7 +70,6 @@ export default function ProductPage() {
                 <CapabilityVisual kind={capability.kind} />
               )}
               <div className="feature-row-copy">
-                <p className="eyebrow">{capability.number} · {capability.kicker}</p>
                 <h2>{capability.title}</h2>
                 <p>{capability.description}</p>
                 <Link className="text-link" href="/contact">
@@ -84,7 +82,6 @@ export default function ProductPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <p className="eyebrow">Build the right layer first</p>
         <h2>Start with the operation, not the software.</h2>
         <p className="lead">A focused discovery call maps where clarity will help most.</p>
         <Link className="button" href="/contact">Book a discovery call →</Link>

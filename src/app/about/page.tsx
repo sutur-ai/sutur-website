@@ -14,7 +14,6 @@ export default function AboutPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="About Sutur"
         title={<>Grounded in Lebanon. <em>Built for real operations.</em></>}
         description="We bring ERP implementation, custom development, and practical agent architecture into one accountable build team."
       />
@@ -43,7 +42,6 @@ export default function AboutPage() {
 
       <section className="section team surface-ink" aria-labelledby="team-title">
         <div>
-          <p className="eyebrow">The team</p>
           <h2 id="team-title">A small team with the whole system in view.</h2>
           <p className="lead">
             Operations, implementation, and engineering stay connected from the
@@ -67,7 +65,6 @@ export default function AboutPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <p className="eyebrow">Start with a conversation</p>
         <h2>Tell us where the operation loses clarity.</h2>
         <p className="lead">We will help map the right first move.</p>
         <Link className="button" href="/contact">Book a discovery call →</Link>

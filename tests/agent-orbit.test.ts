@@ -61,7 +61,7 @@ describe("agent orbit hero", () => {
 
   it("reserves a balanced prompt zone above the orbit", () => {
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*40px/);
-    expect(styles).toMatch(/\.prompt\s*{[\s\S]*width:\s*min\(88%,\s*500px\)/);
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*width:\s*min\(88%,\s*37\.5rem\)/);
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*text-wrap:\s*balance/);
     expect(styles).toMatch(/@media\s*\(max-width:\s*1040px\)[\s\S]*\.prompt\s*{[^}]*top:\s*8px/);
   });

@@ -14,13 +14,11 @@ export default function ContactPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="Contact"
         title={<>Start with <em>a conversation.</em></>}
         description="A free, focused discovery call — 30 minutes to map the operation and where clarity would help most."
       />
 
       <section className="booking-section surface-soft" id="book">
-        <p className="eyebrow">Book a discovery call</p>
         <h2>One clear next step.</h2>
         <p className="lead">
           Prefer email? Write to <a href="mailto:hello@sutur.ai">hello@sutur.ai</a>.

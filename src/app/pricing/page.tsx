@@ -41,13 +41,11 @@ export default function PricingPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="Pricing"
         title={<>Engagement-based. <em>Not seat-based.</em></>}
         description="Scope follows the operation. Every tier leads to the same discovery call rather than a checkout or a generic package."
       />
 
       <section className="page-section surface-paper">
-        <p className="eyebrow">A clear path to scope</p>
         <h2>Start free. Build only what earns its place.</h2>
         <div className="page-grid">
           {tiers.map((tier) => (
@@ -70,7 +68,6 @@ export default function PricingPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <p className="eyebrow">No black box</p>
         <h2>Understand the operation before pricing the build.</h2>
         <p className="lead">The discovery call is free, focused, and leaves you with a clearer map.</p>
         <Link className="button" href="/contact">Book a discovery call →</Link>

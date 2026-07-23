@@ -253,7 +253,6 @@ export function CompanyCapabilities() {
     >
       <div className={styles.intro}>
         <div>
-          <p className="eyebrow">What sutur builds</p>
           <h2 id="capabilities-title">
             One connected business.
             <br />

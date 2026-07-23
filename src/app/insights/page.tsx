@@ -39,7 +39,6 @@ export default function InsightsPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="Insights"
         title={<>Operational playbooks. <em>Field notes.</em></>}
         description="Clear writing about ERP, custom systems, and practical agents — focused on decisions an operating team can use."
       />
@@ -47,7 +46,6 @@ export default function InsightsPage() {
       <section className="page-section surface-paper" aria-labelledby="insights-title">
         <div className="insights-heading">
           <div>
-            <p className="eyebrow">Field notes for operators</p>
             <h2 id="insights-title">Useful enough to keep.</h2>
           </div>
           <ul className="topic-filters" aria-label="Insight topics">
@@ -88,7 +86,6 @@ export default function InsightsPage() {
       <section className="page-section surface-soft">
         <div className="empty-state">
           <div>
-            <p className="eyebrow">Start with the real question</p>
             <h2>Ask Sutur directly.</h2>
             <p className="lead">A focused conversation is more useful than generic advice.</p>
             <Link className="button" href="/contact">Start a conversation →</Link>

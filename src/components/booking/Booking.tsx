@@ -129,7 +129,6 @@ export function Booking() {
 
           {sent ? (
             <div className="success" aria-live="polite">
-              <p className="eyebrow">Email draft prepared</p>
               <h3>Your email app is opening.</h3>
               <p>
                 Review the prepared message and send it to hello@sutur.ai. Nothing
@@ -139,7 +138,6 @@ export function Booking() {
             </div>
           ) : (
             <form onSubmit={handleSubmit(submit)} noValidate>
-              <p className="eyebrow">Book a call</p>
               <h3>Tell us what needs to connect.</h3>
               <label>
                 Name

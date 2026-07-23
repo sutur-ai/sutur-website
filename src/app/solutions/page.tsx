@@ -41,13 +41,11 @@ export default function SolutionsPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        kicker="Solutions by outcome"
         title={<>Built around the result <em>your team needs.</em></>}
         description="Choose the operating problem first. We will map the right combination of ERP, custom development, and practical agents."
       />
 
       <section className="page-section surface-paper">
-        <p className="eyebrow">Three clear entry points</p>
         <h2>Organized by the outcome a buyer is looking for.</h2>
         <div className="page-grid">
           {solutions.map((solution) => (
@@ -65,7 +63,6 @@ export default function SolutionsPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <p className="eyebrow">One discovery path</p>
         <h2>Every solution starts with the same conversation.</h2>
         <p className="lead">Map the operation, find the constraint, then choose the smallest useful build.</p>
         <Link className="button" href="/contact">Book a discovery call →</Link>
