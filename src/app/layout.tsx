@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description:
     'Tailored Odoo ERP, custom development, and practical AI agents for clearer operations.',
   icons: {
-    icon: '/brand/design-system/sutur-icon-deep.png',
-    apple: '/brand/design-system/sutur-icon-deep.png',
+    icon: '/brand/design-system/sutur-agent-favicon.png',
+    apple: '/brand/design-system/sutur-agent-favicon.png',
   },
   openGraph: {
     type: 'website',

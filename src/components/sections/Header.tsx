@@ -20,21 +20,14 @@ export function Header() {
 
   useEffect(() => {
     const updateHeader = () => {
-      const hero = document.querySelector('.hero, .page-hero');
-      const capabilities = document.querySelector('#capabilities');
       const footer = document.querySelector('.site-footer');
-      const afterPrimaryContent = capabilities
-        ? capabilities.getBoundingClientRect().bottom <= window.innerHeight * 0.35
-        : hero
-          ? hero.getBoundingClientRect().bottom <= window.innerHeight * 0.35
-        : window.scrollY > 480;
       const footerIsVisible = footer
         ? footer.getBoundingClientRect().top < window.innerHeight
         : false;
 
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 96);
-      setShowFloatingCta(afterPrimaryContent && !footerIsVisible && pathname !== '/contact');
+      setShowFloatingCta(!footerIsVisible && pathname !== '/contact');
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
@@ -68,13 +61,6 @@ export function Header() {
             alt="sutur"
             width={124}
             height={45}
-          />
-          <span className="wordmark-divider" aria-hidden="true" />
-          <img
-            src="/brand/design-system/sutur-wordmark-arabic-soft.png"
-            alt="سطور"
-            width={106}
-            height={50}
           />
         </Link>
 
@@ -126,8 +112,13 @@ export function Header() {
         className={`floating-cta${showFloatingCta ? ' is-visible' : ''}`}
         href="/contact"
       >
-        <span aria-hidden="true" />
-        Book a discovery call
+        <img
+          src="/brand/design-system/sutur-icon-soft.png"
+          alt=""
+          width={24}
+          height={29}
+        />
+        <span>Book a call</span>
         <b aria-hidden="true">→</b>
       </Link>
     </>

@@ -119,10 +119,10 @@ main {
   left: 50%;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: min(82rem, max(58rem, 70vw), calc(100% - 2rem));
   height: var(--header-height);
   gap: var(--space-4);
-  padding-inline: max(var(--page-gutter), calc((100vw - var(--content-width)) / 2));
+  padding-inline: 0.75rem;
   border: 0;
   background: var(--deep-interface);
   color: var(--soft-signal);
@@ -138,44 +138,31 @@ main {
 
 .site-header.is-floating {
   top: 0.75rem;
-  width: min(clamp(42rem, 64vw, 72rem), calc(100% - 2rem));
+  width: min(64rem, max(52rem, 58vw), calc(100% - 3rem));
   height: var(--header-floating-height);
-  padding-inline: 1.125rem;
+  padding-inline: 1rem;
   border: 1px solid var(--border-on-deep);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-overlay);
 }
 
-
 .wordmark {
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 0.625rem;
   color: inherit;
   text-decoration: none;
 }
 
 .site-header .wordmark img {
   width: auto;
-  height: 1.625rem;
+  height: 2.125rem;
   object-fit: contain;
   transition: height var(--motion-fast) var(--ease-out);
 }
 
-.site-header .wordmark img:last-child {
-  height: 1.5625rem;
-}
-
-.site-header.is-floating .wordmark img,
-.site-header.is-floating .wordmark img:last-child {
-  height: 1.375rem;
-}
-
-.wordmark-divider {
-  width: 1px;
-  height: 1.375rem;
-  background: rgb(var(--soft-signal-rgb) / 0.42);
+.site-header.is-floating .wordmark img {
+  height: 1.75rem;
 }
 
 .site-header nav {
@@ -312,10 +299,11 @@ button:disabled,
   transform: translateY(0);
 }
 
-.floating-cta > span {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--active-orange);
+.floating-cta > img {
+  width: 1.35rem;
+  height: 1.625rem;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 
 .floating-cta b {
@@ -371,7 +359,7 @@ button:disabled,
   display: inline;
   color: var(--active-orange);
   font-style: normal;
-  font-weight: var(--weight-black);
+  font-weight: var(--weight-book);
 }
 
 .hero-copy .lead {
@@ -1330,14 +1318,8 @@ button:disabled,
   }
 
   .site-header .wordmark img,
-  .site-header .wordmark img:last-child,
-  .site-header.is-floating .wordmark img,
-  .site-header.is-floating .wordmark img:last-child {
-    height: 1.1875rem;
-  }
-
-  .wordmark-divider {
-    height: 1.125rem;
+  .site-header.is-floating .wordmark img {
+    height: 1.5rem;
   }
 
   .site-header nav,
@@ -1469,10 +1451,8 @@ button:disabled,
 
 @media (max-width: 440px) {
   .site-header .wordmark img,
-  .site-header .wordmark img:last-child,
-  .site-header.is-floating .wordmark img,
-  .site-header.is-floating .wordmark img:last-child {
-    height: 1rem;
+  .site-header.is-floating .wordmark img {
+    height: 1.25rem;
   }
 
   .card-front::after {

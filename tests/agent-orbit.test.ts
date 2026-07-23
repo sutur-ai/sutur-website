@@ -60,18 +60,21 @@ describe("agent orbit hero", () => {
   });
 
   it("reserves a balanced prompt zone above the orbit", () => {
-    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*40px/);
+    expect(styles).toMatch(/\.prompt\s*{[\s\S]*top:\s*0/);
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*width:\s*min\(88%,\s*37\.5rem\)/);
     expect(styles).toMatch(/\.prompt\s*{[\s\S]*text-wrap:\s*balance/);
     expect(styles).toMatch(/@media\s*\(max-width:\s*1040px\)[\s\S]*\.prompt\s*{[^}]*top:\s*8px/);
   });
 
-  it("uses brand colors, segmented node shapes, and no gradients", () => {
+  it("uses brand colors, uniform rounded-square nodes, and no gradients", () => {
     expect(styles).not.toContain("gradient(");
     expect(styles).toContain("var(--soft-signal)");
     expect(styles).toContain("var(--active-orange)");
     expect(styles).toContain("var(--data-violet)");
-    expect(styles).toMatch(/\.n1 \.nodeFace,[\s\S]*border-radius:\s*999px 999px/s);
+    expect(styles).toMatch(/\.nodeFace\s*{[^}]*border-radius:\s*var\(--radius-md\)/s);
+    expect(styles).not.toContain(".n1 .nodeFace");
+    expect(styles).not.toContain(".n3 .nodeFace");
+    expect(styles).not.toContain(".agent::after");
   });
 
   it("keeps decorative motion disabled for reduced-motion users", () => {

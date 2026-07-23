@@ -83,7 +83,6 @@ describe('website design-system theme', () => {
 
   it('uses orange only as an active signal and rounds controls as pills', () => {
     expect(css).toMatch(/\.header-cta,[\s\S]*background:\s*var\(--active-orange\)/s);
-    expect(css).toMatch(/\.floating-cta > span\s*{[^}]*background:\s*var\(--active-orange\)/s);
     expect(theme).toContain('--radius-card: 1.125rem');
     expect(theme).toContain('--radius-pill: 999px');
   });
@@ -91,6 +90,7 @@ describe('website design-system theme', () => {
   it('opens with the approved human copy and preserves the branded interactive orbit', () => {
     expect(page).toContain('Connect your business.');
     expect(page).toContain('Automate the busywork.');
+    expect(css).toMatch(/\.hero-copy h1 em\s*{[^}]*font-weight:\s*var\(--weight-book\)/s);
     expect(page).toContain('<AgentOrbit />');
     expect(page).not.toContain('className="hero-brand"');
     expect(page).toContain('surface-ink');
@@ -104,14 +104,17 @@ describe('website design-system theme', () => {
     expect(orbitCss).toContain('@media (prefers-reduced-motion: reduce)');
   });
 
-  it('reveals the floating discovery control after primary content and hides it near the footer', () => {
+  it('keeps the floating booking control available away from contact/footer with the agent mark', () => {
     expect(header).toContain("const [scrolled, setScrolled] = useState(false)");
     expect(header).toContain("const [showFloatingCta, setShowFloatingCta] = useState(false)");
     expect(header).toContain('currentScrollY > 96');
-    expect(header).toContain('capabilities.getBoundingClientRect().bottom <= window.innerHeight * 0.35');
-    expect(header).toContain('afterPrimaryContent && !footerIsVisible');
+    expect(header).not.toContain('afterPrimaryContent');
+    expect(header).toContain("setShowFloatingCta(!footerIsVisible && pathname !== '/contact')");
     expect(header).toContain("floating-cta${showFloatingCta ? ' is-visible' : ''}");
+    expect(header).toContain('src="/brand/design-system/sutur-icon-soft.png"');
+    expect(header).toContain('Book a call');
     expect(header).toContain('href="/contact"');
+    expect(css).toMatch(/\.floating-cta > img\s*{[^}]*object-fit:\s*contain/s);
     expect(css).toMatch(/\.floating-cta\s*{[^}]*opacity:\s*0[^}]*pointer-events:\s*none/s);
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto/s);
   });
@@ -126,6 +129,8 @@ describe('website design-system theme', () => {
       expect(header).toContain(link);
     }
     expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
+    expect(css).toMatch(/\.site-header\s*{[^}]*width:\s*min\(82rem, max\(58rem, 70vw\), calc\(100% - 2rem\)\)/s);
+    expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*width:\s*min\(64rem, max\(52rem, 58vw\), calc\(100% - 3rem\)\)/s);
     expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*border-radius:\s*var\(--radius-pill\)/s);
   });
 
@@ -153,12 +158,14 @@ describe('website design-system theme', () => {
     }
   });
 
-  it('uses the supplied bilingual brand assets and branded favicon', () => {
+  it('uses the larger English wordmark and agent-mark favicon', () => {
     expect(header).toContain('/brand/design-system/sutur-wordmark-soft.png');
-    expect(header).toContain('/brand/design-system/sutur-wordmark-arabic-soft.png');
+    expect(header).not.toContain('/brand/design-system/sutur-wordmark-arabic-soft.png');
     expect(header).toContain('alt="sutur"');
-    expect(header).toContain('alt="سطور"');
-    expect(layout).toContain("icon: '/brand/design-system/sutur-icon-deep.png'");
+    expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*height:\s*2\.125rem/s);
+    expect(layout).toContain("icon: '/brand/design-system/sutur-agent-favicon.png'");
+    expect(layout).toContain("apple: '/brand/design-system/sutur-agent-favicon.png'");
+    expect(existsSync(new URL('../public/brand/design-system/sutur-agent-favicon.png', import.meta.url))).toBe(true);
   });
 
   it('keeps mobile navigation accessible, compact, and full-width', () => {
