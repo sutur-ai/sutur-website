@@ -714,6 +714,7 @@ button:disabled,
 }
 
 .booking-form-grid input,
+.booking-form-grid select,
 .booking-form-grid textarea {
   width: 100%;
   min-height: 3.125rem;
@@ -742,12 +743,14 @@ button:disabled,
 }
 
 .booking-form-grid input:focus-visible,
+.booking-form-grid select:focus-visible,
 .booking-form-grid textarea:focus-visible {
   border-color: var(--focus-ring);
   box-shadow: var(--shadow-focus);
 }
 
 .booking-form-grid input[aria-invalid='true'],
+.booking-form-grid select[aria-invalid='true'],
 .booking-form-grid textarea[aria-invalid='true'] {
   border-color: var(--error-text);
 }

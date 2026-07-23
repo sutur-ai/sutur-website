@@ -1,6 +1,6 @@
 # Connect the booking calendar
 
-The booking section now keeps the required lead form and Calendly calendar together on one page. Until a Calendly event URL is configured, a valid form opens a prepared email instead of showing a broken scheduler.
+The booking section keeps the required lead form and Calendly calendar together on one page. Calendly's own final scheduling action reserves the selected slot and sends the booking notifications. Until a real event URL is configured, the form remains unavailable instead of pretending an email draft can reserve a time.
 
 ## One-time Calendly setup
 
@@ -8,10 +8,11 @@ The booking section now keeps the required lead form and Calendly calendar toget
 2. Create a 30-minute event type for the Sutur discovery call.
 3. Keep Calendly's built-in name and email fields required.
 4. Add these invitee questions in this exact order so the website can prefill them:
-   1. Location — required, one line.
-   2. Phone number — required, one line.
-   3. Business name — required, one line.
-   4. Tell us more — optional, multiple lines.
+   1. Country — required, one line.
+   2. City — required, one line.
+   3. Phone number — required, one line.
+   4. Business name — required, one line.
+   5. Tell us more — optional, multiple lines.
 5. Set availability, video-call details, reminders, and confirmation copy in Calendly.
 6. Copy the public event URL. It must look like `https://calendly.com/account/event-name`.
 7. Add it to the GitHub repository and redeploy:
@@ -29,4 +30,4 @@ cp .env.example .env.local
 npm run dev
 ```
 
-No API token is needed. The website validates first name, last name, location, phone number, work email, and business name before unlocking the calendar. It then prefills Calendly's name, email, and custom answers; Calendly owns availability, calendar writes, meeting links, and confirmation emails.
+No API token is needed. The website validates first name, last name, country, city, phone number, email, and business name before unlocking the calendar. It then prefills Calendly's name, email, and custom answers. The visitor finishes inside Calendly; Calendly owns availability, reserves the chosen slot, writes the calendar event, creates meeting links, and sends host/invitee notifications according to the event settings.

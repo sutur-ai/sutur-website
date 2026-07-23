@@ -1,7 +1,10 @@
+import { COUNTRIES } from './countries';
+
 export type BookingDetails = {
   firstName: string;
   lastName: string;
-  location: string;
+  country: string;
+  city: string;
   phone: string;
   email: string;
   businessName: string;
@@ -15,7 +18,8 @@ export const BOOKING_FIELD_LIMITS: Readonly<
 > = {
   firstName: 80,
   lastName: 80,
-  location: 120,
+  country: 80,
+  city: 120,
   phone: 32,
   email: 254,
   businessName: 160,
@@ -28,11 +32,14 @@ const requiredMessages: Record<
 > = {
   firstName: 'Enter your first name.',
   lastName: 'Enter your last name.',
-  location: 'Enter your location.',
+  country: 'Select your country.',
+  city: 'Enter your city.',
   phone: 'Enter your phone number.',
   email: 'Enter your email address.',
   businessName: 'Enter your business name.',
 };
+
+const COUNTRY_SET = new Set<string>(COUNTRIES);
 
 export function validateBookingDetails(details: BookingDetails) {
   const values = Object.fromEntries(
@@ -55,6 +62,10 @@ export function validateBookingDetails(details: BookingDetails) {
       const formattedLimit = limit === 1000 ? '1,000' : String(limit);
       errors[field] = `Keep this under ${formattedLimit} characters.`;
     }
+  }
+
+  if (values.country && !errors.country && !COUNTRY_SET.has(values.country)) {
+    errors.country = 'Select a valid country.';
   }
 
   if (

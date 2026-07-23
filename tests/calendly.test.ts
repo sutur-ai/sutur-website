@@ -30,7 +30,8 @@ describe('Calendly embed URL', () => {
       {
         firstName: 'Ada',
         lastName: 'Lovelace',
-        location: 'Beirut, Lebanon',
+        country: 'Lebanon',
+        city: 'Beirut',
         phone: '+961 70 123 456',
         email: 'ada@example.com',
         businessName: 'Analytical Engines',
@@ -41,10 +42,11 @@ describe('Calendly embed URL', () => {
 
     expect(url.searchParams.get('name')).toBe('Ada Lovelace');
     expect(url.searchParams.get('email')).toBe('ada@example.com');
-    expect(url.searchParams.get('a1')).toBe('Beirut, Lebanon');
-    expect(url.searchParams.get('a2')).toBe('+961 70 123 456');
-    expect(url.searchParams.get('a3')).toBe('Analytical Engines');
-    expect(url.searchParams.get('a4')).toBe(
+    expect(url.searchParams.get('a1')).toBe('Lebanon');
+    expect(url.searchParams.get('a2')).toBe('Beirut');
+    expect(url.searchParams.get('a3')).toBe('+961 70 123 456');
+    expect(url.searchParams.get('a4')).toBe('Analytical Engines');
+    expect(url.searchParams.get('a5')).toBe(
       'We need to connect finance and inventory.',
     );
     expect(url.searchParams.get('primary_color')).toBe('f57e20');
@@ -56,7 +58,8 @@ describe('Calendly embed URL', () => {
       {
         firstName: 'Ada',
         lastName: 'Lovelace',
-        location: 'Beirut, Lebanon',
+        country: 'Lebanon',
+        city: 'Beirut',
         phone: '+961 70 123 456',
         email: 'ada@example.com',
         businessName: 'Analytical Engines',
@@ -64,7 +67,7 @@ describe('Calendly embed URL', () => {
       },
     );
 
-    expect(new URL(result ?? '').searchParams.has('a4')).toBe(false);
+    expect(new URL(result ?? '').searchParams.has('a5')).toBe(false);
   });
 
   it.each([

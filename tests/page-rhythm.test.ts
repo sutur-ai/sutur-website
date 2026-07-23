@@ -200,19 +200,24 @@ describe('website design-system theme', () => {
     expect(bookingComponent).toContain('validateBookingDetails');
     expect(bookingComponent).toContain('<form');
     expect(bookingComponent).toContain('className="booking-lead-form"');
-    expect(bookingComponent).toContain('action="mailto:hello@sutur.ai?subject=Sutur%20discovery%20call"');
+    expect(bookingComponent).toContain('action="#book"');
     expect(bookingComponent).toContain('method="post"');
-    expect(bookingComponent).toContain('encType="text/plain"');
     for (const label of [
       'First name',
       'Last name',
-      'Location',
+      'Country',
+      'City',
       'Phone number',
       'Business name',
     ]) {
       expect(bookingComponent).toContain(label);
     }
     expect(bookingComponent).toContain('            Email\n            <input');
+    expect(bookingComponent).toContain('<select');
+    expect(bookingComponent).toContain('name="country"');
+    expect(bookingComponent).toContain('<option value="">Select a country</option>');
+    expect(bookingComponent).toContain('{COUNTRIES.map((country) => (');
+    expect(bookingComponent).toContain('name="city"');
     expect(bookingComponent).toContain('className="booking-label-text"');
     expect(bookingComponent).toContain('<small>(optional)</small>');
     expect(bookingComponent).toContain('Complete your details to unlock available times.');
@@ -227,7 +232,11 @@ describe('website design-system theme', () => {
     expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.businessName}');
     expect(bookingComponent).toContain('<iframe');
     expect(bookingComponent).toContain('title="Book a Sutur discovery call"');
-    expect(bookingComponent).toContain('mailto:hello@sutur.ai');
+    expect(bookingComponent).toContain('disabled={!isHydrated || !baseCalendarUrl}');
+    expect(bookingComponent).toContain('Continue to available times');
+    expect(bookingComponent).not.toContain('Send details by email');
+    expect(bookingComponent).not.toContain('mailto:hello@sutur.ai');
+    expect(bookingComponent).not.toContain('openEmailDraft');
     expect(bookingComponent).not.toContain('dialog.showModal()');
     expect(bookingComponent).not.toContain('card-scene');
     expect(css).toContain('.booking-flow');

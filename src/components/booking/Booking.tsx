@@ -1,9 +1,10 @@
 'use client';
 
-import { type FormEvent, useRef, useState } from 'react';
+import { type FormEvent, useEffect, useRef, useState } from 'react';
 import { ArrowIcon } from '@/components/ui/icons';
 import { SignalDot } from '@/components/ui/SignalDot';
 import { getCalendlyEmbedUrl } from '@/lib/booking/calendly';
+import { COUNTRIES } from '@/lib/booking/countries';
 import {
   BOOKING_FIELD_LIMITS,
   type BookingDetailErrors,
@@ -16,32 +17,13 @@ const calendlyEventUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
 const emptyDetails: BookingDetails = {
   firstName: '',
   lastName: '',
-  location: '',
+  country: '',
+  city: '',
   phone: '',
   email: '',
   businessName: '',
   tellUsMore: '',
 };
-
-function openEmailDraft(details: BookingDetails) {
-  const subject = encodeURIComponent(
-    `Sutur discovery call — ${details.businessName}`,
-  );
-  const body = encodeURIComponent(
-    [
-      `Name: ${details.firstName} ${details.lastName}`,
-      `Location: ${details.location}`,
-      `Phone: ${details.phone}`,
-      `Email: ${details.email}`,
-      `Business: ${details.businessName}`,
-      '',
-      'Tell us more:',
-      details.tellUsMore || 'Not provided',
-    ].join('\n'),
-  );
-
-  window.location.href = `mailto:hello@sutur.ai?subject=${subject}&body=${body}`;
-}
 
 export function Booking() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -51,6 +33,9 @@ export function Booking() {
   const [errors, setErrors] = useState<BookingDetailErrors>({});
   const [calendarUrl, setCalendarUrl] = useState(baseCalendarUrl);
   const [calendarReady, setCalendarReady] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => setIsHydrated(true), []);
 
   function updateDetail(field: keyof BookingDetails, value: string) {
     setDetails((current) => ({ ...current, [field]: value }));
@@ -79,10 +64,7 @@ export function Booking() {
     }
 
     const prefilledUrl = getCalendlyEmbedUrl(calendlyEventUrl, values);
-    if (!prefilledUrl) {
-      openEmailDraft(values);
-      return;
-    }
+    if (!prefilledUrl) return;
 
     setCalendarUrl(prefilledUrl);
     setCalendarReady(true);
@@ -104,9 +86,8 @@ export function Booking() {
       <form
         ref={formRef}
         className="booking-lead-form"
-        action="mailto:hello@sutur.ai?subject=Sutur%20discovery%20call"
+        action="#book"
         method="post"
-        encType="text/plain"
         onSubmit={submit}
         noValidate
       >
@@ -152,20 +133,43 @@ export function Booking() {
           </label>
 
           <label>
-            Location
-            <input
-              name="location"
+            Country
+            <select
+              name="country"
               required
-              maxLength={BOOKING_FIELD_LIMITS.location}
+              autoComplete="country-name"
+              value={details.country}
+              aria-invalid={Boolean(errors.country)}
+              aria-describedby="booking-country-error"
+              onChange={(event) => updateDetail('country', event.target.value)}
+            >
+              <option value="">Select a country</option>
+              {COUNTRIES.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+            <em id="booking-country-error" aria-live="polite">
+              {errors.country}
+            </em>
+          </label>
+
+          <label>
+            City
+            <input
+              name="city"
+              required
+              maxLength={BOOKING_FIELD_LIMITS.city}
               autoComplete="address-level2"
-              placeholder="City, country"
-              value={details.location}
-              aria-invalid={Boolean(errors.location)}
-              aria-describedby="booking-location-error"
-              onChange={(event) => updateDetail('location', event.target.value)}
+              placeholder="Beirut"
+              value={details.city}
+              aria-invalid={Boolean(errors.city)}
+              aria-describedby="booking-city-error"
+              onChange={(event) => updateDetail('city', event.target.value)}
             />
-            <em id="booking-location-error" aria-live="polite">
-              {errors.location}
+            <em id="booking-city-error" aria-live="polite">
+              {errors.city}
             </em>
           </label>
 
@@ -249,8 +253,14 @@ export function Booking() {
           </label>
         </div>
 
-        <button className="button booking-continue" type="submit">
-          {baseCalendarUrl ? 'Continue to available times' : 'Send details by email'}
+        <button
+          className="button booking-continue"
+          type="submit"
+          disabled={!isHydrated || !baseCalendarUrl}
+        >
+          {baseCalendarUrl
+            ? 'Continue to available times'
+            : 'Scheduling temporarily unavailable'}
           <ArrowIcon />
         </button>
         <p className="booking-form-note">
@@ -300,8 +310,7 @@ export function Booking() {
           <div className="booking-calendar-unavailable">
             <strong>Online scheduling is being connected.</strong>
             <p>
-              Complete your details and your email app will open with everything
-              prepared for hello@sutur.ai.
+              Booking will reopen here as soon as the Calendly event is connected.
             </p>
           </div>
         )}
@@ -309,7 +318,7 @@ export function Booking() {
         <p className="booking-privacy">
           {baseCalendarUrl
             ? 'Validated details are passed to Calendly only to prefill your booking.'
-            : 'Your details stay in the prepared email until you choose to send it.'}
+            : 'No details can be submitted while online scheduling is unavailable.'}
         </p>
       </section>
     </div>

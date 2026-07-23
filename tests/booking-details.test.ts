@@ -7,7 +7,8 @@ import {
 const completeDetails = {
   firstName: 'Ada',
   lastName: 'Lovelace',
-  location: 'Beirut, Lebanon',
+  country: 'Lebanon',
+  city: 'Beirut',
   phone: '+961 70 123 456',
   email: 'ada@example.com',
   businessName: 'Analytical Engines',
@@ -30,7 +31,8 @@ describe('booking details validation', () => {
   it.each([
     'firstName',
     'lastName',
-    'location',
+    'country',
+    'city',
     'phone',
     'email',
     'businessName',
@@ -41,6 +43,15 @@ describe('booking details validation', () => {
     });
 
     expect(result.errors[field]).toBeTruthy();
+  });
+
+  it('rejects a country value outside the dropdown options', () => {
+    const result = validateBookingDetails({
+      ...completeDetails,
+      country: 'Atlantis',
+    });
+
+    expect(result.errors.country).toBe('Select a valid country.');
   });
 
   it('rejects an invalid email address', () => {
@@ -75,7 +86,8 @@ describe('booking details validation', () => {
   it.each([
     'firstName',
     'lastName',
-    'location',
+    'country',
+    'city',
     'phone',
     'email',
     'businessName',

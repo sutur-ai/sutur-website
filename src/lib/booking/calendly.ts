@@ -32,11 +32,12 @@ export function getCalendlyEmbedUrl(
         `${details.firstName.trim()} ${details.lastName.trim()}`,
       );
       url.searchParams.set('email', details.email.trim());
-      url.searchParams.set('a1', details.location.trim());
-      url.searchParams.set('a2', details.phone.trim());
-      url.searchParams.set('a3', details.businessName.trim());
+      url.searchParams.set('a1', details.country.trim());
+      url.searchParams.set('a2', details.city.trim());
+      url.searchParams.set('a3', details.phone.trim());
+      url.searchParams.set('a4', details.businessName.trim());
       if (details.tellUsMore.trim()) {
-        url.searchParams.set('a4', details.tellUsMore.trim());
+        url.searchParams.set('a5', details.tellUsMore.trim());
       }
     }
 
