@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { PageHero } from '@/components/sections/PageHero';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -41,12 +43,12 @@ export default function PricingPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        title={<>Engagement-based. <em>Not seat-based.</em></>}
+        title={<>Engagement-based<SignalDot /> <em>Not seat-based<SignalDot /></em></>}
         description="Scope follows the operation. Every tier leads to the same discovery call rather than a checkout or a generic package."
       />
 
       <section className="page-section surface-paper">
-        <h2>Start free. Build only what earns its place.</h2>
+        <h2>Start free<SignalDot /> Build only what earns its place<SignalDot /></h2>
         <div className="page-grid">
           {tiers.map((tier) => (
             <article
@@ -60,7 +62,7 @@ export default function PricingPage() {
                 {tier.items.map((item) => <li key={item}>{item}</li>)}
               </ul>
               <Link className={tier.featured ? 'button' : 'button-secondary'} href="/contact">
-                {tier.cta} →
+                {tier.cta} <ArrowIcon />
               </Link>
             </article>
           ))}
@@ -68,9 +70,9 @@ export default function PricingPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <h2>Understand the operation before pricing the build.</h2>
+        <h2>Understand the operation before pricing the build<SignalDot /></h2>
         <p className="lead">The discovery call is free, focused, and leaves you with a clearer map.</p>
-        <Link className="button" href="/contact">Book a discovery call →</Link>
+        <Link className="button" href="/contact">Book a discovery call <ArrowIcon /></Link>
       </section>
       <SiteFooter />
     </main>

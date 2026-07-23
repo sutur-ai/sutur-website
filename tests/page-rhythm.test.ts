@@ -17,6 +17,10 @@ const capabilitiesCss = readFileSync(
   new URL('../src/components/sections/CompanyCapabilities.module.css', import.meta.url),
   'utf8',
 );
+const capabilitiesComponent = readFileSync(
+  new URL('../src/components/sections/CompanyCapabilities.tsx', import.meta.url),
+  'utf8',
+);
 const orbitCss = readFileSync(
   new URL('../src/components/brand/AgentOrbit.module.css', import.meta.url),
   'utf8',
@@ -33,16 +37,20 @@ describe('website design-system theme', () => {
   it('keeps the intended light and deep homepage rhythm', () => {
     const hero = page.indexOf('className="hero scroll-section surface-ink"');
     const capabilities = page.indexOf('<CompanyCapabilities />');
-    const agentDemo = page.indexOf('<AgentActionDemo />');
+    const whyUs = page.indexOf('<WhyUs />');
     const team = page.indexOf('className="section team scroll-section surface-ink"');
+    const reviews = page.indexOf('<Reviews />');
+    const questions = page.indexOf('<FaqSection />');
     const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
     const footer = page.indexOf('<SiteFooter />');
 
     expect(hero).toBeGreaterThan(-1);
     expect(capabilities).toBeGreaterThan(hero);
-    expect(agentDemo).toBeGreaterThan(capabilities);
-    expect(team).toBeGreaterThan(agentDemo);
-    expect(booking).toBeGreaterThan(team);
+    expect(whyUs).toBeGreaterThan(capabilities);
+    expect(team).toBeGreaterThan(whyUs);
+    expect(reviews).toBeGreaterThan(team);
+    expect(questions).toBeGreaterThan(reviews);
+    expect(booking).toBeGreaterThan(questions);
     expect(footer).toBeGreaterThan(booking);
   });
 
@@ -88,12 +96,30 @@ describe('website design-system theme', () => {
   });
 
   it('opens with the approved human copy and preserves the branded interactive orbit', () => {
-    expect(page).toContain('Connect your business.');
-    expect(page).toContain('Automate the busywork.');
-    expect(css).toMatch(/\.hero-copy h1 em\s*{[^}]*font-weight:\s*var\(--weight-book\)/s);
+    expect(page).toContain('Connect your business<SignalDot />');
+    expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
+    expect(css).toMatch(/\.hero-copy h1 em\s*{[^}]*font-weight:\s*var\(--weight-black\)/s);
     expect(page).toContain('<AgentOrbit />');
     expect(page).not.toContain('className="hero-brand"');
     expect(page).toContain('surface-ink');
+  });
+
+  it('renders display punctuation and list dots as orange square signals', () => {
+    expect(existsSync(new URL('../src/components/ui/SignalDot.tsx', import.meta.url))).toBe(true);
+    expect(page).toContain('Connect your business<SignalDot />');
+    expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
+    expect(page).toContain('A local team, close to the operation<SignalDot />');
+    expect(page).toContain('What would a clearer operation make possible<SignalDot />');
+    expect(capabilitiesComponent).toContain('One connected business<SignalDot />');
+    expect(capabilitiesComponent).toContain('<em>Three ways to move it forward<SignalDot /></em>');
+    expect(capabilitiesComponent).toContain('<h3>{capability.title}<SignalDot /></h3>');
+    expect(bookingComponent).toContain("Let&apos;s make the operating system clearer<SignalDot />");
+    expect(bookingComponent).toContain('A free, focused discovery call<SignalDot />');
+    expect(bookingComponent).toContain('Your email app is opening<SignalDot />');
+    expect(bookingComponent).toContain('Tell us what needs to connect<SignalDot />');
+    expect(css).toMatch(/\.signal-dot\s*{[^}]*display:\s*inline-block[^}]*width:\s*0\.16em[^}]*height:\s*0\.16em[^}]*background:\s*var\(--active-orange\)/s);
+    expect(css).toMatch(/\.check-list li::before\s*{[^}]*width:\s*0\.4rem[^}]*height:\s*0\.4rem[^}]*background:\s*var\(--active-orange\)/s);
+    expect(css).not.toMatch(/\.check-list li::before\s*{[^}]*content:\s*["']·["']/s);
   });
 
   it('uses natural scrolling and complete reduced-motion fallbacks', () => {
@@ -115,8 +141,9 @@ describe('website design-system theme', () => {
     expect(header).toContain('Book a call');
     expect(header).toContain('href="/contact"');
     expect(css).toMatch(/\.floating-cta > img\s*{[^}]*object-fit:\s*contain/s);
+    expect(css).toMatch(/\.floating-cta\s*{[^}]*right:\s*auto[^}]*left:\s*50%[^}]*transform:\s*translate\(-50%,\s*0\.75rem\)/s);
     expect(css).toMatch(/\.floating-cta\s*{[^}]*opacity:\s*0[^}]*pointer-events:\s*none/s);
-    expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto/s);
+    expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto[^}]*transform:\s*translate\(-50%,\s*0\)/s);
   });
 
   it('uses the deck navigation and keeps the header fixed while it condenses into a pill', () => {

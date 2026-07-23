@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { PageHero } from '@/components/sections/PageHero';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -14,7 +16,7 @@ export default function AboutPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        title={<>Grounded in Lebanon. <em>Built for real operations.</em></>}
+        title={<>Grounded in Lebanon<SignalDot /> <em>Built for real operations<SignalDot /></em></>}
         description="We bring ERP implementation, custom development, and practical agent architecture into one accountable build team."
       />
 
@@ -22,7 +24,7 @@ export default function AboutPage() {
         <div className="split-layout">
           <article className="info-panel">
             <p className="panel-label">The company</p>
-            <h2>One reliable system for the whole operation.</h2>
+            <h2>One reliable system for the whole operation<SignalDot /></h2>
             <p>
               Sutur starts with how work actually moves: the handoffs, exceptions,
               local realities, and follow-through a generic implementation misses.
@@ -31,7 +33,7 @@ export default function AboutPage() {
           </article>
           <article className="info-panel">
             <p className="panel-label">The approach</p>
-            <h2>Confident, plain-spoken, and practical.</h2>
+            <h2>Confident, plain-spoken, and practical<SignalDot /></h2>
             <p>
               No hype and no inflated AI promises. We describe outcomes, show the
               system working, and build only what helps the team operate with more clarity.
@@ -42,7 +44,7 @@ export default function AboutPage() {
 
       <section className="section team surface-ink" aria-labelledby="team-title">
         <div>
-          <h2 id="team-title">A small team with the whole system in view.</h2>
+          <h2 id="team-title">A small team with the whole system in view<SignalDot /></h2>
           <p className="lead">
             Operations, implementation, and engineering stay connected from the
             first process map to the system people use every day.
@@ -65,9 +67,9 @@ export default function AboutPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <h2>Tell us where the operation loses clarity.</h2>
+        <h2>Tell us where the operation loses clarity<SignalDot /></h2>
         <p className="lead">We will help map the right first move.</p>
-        <Link className="button" href="/contact">Book a discovery call →</Link>
+        <Link className="button" href="/contact">Book a discovery call <ArrowIcon /></Link>
       </section>
       <SiteFooter />
     </main>

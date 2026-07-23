@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { PageHero } from '@/components/sections/PageHero';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 export const metadata: Metadata = {
   title: 'Insights',
@@ -39,14 +41,14 @@ export default function InsightsPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        title={<>Operational playbooks. <em>Field notes.</em></>}
+        title={<>Operational playbooks<SignalDot /> <em>Field notes<SignalDot /></em></>}
         description="Clear writing about ERP, custom systems, and practical agents — focused on decisions an operating team can use."
       />
 
       <section className="page-section surface-paper" aria-labelledby="insights-title">
         <div className="insights-heading">
           <div>
-            <h2 id="insights-title">Useful enough to keep.</h2>
+            <h2 id="insights-title">Useful enough to keep<SignalDot /></h2>
           </div>
           <ul className="topic-filters" aria-label="Insight topics">
             <li>Odoo</li>
@@ -66,7 +68,7 @@ export default function InsightsPage() {
               <p className="number">{featured.number} · Featured field note</p>
               <h3>{featured.title}</h3>
               <p>{featured.description}</p>
-              <span className="text-link" aria-label="Featured field note coming soon">Coming soon →</span>
+              <span className="text-link" aria-label="Featured field note coming soon">Coming soon <ArrowIcon /></span>
             </div>
           </article>
 
@@ -86,9 +88,9 @@ export default function InsightsPage() {
       <section className="page-section surface-soft">
         <div className="empty-state">
           <div>
-            <h2>Ask Sutur directly.</h2>
+            <h2>Ask Sutur directly<SignalDot /></h2>
             <p className="lead">A focused conversation is more useful than generic advice.</p>
-            <Link className="button" href="/contact">Start a conversation →</Link>
+            <Link className="button" href="/contact">Start a conversation <ArrowIcon /></Link>
           </div>
         </div>
       </section>

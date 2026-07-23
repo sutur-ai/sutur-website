@@ -7,7 +7,9 @@ import {
   CapabilityVisual,
   type VisualKind,
 } from '@/components/sections/CompanyCapabilities';
-import { AgentHandoffMock } from '@/components/sections/AgentActionDemo';
+import { AgentHandoffMock } from '@/components/sections/AgentHandoffMock';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 export const metadata: Metadata = {
   title: 'Product',
@@ -25,7 +27,7 @@ const capabilities: Array<{
   {
     number: '01',
     kicker: 'Odoo ERP implementation',
-    title: 'One source of truth for the operation.',
+    title: 'One source of truth for the operation',
     description:
       'CRM, accounting, inventory, purchasing, manufacturing, and delivery work as one system configured around the way your team actually operates.',
     cta: 'Plan your ERP implementation',
@@ -34,7 +36,7 @@ const capabilities: Array<{
   {
     number: '02',
     kicker: 'Custom development',
-    title: 'Software that fits the exceptions.',
+    title: 'Software that fits the exceptions',
     description:
       'We build the workflows, integrations, and bilingual tools that generic products miss, grounded in the Lebanese market and your real operating constraints.',
     cta: 'Discuss your custom build',
@@ -43,7 +45,7 @@ const capabilities: Array<{
   {
     number: '03',
     kicker: 'AI agent architecture',
-    title: 'A permission-aware layer above it all.',
+    title: 'A permission-aware layer above it all',
     description:
       'Agents work across ERP, documents, messages, and internal knowledge to bring context into each step and remove repetitive follow-through.',
     cta: 'Design your agent architecture',
@@ -56,7 +58,7 @@ export default function ProductPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        title={<>One connected business. <em>Three ways forward.</em></>}
+        title={<>One connected business<SignalDot /> <em>Three ways forward<SignalDot /></em></>}
         description="The operating foundation, the software that fits, and the intelligence layer above them — designed as one buildable system."
       />
 
@@ -70,10 +72,10 @@ export default function ProductPage() {
                 <CapabilityVisual kind={capability.kind} />
               )}
               <div className="feature-row-copy">
-                <h2>{capability.title}</h2>
+                <h2>{capability.title}<SignalDot /></h2>
                 <p>{capability.description}</p>
                 <Link className="text-link" href="/contact">
-                  {capability.cta} →
+                  {capability.cta} <ArrowIcon />
                 </Link>
               </div>
             </article>
@@ -82,9 +84,9 @@ export default function ProductPage() {
       </section>
 
       <section className="booking-section surface-soft">
-        <h2>Start with the operation, not the software.</h2>
+        <h2>Start with the operation, not the software<SignalDot /></h2>
         <p className="lead">A focused discovery call maps where clarity will help most.</p>
-        <Link className="button" href="/contact">Book a discovery call →</Link>
+        <Link className="button" href="/contact">Book a discovery call <ArrowIcon /></Link>
       </section>
       <SiteFooter />
     </main>

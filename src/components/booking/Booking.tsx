@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookingSchema, type BookingInput } from '@/lib/booking/schema';
+import { ArrowIcon, CloseIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 function openEmailDraft(data: BookingInput) {
   const subject = encodeURIComponent(`Sutur discovery call — ${data.company}`);
@@ -81,20 +83,20 @@ export function Booking() {
           tabIndex={flipped ? -1 : 0}
         >
           <p>Discovery / 30 minutes</p>
-          <h3>Let&apos;s make the operating system clearer.</h3>
-          <span>Open the card →</span>
+          <h3>Let&apos;s make the operating system clearer<SignalDot /></h3>
+          <span>Open the card <ArrowIcon /></span>
         </button>
 
         <div className="business-card card-back" aria-hidden={!flipped}>
           <p>Your next step</p>
-          <h3>A free, focused discovery call.</h3>
+          <h3>A free, focused discovery call<SignalDot /></h3>
           <button
             ref={openButtonRef}
             type="button"
             tabIndex={flipped ? 0 : -1}
             onClick={openBooking}
           >
-            Open booking form →
+            Open booking form <ArrowIcon />
           </button>
         </div>
       </div>
@@ -124,12 +126,12 @@ export function Booking() {
             aria-label="Close booking form"
             onClick={closeBooking}
           >
-            ×
+            <CloseIcon />
           </button>
 
           {sent ? (
             <div className="success" aria-live="polite">
-              <h3>Your email app is opening.</h3>
+              <h3>Your email app is opening<SignalDot /></h3>
               <p>
                 Review the prepared message and send it to hello@sutur.ai. Nothing
                 was silently submitted or stored.
@@ -138,7 +140,7 @@ export function Booking() {
             </div>
           ) : (
             <form onSubmit={handleSubmit(submit)} noValidate>
-              <h3>Tell us what needs to connect.</h3>
+              <h3>Tell us what needs to connect<SignalDot /></h3>
               <label>
                 Name
                 <input
@@ -191,7 +193,7 @@ export function Booking() {
                 <em id="booking-note-error" aria-live="polite">{errors.note?.message}</em>
               </label>
               <button type="submit" disabled={isSubmitting}>
-                Prepare email →
+                Prepare email <ArrowIcon />
               </button>
             </form>
           )}

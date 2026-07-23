@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Header } from '@/components/sections/Header';
 import { SiteFooter } from '@/components/sections/SiteFooter';
 import { PageHero } from '@/components/sections/PageHero';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 export const metadata: Metadata = {
   title: 'Solutions',
@@ -41,12 +43,12 @@ export default function SolutionsPage() {
     <main className="page-shell">
       <Header />
       <PageHero
-        title={<>Built around the result <em>your team needs.</em></>}
+        title={<>Built around the result <em>your team needs<SignalDot /></em></>}
         description="Choose the operating problem first. We will map the right combination of ERP, custom development, and practical agents."
       />
 
       <section className="page-section surface-paper">
-        <h2>Organized by the outcome a buyer is looking for.</h2>
+        <h2>Organized by the outcome a buyer is looking for<SignalDot /></h2>
         <div className="page-grid">
           {solutions.map((solution) => (
             <article
@@ -56,16 +58,16 @@ export default function SolutionsPage() {
               <p className="number">{solution.number}</p>
               <h3>{solution.title}</h3>
               <p>{solution.description}</p>
-              <Link className="text-link" href="/contact">{solution.cta} →</Link>
+              <Link className="text-link" href="/contact">{solution.cta} <ArrowIcon /></Link>
             </article>
           ))}
         </div>
       </section>
 
       <section className="booking-section surface-soft">
-        <h2>Every solution starts with the same conversation.</h2>
+        <h2>Every solution starts with the same conversation<SignalDot /></h2>
         <p className="lead">Map the operation, find the constraint, then choose the smallest useful build.</p>
-        <Link className="button" href="/contact">Book a discovery call →</Link>
+        <Link className="button" href="/contact">Book a discovery call <ArrowIcon /></Link>
       </section>
       <SiteFooter />
     </main>

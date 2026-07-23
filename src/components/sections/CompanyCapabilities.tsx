@@ -1,10 +1,12 @@
 import styles from './CompanyCapabilities.module.css';
+import { ArrowIcon } from '@/components/ui/icons';
+import { SignalDot } from '@/components/ui/SignalDot';
 
 const capabilities = [
   {
     number: '01',
     label: 'AI agent architecture',
-    title: 'An AI layer that understands the full picture.',
+    title: 'An AI layer that understands the full picture',
     description:
       'We connect your ERP, documents, messages, and internal knowledge through a permission-aware agent architecture. It brings context into every step and removes repetitive follow-through.',
     cta: 'Design your agent architecture',
@@ -13,7 +15,7 @@ const capabilities = [
   {
     number: '02',
     label: 'Odoo ERP implementation',
-    title: 'One reliable system for the whole operation.',
+    title: 'One reliable system for the whole operation',
     description:
       'We implement Odoo around your real operation — from CRM and accounting to inventory, purchasing, and delivery — so your team works from one source of truth.',
     cta: 'Plan your ERP implementation',
@@ -22,7 +24,7 @@ const capabilities = [
   {
     number: '03',
     label: 'Custom development',
-    title: 'Built for you. Grounded in Lebanon.',
+    title: 'Built for you, grounded in Lebanon',
     description:
       'We design software around your workflow and the Lebanese market, including bilingual teams, local payment realities, and the exceptions generic products miss.',
     cta: 'Discuss your custom build',
@@ -254,9 +256,9 @@ export function CompanyCapabilities() {
       <div className={styles.intro}>
         <div>
           <h2 id="capabilities-title">
-            One connected business.
+            One connected business<SignalDot />
             <br />
-            {' '}<em>Three ways to move it forward.</em>
+            {' '}<em>Three ways to move it forward<SignalDot /></em>
           </h2>
         </div>
         <p className={styles.summary}>
@@ -275,10 +277,10 @@ export function CompanyCapabilities() {
                 <span>{capability.number}</span>
                 <p>{capability.label}</p>
               </div>
-              <h3>{capability.title}</h3>
+              <h3>{capability.title}<SignalDot /></h3>
               <p>{capability.description}</p>
               <a href="#book" aria-label={`${capability.cta} — book a discovery call`}>
-                {capability.cta} <span aria-hidden="true">→</span>
+                {capability.cta} <ArrowIcon />
               </a>
             </div>
           </article>

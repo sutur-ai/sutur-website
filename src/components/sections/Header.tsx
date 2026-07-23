@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { ArrowIcon, MenuIcon } from '@/components/ui/icons';
 
 const links = [
   ['Product', '/product'],
@@ -88,21 +89,22 @@ export function Header() {
           aria-controls="mobile-navigation"
           onClick={() => setOpen((current) => !current)}
         >
-          {open ? 'Close' : 'Menu'}
+          <span>{open ? 'Close' : 'Menu'}</span>
+          <MenuIcon open={open} />
         </button>
 
         {open && (
           <div className="mobile-menu" id="mobile-navigation">
             {links.map(([label, href]) => (
               <Link key={href} href={href}>
-                {label} <span aria-hidden="true">→</span>
+                {label} <ArrowIcon />
               </Link>
             ))}
             <Link href="/insights">
-              Insights <span aria-hidden="true">→</span>
+              Insights <ArrowIcon />
             </Link>
             <Link href="/contact">
-              Book a call <span aria-hidden="true">→</span>
+              Book a call <ArrowIcon />
             </Link>
           </div>
         )}
@@ -119,7 +121,7 @@ export function Header() {
           height={29}
         />
         <span>Book a call</span>
-        <b aria-hidden="true">→</b>
+        <b><ArrowIcon /></b>
       </Link>
     </>
   );
