@@ -1,10 +1,7 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const page = readFileSync(
-  new URL('../src/app/page.tsx', import.meta.url),
-  'utf8',
-);
+const page = readFileSync(new URL('../src/app/page.tsx', import.meta.url), 'utf8');
 const component = readFileSync(
   new URL('../src/components/sections/CompanyCapabilities.tsx', import.meta.url),
   'utf8',
@@ -18,43 +15,69 @@ const styles = readFileSync(
   'utf8',
 );
 
+const integrations = [
+  ['Odoo ERP', 'odoo.svg'],
+  ['Gmail', 'gmail.svg'],
+  ['Notion', 'notion.svg'],
+  ['Slack', 'slack.svg'],
+  ['Discord', 'discord.svg'],
+  ['Obsidian', 'obsidian.svg'],
+  ['SAP', 'sap.svg'],
+  ['AutoCAD', 'autocad.svg'],
+  ['Salesforce', 'salesforce.svg'],
+  ['Google Drive', 'google-drive.svg'],
+  ['HubSpot', 'hubspot.svg'],
+  ['Microsoft Teams', 'microsoft-teams.svg'],
+] as const;
+
 describe('company capabilities section', () => {
-  it('keeps one focused section in place of the former homepage modules', () => {
+  it('keeps Alex’s focused three-offer section and its semantic structure', () => {
     expect(page).toContain('<CompanyCapabilities />');
     expect(page).not.toContain('<ModuleGrid />');
     expect(page).not.toContain('<KnowledgeDiagram />');
     expect(page).not.toContain('<ProcessTimeline />');
-  });
-
-  it('presents all three offers as one semantic list', () => {
     expect(component).toContain('id="capabilities"');
     expect(component).toContain('aria-labelledby="capabilities-title"');
     expect(component).toContain('role="list"');
-    expect(component).toContain("label: 'Odoo ERP implementation'");
-    expect(component).toContain("label: 'Custom development'");
-    expect(component).toContain("label: 'AI agent architecture'");
+    expect(component).toContain('role="listitem"');
     expect(component.match(/visual: '(?:erp|custom|agent)'/g)).toHaveLength(3);
   });
 
-  it('uses 20px flat cards and full-edge product windows', () => {
-    expect(styles).toContain('border-radius: var(--radius-lg)');
-    expect(styles).toMatch(/\.visual\s*{[^}]*height:\s*320px[^}]*background:\s*var\(--deep-interface\)/s);
-    expect(styles).toMatch(/\.productWindow\s*{[^}]*inset:\s*0/s);
+  it('preserves Alex’s approved offer order: AI, Odoo, custom development', () => {
+    const agentIndex = component.indexOf("label: 'AI agent architecture'");
+    const erpIndex = component.indexOf("label: 'Odoo ERP implementation'");
+    const customIndex = component.indexOf("label: 'Custom development'");
+
+    expect(agentIndex).toBeGreaterThan(-1);
+    expect(agentIndex).toBeLessThan(erpIndex);
+    expect(erpIndex).toBeLessThan(customIndex);
+    expect(component).toContain("number: '01',\n    label: 'AI agent architecture'");
+    expect(component).toContain("number: '02',\n    label: 'Odoo ERP implementation'");
+    expect(component).toContain("number: '03',\n    label: 'Custom development'");
+  });
+
+  it('keeps full-edge, flat product windows at the centralized visual size', () => {
+    expect(styles).toMatch(
+      /\.visual\s*{[^}]*height:\s*var\(--capability-visual-height\)[^}]*background:\s*var\(--deep-interface\)/s,
+    );
+    expect(styles).toMatch(/\.productWindow\s*{[^}]*inset:\s*0[^}]*border:\s*0/s);
     expect(styles).not.toContain('backdrop-filter');
     expect(styles).not.toContain('gradient(');
   });
 
-  it('uses only the SUTUR signal colors in the window chrome', () => {
+  it('uses only Sutur signal colors in product-window chrome', () => {
     expect(component).toContain('function WindowChrome');
     expect(component).toContain('className={styles.windowControls}');
     expect(styles).toMatch(/\.windowControls i\s*{[^}]*background:\s*var\(--active-orange\)/s);
-    expect(styles).toMatch(/\.windowControls i:nth-child\(2\)\s*{[^}]*background:\s*var\(--soft-signal\)/s);
-    expect(styles).toMatch(/\.windowControls i:nth-child\(3\)\s*{[^}]*background:\s*var\(--data-violet\)/s);
+    expect(styles).toMatch(
+      /\.windowControls i:nth-child\(2\)\s*{[^}]*background:\s*var\(--soft-signal\)/s,
+    );
+    expect(styles).toMatch(
+      /\.windowControls i:nth-child\(3\)\s*{[^}]*background:\s*var\(--data-violet\)/s,
+    );
   });
 
-  it('renders the Odoo app launcher with its complete module set', () => {
-    expect(component).toContain('className={styles.odooTopbar}');
-    expect(component).toContain('className={styles.appLauncher}');
+  it('keeps the complete Odoo launcher and readable custom-development diff', () => {
     for (const app of [
       'Discuss', 'Calendar', 'Appointments', 'Contacts', 'CRM', 'Sales',
       'Dashboards', 'Point of Sale', 'Accounting', 'Website', 'Purchase',
@@ -62,46 +85,56 @@ describe('company capabilities section', () => {
     ]) {
       expect(component).toContain(`>${app}<`);
     }
-  });
-
-  it('keeps the product UI readable at desktop and wide-desktop sizes', () => {
-    expect(styles).toMatch(/\.windowChrome\s*{[^}]*height:\s*36px/s);
-    expect(styles).toMatch(/\.codeEditor\s*{[^}]*font:\s*7px\//s);
-    expect(styles).toMatch(/\.chatMessage\s*{[^}]*font-size:\s*8px/s);
-    expect(styles).toMatch(/@media \(min-width: 1500px\)[\s\S]*?\.appIcon\s*{[^}]*width:\s*46px/s);
-  });
-
-  it('stacks cards before product windows become compressed', () => {
-    expect(styles).toMatch(/@media \(max-width: 1120px\)[\s\S]*\.capabilityGrid\s*{[^}]*grid-template-columns:\s*1fr/s);
-    expect(styles).toMatch(/@media \(max-width: 680px\)[\s\S]*\.capability\s*{[^}]*grid-template-columns:\s*1fr/s);
-  });
-
-  it('renders a code editor with a file tree and visible diff states', () => {
     expect(component).toContain('className={styles.fileTree}');
     expect(component).toContain('purchase_order.py');
+    expect(component).toContain('resolve_supplier');
+    expect(component).toContain('validate_quantity');
     expect(component).toContain('className={`${styles.codeLine} ${styles.removedLine}`}');
     expect(component).toContain('className={`${styles.codeLine} ${styles.addedLine}`}');
-    expect(styles).toMatch(/\.removedLine\s*{[^}]*var\(--active-orange\)/s);
-    expect(styles).toMatch(/\.addedLine\s*{[^}]*var\(--data-violet\)/s);
   });
 
-  it('renders the business-agent chat with both user and agent states', () => {
-    expect(component).toContain('className={styles.chatMessages}');
-    expect(component).toContain('Create a purchase order from Supplier X');
-    expect(component).toContain('Draft PO P00042 created');
-    expect(component.match(/styles\.userMessage/g)).toHaveLength(2);
-    expect(component.match(/styles\.agentMessage/g)).toHaveLength(2);
+  it('preserves the chrome-free, edge-to-edge honeycomb and every downloaded brand asset', () => {
+    expect(component).toContain('viewBox="0 0 382 241"');
+    expect(component).toContain('preserveAspectRatio="xMidYMid meet"');
+    expect(component).toContain("{ y: 48, centers: [64, 149, 233, 318] }");
+    expect(component).toContain("{ y: 128, centers: [22, 106, 191, 276, 360] }");
+    expect(component).toContain("{ y: 208, centers: [64, 149, 233, 318] }");
+    expect(component).toContain('className={styles.integrationGrid}');
+    expect(component).toContain('<polygon');
+    expect(component).toContain('<image');
+    expect(styles).toMatch(/\.integrationGrid\s*{[^}]*width:\s*100%[^}]*height:\s*100%/s);
+    expect(styles).toMatch(/\.integrationHex\s*{[^}]*vector-effect:\s*non-scaling-stroke/s);
+
+    for (const [app, asset] of integrations) {
+      expect(component).toContain(`label: '${app}'`);
+      expect(component).toContain(`icon: '/brand/integrations/${asset}'`);
+      expect(existsSync(new URL(`../public/brand/integrations/${asset}`, import.meta.url))).toBe(true);
+    }
+
+    const agentVisual = component.slice(
+      component.indexOf('className={`${styles.visual} ${styles.agentVisual}`'),
+      component.indexOf('export function CompanyCapabilities'),
+    );
+    expect(agentVisual).not.toContain('<WindowChrome');
+    expect(agentVisual).not.toContain('styles.productWindow');
   });
 
-  it('omits the obsolete full-width architecture figure', () => {
-    expect(component).not.toContain('YOUR BUSINESS, CONNECTED END TO END');
-    expect(component).not.toContain('className={styles.architecture}');
-    expect(styles).not.toMatch(/\.architecture(?:[\s:{])/);
+  it('changes from three columns to split rows before product UIs compress, then stacks on mobile', () => {
+    expect(styles).toMatch(/\.capabilityGrid\s*{[^}]*grid-template-columns:\s*repeat\(3,/s);
+    expect(styles).toMatch(
+      /@media \(max-width: 1120px\)[\s\S]*?\.capabilityGrid\s*{[^}]*grid-template-columns:\s*1fr/s,
+    );
+    expect(styles).toMatch(
+      /@media \(max-width: 680px\)[\s\S]*?\.capability\s*{[^}]*grid-template-columns:\s*1fr/s,
+    );
   });
 
-  it('keeps navigation and calls to action pointed at live IDs', () => {
+  it('keeps capability and global navigation pointed at live destinations', () => {
     expect(page).toContain('href="#capabilities"');
-    expect(header).toContain("['What we build', 'capabilities']");
+    expect(header).toContain("['Product', '/product']");
+    expect(header).toContain("['Solutions', '/solutions']");
+    expect(header).toContain("['Pricing', '/pricing']");
+    expect(header).toContain("['About', '/about']");
     expect(component).toContain('href="#book"');
   });
 });

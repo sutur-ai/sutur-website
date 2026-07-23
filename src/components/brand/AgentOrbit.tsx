@@ -57,6 +57,7 @@ export function AgentOrbit() {
 
   useEffect(() => {
     let cancelled = false;
+    const signalLayer = signalRef.current;
     const waits = async (milliseconds: number) => {
       await sleep(milliseconds);
       return !cancelled;
@@ -89,7 +90,7 @@ export function AgentOrbit() {
 
     const emitPacket = (from: Endpoint, to: Endpoint, laneOffset = 0, color: "orange" | "purple" | "" = "") =>
       new Promise<void>((resolve) => {
-        const layer = signalRef.current;
+        const layer = signalLayer;
         if (!layer || cancelled) return resolve();
         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
         const packet = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -236,7 +237,7 @@ export function AgentOrbit() {
     play();
     return () => {
       cancelled = true;
-      signalRef.current?.replaceChildren();
+      signalLayer?.replaceChildren();
     };
   }, []);
 

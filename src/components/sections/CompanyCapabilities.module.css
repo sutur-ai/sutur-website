@@ -6,10 +6,10 @@
 .section::before {
   content: "";
   position: absolute;
-  top: 70px;
-  right: max(24px, calc((100vw - var(--content-width)) / 2));
-  width: 76px;
-  height: 20px;
+  top: 4.375rem;
+  right: max(var(--page-gutter), calc((100vw - var(--content-width)) / 2));
+  width: 4.75rem;
+  height: 1.25rem;
   border-radius: 999px 0 0 999px;
   background: var(--soft-signal);
   pointer-events: none;
@@ -18,10 +18,10 @@
 .section::after {
   content: "";
   position: absolute;
-  top: 70px;
-  right: calc(max(24px, (100vw - var(--content-width)) / 2) + 82px);
-  width: 20px;
-  height: 20px;
+  top: 4.375rem;
+  right: calc(max(var(--page-gutter), (100vw - var(--content-width)) / 2) + 5.125rem);
+  width: 1.25rem;
+  height: 1.25rem;
   background: var(--active-orange);
   pointer-events: none;
 }
@@ -34,159 +34,172 @@
 
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
-  align-items: end;
-  gap: clamp(48px, 8vw, 126px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(17.5rem, 0.65fr);
+  align-items: flex-end;
+  gap: clamp(var(--space-5), 8vw, var(--space-8));
 }
 
 .intro h2 {
-  max-width: 940px;
+  max-width: 58.75rem;
 }
 
 .intro h2 em {
   color: var(--data-violet);
   font-style: normal;
-  font-weight: 900;
+  font-weight: var(--weight-black);
 }
 
 .summary {
-  max-width: 450px;
-  margin: 0 0 8px;
+  max-width: 28.125rem;
+  margin: 0 0 var(--space-2);
   color: var(--text-secondary);
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.68;
+  font-size: var(--type-body-large);
+  line-height: var(--leading-body);
 }
 
 .capabilityGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: clamp(64px, 8vw, 104px);
+  gap: var(--space-3);
+  margin-top: clamp(var(--space-6), 8vw, var(--space-7));
 }
 
 .capability {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: 16px 16px 28px;
+  padding: var(--space-3) var(--space-3) 1.75rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-card);
   background: var(--surface-card);
   box-shadow: var(--shadow-card);
-  transition: border-color 180ms ease-out, transform 180ms ease-out;
+  transition: border-color var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
 }
 
 .capability:hover,
 .capability:focus-within {
   border-color: var(--border-strong);
-  transform: translateY(-4px);
+  transform: translateY(-0.25rem);
 }
 
 .visual {
   position: relative;
-  height: 320px;
-  margin-bottom: 28px;
+  height: var(--capability-visual-height);
+  margin-bottom: 1.75rem;
   overflow: hidden;
-  border-radius: 16px;
+  border: 1px solid var(--border-on-deep);
+  border-radius: var(--radius-card);
   background: var(--deep-interface);
+  transition: transform var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out);
 }
 
 .erpVisual {
-  border: 1px solid rgba(144, 111, 177, 0.7);
+  border-color: rgb(var(--data-violet-rgb) / 0.7);
 }
 
 .customVisual {
-  border: 1px solid rgba(245, 126, 32, 0.55);
+  border-color: rgb(var(--active-orange-rgb) / 0.55);
 }
 
 .agentVisual {
-  border: 1px solid rgba(234, 209, 229, 0.32);
+  isolation: isolate;
+  border-color: var(--border);
+  background: var(--surface-soft);
+}
+
+.capability:hover .visual,
+.capability:focus-within .visual {
+  transform: translateY(-0.3125rem);
+  box-shadow: var(--shadow-card);
 }
 
 .capabilityCopy {
   display: flex;
-  min-height: 330px;
+  min-height: 20.625rem;
   flex: 1;
   flex-direction: column;
-  padding: 2px 12px 0;
+  padding: 0.125rem 0.75rem 0;
 }
 
 .capabilityLabel {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .capabilityLabel span {
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 1.875rem;
+  height: 1.875rem;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid var(--border-strong);
   border-radius: 50%;
   color: var(--data-violet);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 
 .capabilityLabel p {
   margin: 0;
   color: var(--data-violet);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: var(--type-label);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .capability h3 {
   max-width: 14ch;
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-3);
   color: var(--deep-interface);
-  font-size: clamp(1.7rem, 2.3vw, 2.35rem);
+  font-size: var(--type-card-heading);
   line-height: 1.06;
 }
 
 .capabilityCopy > p {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.68;
+  font-size: 0.875rem;
+  line-height: var(--leading-body);
 }
 
 .capability a {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  gap: 10px;
+  gap: 0.625rem;
   margin-top: auto;
-  padding-top: 26px;
+  padding-top: 1.625rem;
   color: var(--deep-interface);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-decoration: none;
 }
 
 .capability a span {
   display: grid;
-  width: 24px;
-  height: 24px;
+  width: 1.5rem;
+  height: 1.5rem;
   place-items: center;
   border-radius: 50%;
   background: var(--orange-tint);
   color: var(--active-orange);
-  transition: transform 160ms ease-out;
+  transition: transform var(--motion-fast) var(--ease-out);
 }
 
 .capability a:hover span,
 .capability a:focus-visible span {
-  transform: translateX(3px);
+  transform: translateX(0.1875rem);
 }
 
+/* Shared product window */
 .productWindow {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  border: 0;
   border-radius: inherit;
   background: var(--deep-interface);
   color: var(--soft-signal);
@@ -195,28 +208,28 @@
 .windowChrome {
   display: flex;
   align-items: center;
-  height: 36px;
-  padding: 0 13px;
-  border-bottom: 1px solid rgba(234, 209, 229, 0.15);
+  height: 2.25rem;
+  padding: 0 0.8125rem;
+  border-bottom: 1px solid var(--border-on-deep);
   background: var(--deep-interface-active);
 }
 
 .windowChrome > span {
   margin-left: auto;
-  color: rgba(234, 209, 229, 0.5);
-  font-size: 8px;
+  color: rgb(var(--soft-signal-rgb) / 0.5);
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .windowControls {
   display: flex;
-  gap: 6px;
+  gap: 0.375rem;
 }
 
 .windowControls i {
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
   background: var(--active-orange);
 }
 
@@ -230,8 +243,9 @@
   background: var(--data-violet);
 }
 
+/* Odoo launcher */
 .odooHome {
-  height: calc(100% - 36px);
+  height: calc(100% - 2.25rem);
   background: var(--deep-interface-hover);
 }
 
@@ -239,15 +253,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 34px;
-  padding: 0 14px;
-  border-bottom: 1px solid rgba(234, 209, 229, 0.12);
+  height: 2.125rem;
+  padding: 0 0.875rem;
+  border-bottom: 1px solid var(--border-on-deep);
   background: var(--deep-interface);
 }
 
 .odooTopbar > b {
   color: var(--soft-signal);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: -0.04em;
 }
@@ -255,53 +269,53 @@
 .odooProfile {
   display: flex;
   align-items: center;
-  gap: 7px;
-  color: rgba(234, 209, 229, 0.64);
+  gap: 0.4375rem;
+  color: rgb(var(--soft-signal-rgb) / 0.64);
 }
 
 .odooProfile span {
   display: grid;
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   place-items: center;
   background: var(--active-orange);
-  color: #ffffff;
-  font-size: 6px;
+  color: var(--text-on-orange);
+  font-size: 0.375rem;
   font-weight: 700;
 }
 
 .odooProfile small {
-  font-size: 7px;
+  font-size: 0.4375rem;
 }
 
 .searchGlyph {
   position: relative;
-  width: 10px;
-  height: 10px;
-  border: 1px solid rgba(234, 209, 229, 0.64);
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.64);
   border-radius: 50%;
 }
 
 .searchGlyph::after {
   content: "";
   position: absolute;
-  right: -3px;
-  bottom: -2px;
-  width: 4px;
+  right: -0.1875rem;
+  bottom: -0.125rem;
+  width: 0.25rem;
   height: 1px;
-  background: rgba(234, 209, 229, 0.64);
+  background: rgb(var(--soft-signal-rgb) / 0.64);
   transform: rotate(45deg);
 }
 
 .odooProfile .profileGlyph {
   display: grid;
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   place-items: center;
   border-radius: var(--radius-sm);
   background: var(--data-violet);
-  color: #ffffff;
-  font-size: 9px;
+  color: var(--white);
+  font-size: 0.5625rem;
   font-style: normal;
   font-weight: 700;
 }
@@ -310,55 +324,57 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   align-content: center;
-  height: calc(100% - 34px);
-  padding: 13px 12px 16px;
-  gap: 12px 5px;
+  height: calc(100% - 2.125rem);
+  padding: 0.8125rem 0.75rem 1rem;
+  gap: 0.75rem 0.3125rem;
 }
 
 .odooApp {
   display: grid;
   justify-items: center;
   min-width: 0;
-  gap: 5px;
-  color: rgba(234, 209, 229, 0.82);
-  font-size: 8px;
+  gap: 0.3125rem;
+  color: rgb(var(--soft-signal-rgb) / 0.82);
+  font-size: 0.5rem;
   text-align: center;
 }
 
 .appIcon {
   display: grid;
-  width: 38px;
-  height: 38px;
+  width: 2.375rem;
+  height: 2.375rem;
   place-items: center;
   overflow: hidden;
-  border: 1px solid rgba(234, 209, 229, 0.26);
-  border-radius: 10px;
-  background: #ffffff;
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.26);
+  border-radius: 0.625rem;
+  background: var(--white);
   color: var(--deep-interface);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-style: normal;
   font-weight: 700;
 }
 
 .appIcon img {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   object-fit: contain;
 }
 
-.discussIcon {
+.discussIcon,
+.settingsIcon {
   background: var(--data-violet);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .calendarIcon,
 .posIcon {
   background: var(--active-orange);
-  color: #ffffff;
+  color: var(--text-on-orange);
 }
 
 .appointmentsIcon,
-.contactsIcon {
+.contactsIcon,
+.dashboardIcon {
   position: relative;
   background: var(--soft-signal);
   color: var(--deep-interface);
@@ -366,48 +382,42 @@
 
 .appointmentsIcon small {
   position: absolute;
-  right: 3px;
-  bottom: 3px;
+  right: 0.1875rem;
+  bottom: 0.1875rem;
   display: grid;
-  width: 11px;
-  height: 11px;
+  width: 0.6875rem;
+  height: 0.6875rem;
   place-items: center;
   border-radius: 50%;
   background: var(--deep-interface);
   color: var(--soft-signal);
-  font-size: 7px;
+  font-size: 0.4375rem;
 }
 
 .dashboardIcon {
-  grid-template-columns: repeat(3, 7px);
-  align-items: end;
-  gap: 2px;
-  background: var(--soft-signal);
+  grid-template-columns: repeat(3, 0.4375rem);
+  align-items: flex-end;
+  gap: 0.125rem;
 }
 
 .dashboardIcon small {
-  width: 7px;
-  height: 12px;
+  width: 0.4375rem;
+  height: 0.75rem;
   background: var(--data-violet);
 }
 
 .dashboardIcon small:nth-child(2) {
-  height: 20px;
+  height: 1.25rem;
   background: var(--active-orange);
 }
 
 .dashboardIcon small:nth-child(3) {
-  height: 16px;
+  height: 1rem;
   background: var(--deep-interface);
 }
 
 .posIcon {
-  font-size: 8px;
-}
-
-.settingsIcon {
-  position: relative;
-  background: var(--data-violet);
+  font-size: 0.5rem;
 }
 
 .settingsIcon small,
@@ -417,21 +427,22 @@
 }
 
 .settingsIcon small {
-  width: 19px;
-  height: 19px;
-  border: 5px dotted rgba(255, 255, 255, 0.9);
+  width: 1.1875rem;
+  height: 1.1875rem;
+  border: 5px dotted rgb(var(--white-rgb) / 0.9);
 }
 
 .settingsIcon b {
-  width: 7px;
-  height: 7px;
-  background: #ffffff;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  background: var(--white);
 }
 
+/* Custom development editor */
 .editorShell {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  height: calc(100% - 36px);
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  height: calc(100% - 2.25rem);
   background: var(--deep-interface-active);
 }
 
@@ -439,36 +450,36 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: 12px 8px;
-  border-right: 1px solid rgba(234, 209, 229, 0.12);
+  padding: 0.75rem 0.5rem;
+  border-right: 1px solid var(--border-on-deep);
   background: var(--deep-interface);
-  color: rgba(234, 209, 229, 0.52);
-  font-size: 7px;
+  color: rgb(var(--soft-signal-rgb) / 0.52);
+  font-size: 0.4375rem;
 }
 
 .fileTree strong {
-  margin-bottom: 8px;
-  color: rgba(234, 209, 229, 0.8);
-  font-size: 7px;
+  margin-bottom: 0.5rem;
+  color: rgb(var(--soft-signal-rgb) / 0.8);
+  font-size: 0.4375rem;
   letter-spacing: 0.08em;
 }
 
 .fileTree span,
 .fileTree i {
   overflow: hidden;
-  padding: 4px;
+  padding: 0.25rem;
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .fileTree i {
-  padding-left: 12px;
+  padding-left: 0.75rem;
 }
 
 .fileTree .activeFile {
   border-left: 3px solid var(--active-orange);
-  background: rgba(245, 126, 32, 0.12);
+  background: rgb(var(--active-orange-rgb) / 0.12);
   color: var(--soft-signal);
 }
 
@@ -480,12 +491,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 30px;
-  padding: 0 10px;
-  border-bottom: 1px solid rgba(234, 209, 229, 0.1);
+  height: 1.875rem;
+  padding: 0 0.625rem;
+  border-bottom: 1px solid var(--border-on-deep);
   background: var(--deep-interface-hover);
-  color: rgba(234, 209, 229, 0.72);
-  font: 7px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: rgb(var(--soft-signal-rgb) / 0.72);
+  font: 0.4375rem/1 var(--font-mono);
 }
 
 .editorTab i {
@@ -495,27 +506,27 @@
 
 .codeEditor {
   display: grid;
-  padding: 10px 0;
-  color: rgba(234, 209, 229, 0.82);
-  font: 7px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  padding: 0.625rem 0;
+  color: rgb(var(--soft-signal-rgb) / 0.82);
+  font: 0.4375rem/1.55 var(--font-mono);
 }
 
 .codeLine {
   display: grid;
-  grid-template-columns: 22px 11px minmax(0, 1fr);
+  grid-template-columns: 1.375rem 0.6875rem minmax(0, 1fr);
   min-width: 0;
-  padding: 1px 5px 1px 0;
+  padding: 1px 0.3125rem 1px 0;
   border-left: 2px solid transparent;
 }
 
 .codeLine b {
-  color: rgba(234, 209, 229, 0.3);
+  color: rgb(var(--soft-signal-rgb) / 0.3);
   font-weight: 400;
   text-align: right;
 }
 
 .codeLine em {
-  color: rgba(234, 209, 229, 0.32);
+  color: rgb(var(--soft-signal-rgb) / 0.32);
   font-style: normal;
   text-align: center;
 }
@@ -530,7 +541,7 @@
 
 .removedLine {
   border-left-color: var(--active-orange);
-  background: rgba(245, 126, 32, 0.14);
+  background: rgb(var(--active-orange-rgb) / 0.14);
   color: var(--orange-tint);
 }
 
@@ -540,7 +551,7 @@
 
 .addedLine {
   border-left-color: var(--data-violet);
-  background: rgba(144, 111, 177, 0.18);
+  background: rgb(var(--data-violet-rgb) / 0.18);
   color: var(--soft-signal);
 }
 
@@ -548,192 +559,109 @@
   color: var(--data-violet);
 }
 
-.chatApp {
+/* Alex's chrome-free, edge-to-edge Sutur integration honeycomb */
+.integrationField {
   display: grid;
-  grid-template-rows: 42px minmax(0, 1fr) 34px;
-  height: calc(100% - 36px);
-  background: var(--deep-interface-active);
-}
-
-.chatHeader {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 12px;
-  border-bottom: 1px solid rgba(234, 209, 229, 0.12);
-  background: var(--deep-interface);
-}
-
-.chatHeader > i {
-  display: grid;
-  width: 28px;
-  height: 28px;
-  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
   place-items: center;
-  background: var(--active-orange);
-  color: #ffffff;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 900;
+  overflow: hidden;
 }
 
-.chatHeader > span {
-  display: grid;
-  gap: 2px;
+.integrationGrid {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.chatHeader b {
-  color: var(--soft-signal);
-  font-size: 8.5px;
+.integrationHex {
+  fill: rgb(var(--soft-signal-rgb) / 0.18);
+  stroke: rgb(var(--deep-interface-rgb) / 0.16);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transition: fill var(--motion-medium) var(--ease-out), stroke var(--motion-medium) var(--ease-out);
 }
 
-.chatHeader small {
-  color: var(--data-violet);
-  font-size: 7px;
+.coreHex {
+  fill: var(--deep-interface);
+  stroke: var(--active-orange);
 }
 
-.chatMessages {
-  display: grid;
-  align-content: center;
-  min-height: 0;
-  gap: 6px;
-  padding: 8px 10px;
+.integrationLogo,
+.suturCoreLogo {
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgb(var(--deep-active-rgb) / 0.08));
 }
 
-.chatMessage {
-  display: grid;
-  max-width: 88%;
-  gap: 2px;
-  padding: 6px 8px 5px;
-  border: 1px solid rgba(234, 209, 229, 0.15);
-  border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 3px;
-  background: var(--deep-interface-hover);
-  color: rgba(234, 209, 229, 0.82);
-  font-size: 8px;
-  line-height: 1.35;
+.capability:hover .integrationHex,
+.capability:focus-within .integrationHex {
+  fill: rgb(var(--white-rgb) / 0.56);
+  stroke: rgb(var(--deep-interface-rgb) / 0.24);
 }
 
-.chatMessage small {
-  justify-self: end;
-  color: rgba(234, 209, 229, 0.42);
-  font-size: 6px;
+.capability:hover .coreHex,
+.capability:focus-within .coreHex {
+  fill: var(--deep-interface-hover);
+  stroke: var(--active-orange-hover);
 }
 
-.userMessage {
-  justify-self: end;
-  border-color: rgba(144, 111, 177, 0.64);
-  border-radius: var(--radius-md) var(--radius-md) 3px var(--radius-md);
-  background: var(--data-violet);
-  color: #ffffff;
-}
-
-.agentMessage {
-  justify-self: start;
-}
-
-.chatComposer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 10px 8px;
-  padding: 5px 5px 5px 10px;
-  border: 1px solid rgba(234, 209, 229, 0.16);
-  border-radius: var(--radius-pill);
-  color: rgba(234, 209, 229, 0.38);
-  font-size: 7px;
-}
-
-.chatComposer i {
-  display: grid;
-  width: 21px;
-  height: 21px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--active-orange);
-  color: #ffffff;
-  font-size: 11px;
-  font-style: normal;
-}
-
-@media (min-width: 1500px) {
+@media (min-width: 1440px) {
   .visual {
-    height: 380px;
+    height: var(--capability-visual-height-wide);
   }
 
   .appLauncher {
-    gap: 16px 10px;
+    gap: 1rem 0.625rem;
   }
 
   .odooApp {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
 
   .appIcon {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
+    width: 2.875rem;
+    height: 2.875rem;
+    border-radius: 0.75rem;
   }
 
   .appIcon img {
-    width: 39px;
-    height: 39px;
+    width: 2.4375rem;
+    height: 2.4375rem;
   }
 
   .editorShell {
-    grid-template-columns: 116px minmax(0, 1fr);
+    grid-template-columns: 7.25rem minmax(0, 1fr);
   }
 
   .fileTree,
   .fileTree strong,
   .editorTab,
   .codeEditor {
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
 
   .codeLine {
-    grid-template-columns: 28px 14px minmax(0, 1fr);
-  }
-
-  .chatHeader b {
-    font-size: 10px;
-  }
-
-  .chatHeader small {
-    font-size: 8px;
-  }
-
-  .chatMessages {
-    gap: 8px;
-    padding: 10px 12px;
-  }
-
-  .chatMessage {
-    padding: 8px 10px 7px;
-    font-size: 9.5px;
-  }
-
-  .chatMessage small {
-    font-size: 7px;
+    grid-template-columns: 1.75rem 0.875rem minmax(0, 1fr);
   }
 
   .capabilityCopy {
-    min-height: 370px;
+    min-height: 23.125rem;
   }
 
   .capabilityCopy > p,
   .summary {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 }
 
 @media (max-width: 1120px) {
   .intro {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 1.75rem;
   }
 
   .summary {
-    max-width: 650px;
+    max-width: 40.625rem;
   }
 
   .capabilityGrid {
@@ -743,22 +671,22 @@
   .capability {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-    gap: 26px;
-    padding: 16px;
+    gap: 1.625rem;
+    padding: var(--space-3);
   }
 
   .visual {
-    height: 320px;
+    height: var(--capability-visual-height);
     margin: 0;
   }
 
   .capabilityCopy {
     min-height: 0;
-    padding: 18px 16px 10px;
+    padding: 1.125rem var(--space-3) 0.625rem;
   }
 
   .capability a {
-    margin-top: 28px;
+    margin-top: var(--space-4);
   }
 }
 
@@ -774,15 +702,15 @@
 
   .capability {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: var(--space-4);
   }
 
   .visual {
-    height: 320px;
+    height: var(--capability-visual-height);
   }
 
   .capabilityCopy {
-    padding: 4px 8px 10px;
+    padding: var(--space-1) var(--space-2) 0.625rem;
   }
 
   .capability h3 {
@@ -791,32 +719,30 @@
 }
 
 @media (max-width: 420px) {
-  .visual {
-    height: 300px;
-  }
-
   .appLauncher {
-    gap: 10px 3px;
+    gap: 0.625rem 0.1875rem;
   }
 
   .appIcon {
-    width: 34px;
-    height: 34px;
+    width: 2.125rem;
+    height: 2.125rem;
   }
 
   .appIcon img {
-    width: 29px;
-    height: 29px;
+    width: 1.8125rem;
+    height: 1.8125rem;
   }
 
   .odooApp {
-    font-size: 7px;
+    font-size: 0.4375rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .capability,
-  .capability a span {
+  .visual,
+  .capability a span,
+  .integrationHex {
     transition: none;
   }
 }

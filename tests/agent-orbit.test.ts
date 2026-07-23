@@ -13,7 +13,7 @@ const styles = readFileSync(
 
 describe("agent orbit hero", () => {
   it("keeps the interactive agent orbit in the hero", () => {
-    expect(page).toContain('import { AgentOrbit } from "@/components/brand/AgentOrbit"');
+    expect(page).toContain("import { AgentOrbit } from '@/components/brand/AgentOrbit'");
     expect(page).toContain("<AgentOrbit />");
     expect(page).not.toContain('className="hero-summary"');
   });

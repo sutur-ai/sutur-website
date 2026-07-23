@@ -1,16 +1,29 @@
 'use client';
-import { useState } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookingSchema, type BookingInput } from '@/lib/booking/schema';
 
-function mockSubmit(_data: BookingInput): Promise<{ id: string }> {
-  return new Promise((resolve) =>
-    setTimeout(() => resolve({ id: `mock-${Date.now()}` }), 600)
+function openEmailDraft(data: BookingInput) {
+  const subject = encodeURIComponent(`Sutur discovery call — ${data.company}`);
+  const body = encodeURIComponent(
+    [
+      `Name: ${data.name}`,
+      `Work email: ${data.email}`,
+      `Company: ${data.company}`,
+      `Preferred date: ${data.date}`,
+      '',
+      'What we would like to improve:',
+      data.note?.trim() || 'Not provided',
+    ].join('\n'),
   );
+  window.location.href = `mailto:hello@sutur.ai?subject=${subject}&body=${body}`;
 }
 
 export function Booking() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const openButtonRef = useRef<HTMLButtonElement>(null);
   const [flipped, setFlipped] = useState(false);
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
@@ -20,105 +33,171 @@ export function Booking() {
     formState: { errors, isSubmitting },
   } = useForm<BookingInput>({ resolver: zodResolver(bookingSchema) });
 
-  async function submit(data: BookingInput) {
-    await mockSubmit(data);
+  useEffect(() => {
+    if (!open) return;
+
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    if (!dialog.open) dialog.showModal();
+    dialog.querySelector<HTMLInputElement>('input')?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      if (dialog.open) dialog.close();
+    };
+  }, [open]);
+
+  function openBooking() {
+    setSent(false);
+    setOpen(true);
+  }
+
+  function closeBooking() {
+    setOpen(false);
+    setSent(false);
+    window.requestAnimationFrame(() => openButtonRef.current?.focus());
+  }
+
+  function submit(data: BookingInput) {
+    openEmailDraft(data);
     setSent(true);
   }
 
   return (
     <>
-      <div
-        className={`card-scene ${flipped ? 'flipped' : ''}`}
-        onClick={() => !flipped && setFlipped(true)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && setFlipped(true)}
-        aria-label="Flip Sutur booking card"
-      >
-        <div className="business-card card-front">
+      <div className={`card-scene ${flipped ? 'flipped' : ''}`}>
+        <button
+          className="business-card card-front"
+          type="button"
+          onClick={() => {
+            setFlipped(true);
+            window.requestAnimationFrame(() => openButtonRef.current?.focus());
+          }}
+          aria-label="Show booking details"
+          aria-hidden={flipped}
+          tabIndex={flipped ? -1 : 0}
+        >
           <p>Discovery / 30 minutes</p>
           <h3>Let&apos;s make the operating system clearer.</h3>
-          <span>Tap to book →</span>
-        </div>
-        <div className="business-card card-back">
+          <span>Open the card →</span>
+        </button>
+
+        <div className="business-card card-back" aria-hidden={!flipped}>
           <p>Your next step</p>
           <h3>A free, focused discovery call.</h3>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(true);
-            }}
+            ref={openButtonRef}
+            type="button"
+            tabIndex={flipped ? 0 : -1}
+            onClick={openBooking}
           >
-            Open booking form
+            Open booking form →
           </button>
         </div>
       </div>
 
       {open && (
-        <div
-          className="modal-backdrop"
-          role="presentation"
-          onMouseDown={() => setOpen(false)}
+        <dialog
+          ref={dialogRef}
+          className="booking-modal"
+          aria-label="Book a discovery call"
+          onCancel={(event) => {
+            event.preventDefault();
+            closeBooking();
+          }}
+          onClick={(event) => {
+            const bounds = event.currentTarget.getBoundingClientRect();
+            const outside =
+              event.clientX < bounds.left ||
+              event.clientX > bounds.right ||
+              event.clientY < bounds.top ||
+              event.clientY > bounds.bottom;
+            if (outside) closeBooking();
+          }}
         >
-          <dialog
-            open
-            className="booking-modal"
-            aria-label="Book a discovery call"
-            onMouseDown={(e) => e.stopPropagation()}
+          <button
+            className="close"
+            type="button"
+            aria-label="Close booking form"
+            onClick={closeBooking}
           >
-            <button
-              className="close"
-              aria-label="Close booking form"
-              onClick={() => setOpen(false)}
-            >
-              ×
-            </button>
+            ×
+          </button>
 
-            {sent ? (
-              <div className="success">
-                <p className="eyebrow">Request received</p>
-                <h3>Thank you.</h3>
-                <p>
-                  This is a mock request stored nowhere. We&apos;ll connect it to
-                  scheduling once credentials are approved.
-                </p>
-                <button onClick={() => setOpen(false)}>Close</button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit(submit)}>
-                <p className="eyebrow">Book a call</p>
-                <h3>Tell us what needs to connect.</h3>
-                <label>
-                  Name
-                  <input {...register('name')} />
-                  <em>{errors.name?.message}</em>
-                </label>
-                <label>
-                  Work email
-                  <input type="email" {...register('email')} />
-                  <em>{errors.email?.message}</em>
-                </label>
-                <label>
-                  Company
-                  <input {...register('company')} />
-                  <em>{errors.company?.message}</em>
-                </label>
-                <label>
-                  Preferred date
-                  <input type="date" {...register('date')} />
-                  <em>{errors.date?.message}</em>
-                </label>
-                <label>
-                  What would you like to improve?
-                  <textarea {...register('note')} rows={3} />
-                </label>
-                <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending…' : 'Request a call'}
-                </button>
-              </form>
-            )}
-          </dialog>
-        </div>
+          {sent ? (
+            <div className="success" aria-live="polite">
+              <p className="eyebrow">Email draft prepared</p>
+              <h3>Your email app is opening.</h3>
+              <p>
+                Review the prepared message and send it to hello@sutur.ai. Nothing
+                was silently submitted or stored.
+              </p>
+              <button type="button" onClick={closeBooking}>Close</button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit(submit)} noValidate>
+              <p className="eyebrow">Book a call</p>
+              <h3>Tell us what needs to connect.</h3>
+              <label>
+                Name
+                <input
+                  autoComplete="name"
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby="booking-name-error"
+                  {...register('name')}
+                />
+                <em id="booking-name-error" aria-live="polite">{errors.name?.message}</em>
+              </label>
+              <label>
+                Work email
+                <input
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby="booking-email-error"
+                  {...register('email')}
+                />
+                <em id="booking-email-error" aria-live="polite">{errors.email?.message}</em>
+              </label>
+              <label>
+                Company
+                <input
+                  autoComplete="organization"
+                  aria-invalid={Boolean(errors.company)}
+                  aria-describedby="booking-company-error"
+                  {...register('company')}
+                />
+                <em id="booking-company-error" aria-live="polite">{errors.company?.message}</em>
+              </label>
+              <label>
+                Preferred date
+                <input
+                  type="date"
+                  aria-invalid={Boolean(errors.date)}
+                  aria-describedby="booking-date-error"
+                  {...register('date')}
+                />
+                <em id="booking-date-error" aria-live="polite">{errors.date?.message}</em>
+              </label>
+              <label>
+                What would you like to improve?
+                <textarea
+                  rows={4}
+                  aria-invalid={Boolean(errors.note)}
+                  aria-describedby="booking-note-error"
+                  {...register('note')}
+                />
+                <em id="booking-note-error" aria-live="polite">{errors.note?.message}</em>
+              </label>
+              <button type="submit" disabled={isSubmitting}>
+                Prepare email →
+              </button>
+            </form>
+          )}
+        </dialog>
       )}
     </>
   );

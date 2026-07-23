@@ -1,0 +1,145 @@
+/*
+ * SUTUR WEB THEME
+ * ----------------
+ * This is the single source of truth for the website's visual system.
+ * Change brand colors, typography, spacing, sizing, radii, shadows, and motion here.
+ * Component styles consume these tokens instead of defining competing theme values.
+ *
+ * Deck breakpoints: 640px / 1024px / 1440px.
+ * CSS custom properties cannot be used inside @media conditions, so those three
+ * breakpoint values are repeated only in media-query declarations.
+ */
+
+:root {
+  /* Brand palette — Design Deck v1.0 */
+  --deep-interface: #3b1447;
+  --deep-interface-rgb: 59 20 71;
+  --deep-interface-hover: #4c1e5b;
+  --deep-interface-active: #2a0d33;
+  --deep-active-rgb: 42 13 51;
+  --soft-signal: #ead1e5;
+  --soft-signal-rgb: 234 209 229;
+  --active-orange: #f57e20;
+  --active-orange-rgb: 245 126 32;
+  --active-orange-hover: #e06f14;
+  --data-violet: #906fb1;
+  --data-violet-rgb: 144 111 177;
+  --white: #ffffff;
+  --white-rgb: 255 255 255;
+
+  /* Semantic color roles */
+  --surface-page: #fdfafc;
+  --surface-soft: #f7ebf5;
+  --surface-card: #ffffff;
+  --text-primary: var(--deep-interface);
+  --text-secondary: #725e7b;
+  --text-on-deep: var(--soft-signal);
+  --text-on-deep-muted: rgba(234, 209, 229, 0.74);
+  --text-on-orange: var(--deep-interface-active);
+  --border: #e2d0df;
+  --border-strong: #c7adc3;
+  --border-on-deep: rgba(234, 209, 229, 0.2);
+  --orange-tint: #fde9d8;
+  --violet-tint: #e9e2f0;
+  --focus-ring: var(--active-orange);
+  --error-text: #a53a0e;
+
+  /* Typography — use licensed Gotham when present; Montserrat is the bundled metric substitute. */
+  --font-display: "Gotham Black", "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Gotham Book", "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --weight-book: 400;
+  --weight-medium: 600;
+  --weight-black: 900;
+  --type-display: clamp(4rem, 7.4vw, 7.5rem);
+  --type-page-title: clamp(3.6rem, 6vw, 6.5rem);
+  --type-section: clamp(2.8rem, 5.2vw, 5.5rem);
+  --type-heading: clamp(2rem, 3vw, 2.75rem);
+  --type-card-heading: clamp(1.65rem, 2.2vw, 2.25rem);
+  --type-body-large: clamp(1.05rem, 1.35vw, 1.25rem);
+  --type-body: 1rem;
+  --type-small: 0.8125rem;
+  --type-label: clamp(0.75rem, 0.8vw, 0.875rem);
+  --tracking-display: -0.035em;
+  --tracking-label: 0.2em;
+  --leading-display: 0.94;
+  --leading-heading: 1.04;
+  --leading-body: 1.65;
+
+  /* 8px rhythm plus deck-supported intermediate values */
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 1rem;     /* 16 */
+  --space-4: 1.5rem;   /* 24 */
+  --space-5: 2.5rem;   /* 40 */
+  --space-6: 4rem;     /* 64 */
+  --space-7: 6rem;     /* 96 */
+  --space-8: 7.5rem;   /* 120 */
+  --space-9: 10rem;    /* 160 */
+
+  /* Layout */
+  --content-width: 90rem; /* 1440px */
+  --page-gutter: clamp(1.5rem, 6vw, 7.5rem);
+  --section-space: clamp(var(--space-8), 10vw, var(--space-9));
+  --grid-gutter: 1.5rem;
+  --header-height: 5.25rem;
+  --header-floating-height: 3.625rem;
+  --hero-min-height: 55rem;
+  --hero-visual-max: 38.75rem;
+  --capability-visual-height: 20rem;
+  --capability-visual-height-wide: 23.75rem;
+  --booking-card-width: 31.25rem;
+  --booking-card-height: 18.75rem;
+
+  /* Shape */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-card: 1.125rem;
+  --radius-lg: var(--radius-card);
+  --radius-pill: 999px;
+  --control-height: 2.75rem;
+  --control-height-small: 2.375rem;
+  --hit-target: 2.75rem;
+
+  /* Elevation — restrained, flat-first */
+  --shadow-card: 0 1px 2px rgba(59, 20, 71, 0.06), 0 12px 30px rgba(59, 20, 71, 0.08);
+  --shadow-overlay: 0 18px 60px rgba(42, 13, 51, 0.3);
+  --shadow-focus: 0 0 0 4px rgba(245, 126, 32, 0.18);
+
+  /* Motion — deck: 16px rise, 600ms, ease-out */
+  --motion-distance: 1rem;
+  --motion-fast: 160ms;
+  --motion-medium: 240ms;
+  --motion-reveal: 600ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: ease-out;
+
+  /* Interactive agent visual */
+  --orbit-size: 38.75rem;
+  --orbit-height: 35rem;
+  --orbit-field-size: 32.5rem;
+  --orbit-node-min: 3.375rem;
+  --orbit-node-max: 4rem;
+  --orbit-cycle: 80s;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --page-gutter: clamp(1.5rem, 5vw, 4rem);
+    --hero-min-height: auto;
+    --section-space: clamp(var(--space-7), 12vw, var(--space-8));
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 1.5rem;
+    --type-display: clamp(3rem, 14vw, 4.6rem);
+    --type-page-title: clamp(3rem, 13vw, 4.5rem);
+    --type-section: clamp(2.55rem, 12vw, 4rem);
+    --section-space: 5.5rem;
+    --capability-visual-height: 18.75rem;
+    --booking-card-height: 19rem;
+  }
+}

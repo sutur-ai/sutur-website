@@ -38,10 +38,10 @@
   left: 50%;
   width: 76%;
   aspect-ratio: 1;
-  border: 1px solid rgba(144, 111, 177, 0.3);
+  border: 1px solid rgb(var(--data-violet-rgb) / 0.3);
   border-radius: 50%;
   background: var(--deep-interface-active);
-  box-shadow: 0 16px 36px rgba(44, 15, 53, 0.32);
+  box-shadow: 0 16px 36px rgb(var(--deep-active-rgb) / 0.32);
   transform: translate(-50%, -50%);
 }
 
@@ -66,12 +66,12 @@
 
 .field::before {
   inset: 9%;
-  border: 1px solid rgba(234, 209, 229, 0.12);
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.12);
 }
 
 .field::after {
   inset: 25%;
-  border: 1px dashed rgba(144, 111, 177, 0.44);
+  border: 1px dashed rgb(var(--data-violet-rgb) / 0.44);
 }
 
 .signals {
@@ -85,7 +85,7 @@
 }
 
 .packet {
-  filter: drop-shadow(0 0 2px rgba(144, 111, 177, 0.72));
+  filter: drop-shadow(0 0 2px rgb(var(--data-violet-rgb) / 0.72));
 }
 
 .packet rect,
@@ -110,7 +110,7 @@
   aspect-ratio: 1;
   place-items: center;
   padding: 16px;
-  border: 1px solid rgba(234, 209, 229, 0.22);
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.22);
   border-radius: 50%;
   background: var(--deep-interface);
   box-shadow: var(--shadow-card);
@@ -167,7 +167,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(144, 111, 177, 0.52);
+  border: 1px solid rgb(var(--data-violet-rgb) / 0.52);
   border-radius: var(--radius-md);
   background: var(--surface-page);
   box-shadow: var(--shadow-card);
@@ -197,12 +197,12 @@
 .node.engaged .nodeFace,
 .node.processing .nodeFace {
   border-color: var(--active-orange);
-  box-shadow: 0 0 0 3px rgba(245, 126, 32, 0.12), var(--shadow-card);
+  box-shadow: 0 0 0 3px rgb(var(--active-orange-rgb) / 0.12), var(--shadow-card);
   scale: 1.1;
 }
 
 .node.processing .nodeFace {
-  box-shadow: 0 0 0 5px rgba(245, 126, 32, 0.14), var(--shadow-card);
+  box-shadow: 0 0 0 5px rgb(var(--active-orange-rgb) / 0.14), var(--shadow-card);
 }
 
 .hasFocus .node:not(.engaged) {
@@ -215,7 +215,7 @@
   top: calc(100% + 9px);
   left: 50%;
   padding: 4px 8px;
-  border: 1px solid rgba(234, 209, 229, 0.18);
+  border: 1px solid rgb(var(--soft-signal-rgb) / 0.18);
   border-radius: var(--radius-pill);
   background: var(--deep-interface-active);
   color: var(--soft-signal);
@@ -248,7 +248,7 @@
   border: 2px solid var(--surface-page);
   border-radius: var(--radius-pill);
   background: var(--active-orange);
-  color: #ffffff;
+  color: var(--white);
   font: 700 10px/1 var(--font-body);
 }
 
