@@ -73,7 +73,7 @@ describe('website design-system theme', () => {
       '--section-space:',
       '--header-height:',
       '--capability-visual-height:',
-      '--booking-card-width:',
+      '--booking-embed-height:',
       '--radius-card:',
       '--motion-fast:',
       '--ease-out:',
@@ -110,14 +110,12 @@ describe('website design-system theme', () => {
     expect(existsSync(new URL('../src/components/ui/SignalDot.tsx', import.meta.url))).toBe(true);
     expect(page).toContain('Connect your business<SignalDot />');
     expect(page).toContain('<em>Automate the busywork<SignalDot /></em>');
-    expect(page).toContain('What would a clearer operation make possible<SignalDot />');
+    expect(page).toContain('Choose a time that works<SignalDot />');
     expect(capabilitiesComponent).toContain('One connected business<SignalDot />');
     expect(capabilitiesComponent).toContain('<em>Three ways to move it forward<SignalDot /></em>');
     expect(capabilitiesComponent).toContain('<h3>{capability.title}<SignalDot /></h3>');
-    expect(bookingComponent).toContain("Let&apos;s make the operating system clearer<SignalDot />");
-    expect(bookingComponent).toContain('A free, focused discovery call<SignalDot />');
-    expect(bookingComponent).toContain('Your email app is opening<SignalDot />');
-    expect(bookingComponent).toContain('Tell us what needs to connect<SignalDot />');
+    expect(bookingComponent).toContain('Discovery call / 30 minutes');
+    expect(bookingComponent).toContain('Select an open time below');
     expect(css).toMatch(/\.signal-dot\s*{[^}]*display:\s*inline-block[^}]*width:\s*0\.16em[^}]*height:\s*0\.16em[^}]*background:\s*var\(--active-orange\)/s);
   });
 
@@ -198,13 +196,15 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/@media \(max-width: 760px\)[\s\S]*\.floating-cta\s*{[^}]*display:\s*none/s);
   });
 
-  it('uses a native modal booking flow with announced field errors and clean reopening', () => {
-    expect(bookingComponent).toContain('dialog.showModal()');
-    expect(bookingComponent).toContain('onCancel={(event) =>');
-    expect(bookingComponent).toContain('aria-invalid={Boolean(errors.name)}');
-    expect(bookingComponent).toContain('aria-describedby="booking-name-error"');
-    expect(bookingComponent).toMatch(/function openBooking\(\)[\s\S]*setSent\(false\)[\s\S]*setOpen\(true\)/s);
-    expect(bookingComponent).toMatch(/function closeBooking\(\)[\s\S]*setOpen\(false\)[\s\S]*setSent\(false\)/s);
-    expect(css).toContain('.booking-modal::backdrop');
+  it('puts the Calendly scheduler directly in the section with an email fallback', () => {
+    expect(bookingComponent).toContain('process.env.NEXT_PUBLIC_CALENDLY_URL');
+    expect(bookingComponent).toContain('<iframe');
+    expect(bookingComponent).toContain('title="Book a Sutur discovery call"');
+    expect(bookingComponent).toContain('mailto:hello@sutur.ai');
+    expect(bookingComponent).not.toContain('dialog.showModal()');
+    expect(bookingComponent).not.toContain('card-scene');
+    expect(css).toContain('.booking-calendar');
+    expect(css).not.toContain('.booking-modal');
+    expect(css).not.toContain('.card-scene');
   });
 });

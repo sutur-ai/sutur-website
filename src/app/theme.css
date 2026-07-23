@@ -90,8 +90,7 @@
   --hero-visual-max: 46rem;
   --capability-visual-height: 20rem;
   --capability-visual-height-wide: 23.75rem;
-  --booking-card-width: 31.25rem;
-  --booking-card-height: 18.75rem;
+  --booking-embed-height: 46rem;
 
   /* Shape */
   --radius-sm: 0.5rem;
@@ -141,6 +140,6 @@
     --type-section: clamp(2.55rem, 12vw, 4rem);
     --section-space: 5.5rem;
     --capability-visual-height: 18.75rem;
-    --booking-card-height: 19rem;
+    --booking-embed-height: 50rem;
   }
 }

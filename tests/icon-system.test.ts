@@ -24,7 +24,6 @@ describe('website icon system', () => {
     const icons = readFileSync(new URL('../src/components/ui/icons.tsx', import.meta.url), 'utf8');
     expect(icons).toContain("from 'lucide-react'");
     expect(icons).toContain('export function ArrowIcon');
-    expect(icons).toContain('export function CloseIcon');
     expect(icons).toContain('export function MenuIcon');
     expect(icons).toContain('export function ExpandIcon');
   });
@@ -34,8 +33,8 @@ describe('website icon system', () => {
     const textArrowFiles = collectTsxFiles(sourceRoot).filter((path) => /[→←↗]/.test(readFileSync(path, 'utf8')));
 
     expect(textArrowFiles).toEqual([]);
-    expect(booking.match(/<ArrowIcon \/>/g)).toHaveLength(3);
-    expect(booking).toContain('<CloseIcon />');
+    expect(booking.match(/<ArrowIcon \/>/g)).toHaveLength(1);
+    expect(booking).not.toContain('<CloseIcon />');
     expect(header).toContain('<MenuIcon open={open} />');
     expect(header).toContain('<ArrowIcon />');
   });

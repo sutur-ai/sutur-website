@@ -48,8 +48,11 @@ export default function Home() {
       <FaqSection />
 
       <section className="booking-section scroll-section surface-soft" id="book">
-        <h2>What would a clearer operation make possible<SignalDot /></h2>
-        <p className="lead">A free, focused discovery call — 30 minutes.</p>
+        <h2>Choose a time that works<SignalDot /></h2>
+        <p className="lead">
+          Share a little context, pick an open spot, and get the call confirmed
+          straight away.
+        </p>
         <Booking />
       </section>
 

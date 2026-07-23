@@ -222,9 +222,7 @@ main {
 
 .header-cta,
 .button,
-.button-secondary,
-.booking-modal button,
-.business-card button {
+.button-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -258,11 +256,7 @@ main {
 .header-cta:hover,
 .header-cta:focus-visible,
 .button:hover,
-.button:focus-visible,
-.booking-modal button:hover,
-.booking-modal button:focus-visible,
-.business-card button:hover,
-.business-card button:focus-visible {
+.button:focus-visible {
   background: var(--active-orange-hover);
   transform: translateY(-1px);
 }
@@ -634,9 +628,8 @@ button:disabled,
   text-align: center;
 }
 
-
 .booking-section h2 {
-  max-width: 61.25rem;
+  max-width: 52rem;
   margin-inline: auto;
 }
 
@@ -644,160 +637,75 @@ button:disabled,
   margin-inline: auto;
 }
 
-.card-scene {
-  position: relative;
-  width: min(var(--booking-card-width), 100%);
-  height: var(--booking-card-height);
-  margin: var(--space-5) auto 0;
-  perspective: 62.5rem;
-  cursor: pointer;
-}
-
-.business-card {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2.375rem;
-  border-radius: var(--radius-card);
+.booking-calendar,
+.booking-fallback {
+  width: min(72rem, 100%);
+  margin: var(--space-6) auto 0;
+  border-block: 1px solid var(--border-strong);
+  background: var(--surface-page);
   text-align: left;
-  backface-visibility: hidden;
-  transition: transform 480ms var(--ease-out);
 }
 
-.card-front {
-  width: 100%;
-  border: 0;
-  overflow: hidden;
-  background: var(--deep-interface);
-  color: var(--soft-signal);
-  cursor: pointer;
+.booking-calendar-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
 }
 
-.card-front::after {
-  content: "";
-  position: absolute;
-  top: 2rem;
-  right: 2.125rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  background: var(--active-orange);
-}
-
-.business-card p {
+.booking-calendar-heading p,
+.booking-fallback > p {
   margin: 0;
-  font-size: 0.6875rem;
-  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.booking-calendar-heading > p:last-child {
+  max-width: 44rem;
+}
+
+.booking-kicker {
+  flex: 0 0 auto;
+  color: var(--deep-interface) !important;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.business-card h3 {
-  max-width: 24rem;
-  font-size: clamp(2rem, 4vw, 2.55rem);
-}
-
-.card-front > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--active-orange);
-  font-size: 0.875rem;
-  font-weight: 700;
-}
-
-.card-back {
-  border: 1px solid var(--border);
-  background: var(--surface-soft);
-  color: var(--deep-interface);
-  pointer-events: none;
-  transform: rotateY(180deg);
-}
-
-.flipped .card-front {
-  pointer-events: none;
-  transform: rotateY(180deg);
-}
-
-.flipped .card-back {
-  pointer-events: auto;
-  transform: rotateY(360deg);
-}
-
-.booking-modal {
-  position: relative;
-  width: min(35rem, calc(100% - 2rem));
-  max-height: 90vh;
-  margin: auto;
-  padding: 2.25rem;
-  overflow-y: auto;
-  border: 0;
-  border-radius: var(--radius-card);
-  background: var(--surface-page);
-  box-shadow: var(--shadow-overlay);
-  color: var(--deep-interface);
-}
-
-.booking-modal::backdrop {
-  background: rgb(var(--deep-active-rgb) / 0.86);
-}
-
-.booking-modal h3 {
-  margin-bottom: var(--space-4);
-  font-size: 2.125rem;
-}
-
-.booking-modal .close {
-  position: absolute;
-  top: 0.875rem;
-  right: 1rem;
-  width: var(--hit-target);
-  min-height: var(--hit-target);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--deep-interface);
-  font-size: 1.625rem;
-}
-
-.booking-modal label {
-  display: grid;
-  margin: 0.8125rem 0;
-  color: var(--deep-interface);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-align: left;
-}
-
-.booking-modal input,
-.booking-modal textarea {
+.booking-calendar-frame {
+  display: block;
   width: 100%;
-  margin-top: 0.375rem;
-  padding: 0.75rem 0.8125rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  background: var(--surface-card);
-  color: var(--deep-interface);
+  height: var(--booking-embed-height);
+  border: 0;
+  background: var(--surface-page);
 }
 
-.booking-modal input:focus,
-.booking-modal textarea:focus {
-  border-color: var(--active-orange);
-  outline: 2px solid var(--active-orange);
-  outline-offset: 2px;
-}
-
-.booking-modal em {
-  min-height: 1rem;
-  color: var(--error-text);
-  font-size: 0.6875rem;
-  font-style: normal;
-}
-
-.success {
+.booking-privacy {
+  margin: 0;
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
   text-align: center;
+}
+
+.booking-fallback {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: clamp(var(--space-5), 6vw, var(--space-7));
+  text-align: center;
+}
+
+.booking-fallback h3 {
+  max-width: 18ch;
+  font-size: var(--type-heading);
+}
+
+.booking-fallback > p:not(.booking-kicker) {
+  max-width: 42rem;
 }
 
 /* Footer */
@@ -986,12 +894,15 @@ button:disabled,
   }
 
 
-  .business-card {
-    padding: 1.75rem;
+  .booking-calendar-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
   }
 
-  .booking-modal {
-    padding: 2rem 1.25rem 1.25rem;
+  .booking-privacy {
+    padding-inline: var(--space-3);
   }
 
   .site-footer {
@@ -1011,12 +922,6 @@ button:disabled,
     height: 1.25rem;
   }
 
-  .card-front::after {
-    top: 1.625rem;
-    right: 1.625rem;
-    width: 1.1875rem;
-    height: 1.1875rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1043,7 +948,7 @@ button:disabled,
   direction: rtl;
 }
 
-[dir="rtl"] .business-card,
-[dir="rtl"] .booking-modal label {
+[dir="rtl"] .booking-calendar,
+[dir="rtl"] .booking-fallback {
   text-align: right;
 }
