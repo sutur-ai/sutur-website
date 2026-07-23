@@ -50,8 +50,8 @@ export default function Home() {
       <section className="booking-section scroll-section surface-soft" id="book">
         <h2>Choose a time that works<SignalDot /></h2>
         <p className="lead">
-          Share a little context, pick an open spot, and get the call confirmed
-          straight away.
+          Add your details once, then choose any open spot without leaving the
+          page.
         </p>
         <Booking />
       </section>

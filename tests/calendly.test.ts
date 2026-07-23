@@ -24,6 +24,49 @@ describe('Calendly embed URL', () => {
     ).toContain('https://www.calendly.com/sutur/discovery');
   });
 
+  it('prefills Calendly from the required lead form without losing the theme', () => {
+    const result = getCalendlyEmbedUrl(
+      'https://calendly.com/sutur/discovery',
+      {
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        location: 'Beirut, Lebanon',
+        phone: '+961 70 123 456',
+        email: 'ada@example.com',
+        businessName: 'Analytical Engines',
+        tellUsMore: 'We need to connect finance and inventory.',
+      },
+    );
+    const url = new URL(result ?? '');
+
+    expect(url.searchParams.get('name')).toBe('Ada Lovelace');
+    expect(url.searchParams.get('email')).toBe('ada@example.com');
+    expect(url.searchParams.get('a1')).toBe('Beirut, Lebanon');
+    expect(url.searchParams.get('a2')).toBe('+961 70 123 456');
+    expect(url.searchParams.get('a3')).toBe('Analytical Engines');
+    expect(url.searchParams.get('a4')).toBe(
+      'We need to connect finance and inventory.',
+    );
+    expect(url.searchParams.get('primary_color')).toBe('f57e20');
+  });
+
+  it('omits the optional Calendly answer when tell us more is blank', () => {
+    const result = getCalendlyEmbedUrl(
+      'https://calendly.com/sutur/discovery',
+      {
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        location: 'Beirut, Lebanon',
+        phone: '+961 70 123 456',
+        email: 'ada@example.com',
+        businessName: 'Analytical Engines',
+        tellUsMore: '',
+      },
+    );
+
+    expect(new URL(result ?? '').searchParams.has('a4')).toBe(false);
+  });
+
   it.each([
     undefined,
     '',

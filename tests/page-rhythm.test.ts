@@ -114,8 +114,7 @@ describe('website design-system theme', () => {
     expect(capabilitiesComponent).toContain('One connected business<SignalDot />');
     expect(capabilitiesComponent).toContain('<em>Three ways to move it forward<SignalDot /></em>');
     expect(capabilitiesComponent).toContain('<h3>{capability.title}<SignalDot /></h3>');
-    expect(bookingComponent).toContain('Discovery call / 30 minutes');
-    expect(bookingComponent).toContain('Select an open time below');
+
     expect(css).toMatch(/\.signal-dot\s*{[^}]*display:\s*inline-block[^}]*width:\s*0\.16em[^}]*height:\s*0\.16em[^}]*background:\s*var\(--active-orange\)/s);
   });
 
@@ -196,14 +195,40 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/@media \(max-width: 760px\)[\s\S]*\.floating-cta\s*{[^}]*display:\s*none/s);
   });
 
-  it('puts the Calendly scheduler directly in the section with an email fallback', () => {
-    expect(bookingComponent).toContain('process.env.NEXT_PUBLIC_CALENDLY_URL');
+  it('keeps the required lead form and Calendly scheduler together without a modal', () => {
+    expect(bookingComponent).toContain("'use client'");
+    expect(bookingComponent).toContain('validateBookingDetails');
+    expect(bookingComponent).toContain('<form');
+    expect(bookingComponent).toContain('className="booking-lead-form"');
+    expect(bookingComponent).toContain('action="mailto:hello@sutur.ai?subject=Sutur%20discovery%20call"');
+    expect(bookingComponent).toContain('method="post"');
+    expect(bookingComponent).toContain('encType="text/plain"');
+    for (const label of [
+      'First name',
+      'Last name',
+      'Location',
+      'Phone number',
+      'Work email',
+      'Business name',
+    ]) {
+      expect(bookingComponent).toContain(label);
+    }
+    expect(bookingComponent).toContain('className="booking-label-text"');
+    expect(bookingComponent).toContain('<small>(optional)</small>');
+    expect(bookingComponent).toContain('Complete your details to unlock available times.');
+    expect(bookingComponent).toContain("calendarReady ? 'is-ready' : 'is-locked'");
+    expect(bookingComponent).toContain('if (calendarReady)');
+    expect(bookingComponent).toContain('setCalendarReady(false)');
+    expect(bookingComponent).toContain('setCalendarUrl(baseCalendarUrl)');
+    expect(bookingComponent).toContain('getCalendlyEmbedUrl(calendlyEventUrl, values)');
     expect(bookingComponent).toContain('<iframe');
     expect(bookingComponent).toContain('title="Book a Sutur discovery call"');
     expect(bookingComponent).toContain('mailto:hello@sutur.ai');
     expect(bookingComponent).not.toContain('dialog.showModal()');
     expect(bookingComponent).not.toContain('card-scene');
-    expect(css).toContain('.booking-calendar');
+    expect(css).toContain('.booking-flow');
+    expect(css).toContain('.booking-lead-form');
+    expect(css).toContain('.booking-calendar-gate');
     expect(css).not.toContain('.booking-modal');
     expect(css).not.toContain('.card-scene');
   });
