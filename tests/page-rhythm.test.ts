@@ -145,16 +145,16 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/\.floating-cta\.is-visible\s*{[^}]*opacity:\s*1[^}]*pointer-events:\s*auto[^}]*transform:\s*translate\(-50%,\s*0\)/s);
   });
 
-  it('uses one-word homepage section navigation and keeps the header fixed while it condenses into a pill', () => {
+  it('uses the approved homepage section navigation and keeps the header fixed while it condenses into a pill', () => {
     for (const link of [
       "['Capabilities', '#capabilities']",
-      "['Why', '#why-us']",
+      "['Why us', '#why-us']",
       "['Reviews', '#reviews']",
-      "['Questions', '#questions']",
+      "['FAQ', '#questions']",
     ]) {
       expect(navigation).toContain(link);
     }
-    expect(header).toContain('href="#book">Book</a>');
+    expect(header).toContain('href="#book">Book a call</a>');
     expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*width:\s*min\(82rem, max\(58rem, 70vw\), calc\(100% - 2rem\)\)/s);
     expect(css).toMatch(/\.site-header\.is-floating\s*{[^}]*width:\s*min\(64rem, max\(52rem, 58vw\), calc\(100% - 3rem\)\)/s);

@@ -62,7 +62,7 @@ export function Header() {
           ))}
         </nav>
 
-        <a className="header-cta" href="#book">Book</a>
+        <a className="header-cta" href="#book">Book a call</a>
 
         <button
           ref={menuButtonRef}
@@ -84,7 +84,7 @@ export function Header() {
               </a>
             ))}
             <a href="#book" onClick={() => setOpen(false)}>
-              Book <ArrowIcon />
+              Book a call <ArrowIcon />
             </a>
           </div>
         )}

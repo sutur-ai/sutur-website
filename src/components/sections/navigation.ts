@@ -1,6 +1,6 @@
 export const sectionLinks = [
   ['Capabilities', '#capabilities'],
-  ['Why', '#why-us'],
+  ['Why us', '#why-us'],
   ['Reviews', '#reviews'],
-  ['Questions', '#questions'],
+  ['FAQ', '#questions'],
 ] as const;

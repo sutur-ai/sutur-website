@@ -21,7 +21,7 @@ export function SiteFooter() {
           {sectionLinks.map(([label, href]) => (
             <a key={href} href={href}>{label}</a>
           ))}
-          <a href="#book">Book</a>
+          <a href="#book">Book a call</a>
         </nav>
       </div>
 

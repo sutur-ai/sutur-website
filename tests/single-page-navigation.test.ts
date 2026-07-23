@@ -44,24 +44,27 @@ describe('single-page website architecture', () => {
     expect(collectPages(appRoot)).toEqual(['page.tsx']);
   });
 
-  it('uses one-word navigation labels for live homepage sections', () => {
+  it('uses Alex’s exact navigation labels for live homepage sections', () => {
     const expectedLinks = [
       ["Capabilities", '#capabilities'],
-      ['Why', '#why-us'],
+      ['Why us', '#why-us'],
       ['Reviews', '#reviews'],
-      ['Questions', '#questions'],
+      ['FAQ', '#questions'],
     ] as const;
 
     for (const [label, href] of expectedLinks) {
-      expect(label.split(/\s+/)).toHaveLength(1);
       expect(navigation).toContain(`['${label}', '${href}']`);
       expect(homepageSources).toContain(`id="${href.slice(1)}"`);
     }
 
     expect(header).toContain('sectionLinks.map');
     expect(header).toContain('href="#book"');
-    expect(header).toContain('>Book<');
+    expect(header).toContain('>Book a call<');
+    expect(header).toMatch(
+      /<a href="#book" onClick=\{\(\) => setOpen\(false\)\}>\s+Book a call <ArrowIcon \/>/,
+    );
     expect(footer).toContain('sectionLinks.map');
+    expect(footer).toContain('>Book a call</a>');
   });
 
   it('contains no links to deleted internal routes', () => {
