@@ -208,11 +208,11 @@ describe('website design-system theme', () => {
       'Last name',
       'Location',
       'Phone number',
-      'Work email',
       'Business name',
     ]) {
       expect(bookingComponent).toContain(label);
     }
+    expect(bookingComponent).toContain('            Email\n            <input');
     expect(bookingComponent).toContain('className="booking-label-text"');
     expect(bookingComponent).toContain('<small>(optional)</small>');
     expect(bookingComponent).toContain('Complete your details to unlock available times.');
@@ -221,6 +221,10 @@ describe('website design-system theme', () => {
     expect(bookingComponent).toContain('setCalendarReady(false)');
     expect(bookingComponent).toContain('setCalendarUrl(baseCalendarUrl)');
     expect(bookingComponent).toContain('getCalendlyEmbedUrl(calendlyEventUrl, values)');
+    expect(bookingComponent).toContain("window.matchMedia('(max-width: 1024px)')");
+    expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.firstName}');
+    expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.email}');
+    expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.businessName}');
     expect(bookingComponent).toContain('<iframe');
     expect(bookingComponent).toContain('title="Book a Sutur discovery call"');
     expect(bookingComponent).toContain('mailto:hello@sutur.ai');

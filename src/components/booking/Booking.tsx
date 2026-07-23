@@ -5,6 +5,7 @@ import { ArrowIcon } from '@/components/ui/icons';
 import { SignalDot } from '@/components/ui/SignalDot';
 import { getCalendlyEmbedUrl } from '@/lib/booking/calendly';
 import {
+  BOOKING_FIELD_LIMITS,
   type BookingDetailErrors,
   type BookingDetails,
   validateBookingDetails,
@@ -86,7 +87,7 @@ export function Booking() {
     setCalendarUrl(prefilledUrl);
     setCalendarReady(true);
     window.requestAnimationFrame(() => {
-      if (window.matchMedia('(max-width: 900px)').matches) {
+      if (window.matchMedia('(max-width: 1024px)').matches) {
         const reduceMotion = window.matchMedia(
           '(prefers-reduced-motion: reduce)',
         ).matches;
@@ -121,6 +122,7 @@ export function Booking() {
             <input
               name="firstName"
               required
+              maxLength={BOOKING_FIELD_LIMITS.firstName}
               autoComplete="given-name"
               value={details.firstName}
               aria-invalid={Boolean(errors.firstName)}
@@ -137,6 +139,7 @@ export function Booking() {
             <input
               name="lastName"
               required
+              maxLength={BOOKING_FIELD_LIMITS.lastName}
               autoComplete="family-name"
               value={details.lastName}
               aria-invalid={Boolean(errors.lastName)}
@@ -153,6 +156,7 @@ export function Booking() {
             <input
               name="location"
               required
+              maxLength={BOOKING_FIELD_LIMITS.location}
               autoComplete="address-level2"
               placeholder="City, country"
               value={details.location}
@@ -170,6 +174,7 @@ export function Booking() {
             <input
               name="phone"
               required
+              maxLength={BOOKING_FIELD_LIMITS.phone}
               type="tel"
               inputMode="tel"
               autoComplete="tel"
@@ -185,10 +190,11 @@ export function Booking() {
           </label>
 
           <label>
-            Work email
+            Email
             <input
               name="email"
               required
+              maxLength={BOOKING_FIELD_LIMITS.email}
               type="email"
               inputMode="email"
               autoComplete="email"
@@ -207,6 +213,7 @@ export function Booking() {
             <input
               name="businessName"
               required
+              maxLength={BOOKING_FIELD_LIMITS.businessName}
               autoComplete="organization"
               value={details.businessName}
               aria-invalid={Boolean(errors.businessName)}
@@ -227,7 +234,7 @@ export function Booking() {
             <textarea
               name="tellUsMore"
               rows={4}
-              maxLength={1000}
+              maxLength={BOOKING_FIELD_LIMITS.tellUsMore}
               placeholder="What would you like to improve?"
               value={details.tellUsMore}
               aria-invalid={Boolean(errors.tellUsMore)}
@@ -301,7 +308,7 @@ export function Booking() {
 
         <p className="booking-privacy">
           {baseCalendarUrl
-            ? 'Scheduling and confirmation emails are handled securely by Calendly.'
+            ? 'Validated details are passed to Calendly only to prefill your booking.'
             : 'Your details stay in the prepared email until you choose to send it.'}
         </p>
       </section>

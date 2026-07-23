@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { validateBookingDetails } from '../src/lib/booking/details';
+import {
+  BOOKING_FIELD_LIMITS,
+  validateBookingDetails,
+} from '../src/lib/booking/details';
 
 const completeDetails = {
   firstName: 'Ada',
@@ -67,5 +70,25 @@ describe('booking details validation', () => {
         tellUsMore: 'x'.repeat(1001),
       }).errors.tellUsMore,
     ).toBe('Keep this under 1,000 characters.');
+  });
+
+  it.each([
+    'firstName',
+    'lastName',
+    'location',
+    'phone',
+    'email',
+    'businessName',
+  ] as const)('caps %s before building external URLs', (field) => {
+    const limit = BOOKING_FIELD_LIMITS[field];
+    const result = validateBookingDetails({
+      ...completeDetails,
+      [field]: 'x'.repeat(limit + 1),
+    });
+    const formattedLimit = limit === 1000 ? '1,000' : String(limit);
+
+    expect(result.errors[field]).toBe(
+      `Keep this under ${formattedLimit} characters.`,
+    );
   });
 });
