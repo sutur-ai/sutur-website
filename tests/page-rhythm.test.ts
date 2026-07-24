@@ -82,8 +82,15 @@ describe('website design-system theme', () => {
     }
     expect(theme).toContain('--font-display: "Gotham Black", "Montserrat"');
     expect(theme).toContain('--font-body: "Gotham Book", "Montserrat"');
-    expect(theme).toContain('--weight-black: 900');
+    expect(theme).toContain('--weight-bold: 700');
     expect(theme).toContain('--weight-book: 400');
+  });
+
+  it('uses the hero bold weight for every strong text treatment', () => {
+    expect(fullCss).not.toContain('--weight-black');
+    expect(fullCss).not.toMatch(/font-weight:\s*(?:700|800|900)\b/);
+    expect(fullCss).not.toMatch(/font:\s*(?:700|800|900)\b/);
+    expect(css).toMatch(/b,\s*strong\s*{[^}]*font-weight:\s*var\(--weight-bold\)/s);
   });
 
   it('keeps the site flat-first with no CSS gradients', () => {

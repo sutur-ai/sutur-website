@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
 @import "./theme.css";
 
 * {
@@ -64,10 +64,15 @@ h3 {
   margin: 0;
   color: inherit;
   font-family: var(--font-display);
-  font-weight: var(--weight-black);
+  font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-display);
   line-height: var(--leading-heading);
   text-wrap: balance;
+}
+
+b,
+strong {
+  font-weight: var(--weight-bold);
 }
 
 .visually-hidden {
@@ -234,7 +239,7 @@ main {
   background: var(--active-orange);
   color: var(--text-on-orange);
   font-size: var(--type-small);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
   transition:
     background var(--motion-fast) var(--ease-out),
@@ -434,7 +439,7 @@ button:disabled,
   color: var(--active-orange);
   font-family: var(--font-display);
   font-size: clamp(4rem, 8vw, 8rem);
-  font-weight: var(--weight-black);
+  font-weight: var(--weight-bold);
   line-height: 0.7;
 }
 
@@ -597,7 +602,7 @@ button:disabled,
   color: var(--soft-signal);
   font-family: var(--font-display);
   font-size: clamp(1.125rem, 1.7vw, 1.5rem);
-  font-weight: var(--weight-black);
+  font-weight: var(--weight-bold);
   list-style: none;
   cursor: pointer;
 }
@@ -1036,7 +1041,7 @@ button:disabled,
     background: transparent;
     color: var(--soft-signal);
     font-size: 1.125rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-align: left;
     text-decoration: none;
   }
