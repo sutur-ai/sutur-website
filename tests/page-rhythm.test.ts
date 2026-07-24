@@ -82,7 +82,7 @@ describe('website design-system theme', () => {
     }
     expect(theme).toContain('--font-display: "Gotham Black", "Montserrat"');
     expect(theme).toContain('--font-body: "Gotham Book", "Montserrat"');
-    expect(theme).toContain('--weight-bold: 700');
+    expect(theme).toContain('--weight-bold: 600');
     expect(theme).toContain('--weight-book: 400');
   });
 
