@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent } from 'react';
 import styles from './CompanyCapabilities.module.css';
+import { CustomDevelopmentVisual } from './CustomDevelopmentVisual';
 import { ArrowIcon } from '@/components/ui/icons';
 import { SignalDot } from '@/components/ui/SignalDot';
 import {
@@ -622,42 +623,7 @@ export function CapabilityVisual({ kind, active = false }: { kind: VisualKind; a
   }
 
   if (kind === 'custom') {
-    return (
-      <div className={`${styles.visual} ${styles.customVisual}`} aria-hidden="true">
-        <div className={styles.productWindow}>
-          <WindowChrome title="sutur-workflows · VS Code" />
-          <div className={styles.editorShell}>
-            <div className={styles.fileTree}>
-              <strong>EXPLORER</strong>
-              <span>⌄ sutur-odoo</span>
-              <span>⌄ src</span>
-              <i className={styles.activeFile}>purchase_order.py</i>
-              <i>inventory_sync.py</i>
-              <i>supplier_rules.py</i>
-              <span>› tests</span>
-              <i>README.md</i>
-            </div>
-            <div className={styles.editorPane}>
-              <div className={styles.editorTab}>
-                <span>purchase_order.py</span>
-                <i>M</i>
-              </div>
-              <code className={styles.codeEditor}>
-                <span className={styles.codeLine}><b>41</b><em> </em><i>def create_purchase_order(request):</i></span>
-                <span className={`${styles.codeLine} ${styles.removedLine}`}><b>42</b><em>−</em><i>supplier = request[&quot;supplier&quot;]</i></span>
-                <span className={`${styles.codeLine} ${styles.addedLine}`}><b>42</b><em>+</em><i>supplier = resolve_supplier(</i></span>
-                <span className={`${styles.codeLine} ${styles.addedLine}`}><b>43</b><em>+</em><i>request.supplier_id)</i></span>
-                <span className={`${styles.codeLine} ${styles.addedLine}`}><b>44</b><em>+</em><i>quantity = validate_quantity(</i></span>
-                <span className={`${styles.codeLine} ${styles.addedLine}`}><b>45</b><em>+</em><i>request.quantity)</i></span>
-                <span className={`${styles.codeLine} ${styles.removedLine}`}><b>46</b><em>−</em><i>return draft</i></span>
-                <span className={`${styles.codeLine} ${styles.addedLine}`}><b>46</b><em>+</em><i>return odoo.purchase.create(</i></span>
-                <span className={styles.codeLine}><b>47</b><em> </em><i>supplier, quantity)</i></span>
-              </code>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <CustomDevelopmentVisual active={active} />;
   }
 
   return <AgentCapabilityVisual active={active} />;
@@ -665,9 +631,13 @@ export function CapabilityVisual({ kind, active = false }: { kind: VisualKind; a
 
 export function CompanyCapabilities() {
   const touchInteractionRef = useRef(false);
+  const customTouchInteractionRef = useRef(false);
   const [agentHovered, setAgentHovered] = useState(false);
   const [agentFocused, setAgentFocused] = useState(false);
+  const [customHovered, setCustomHovered] = useState(false);
+  const [customFocused, setCustomFocused] = useState(false);
   const agentActive = agentHovered || agentFocused;
+  const customActive = customHovered || customFocused;
 
   const activateAgentHover = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType !== 'touch') setAgentHovered(true);
@@ -697,6 +667,34 @@ export function CompanyCapabilities() {
     }
   };
 
+  const activateCustomHover = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'touch') setCustomHovered(true);
+  };
+
+  const trackCustomPointer = (event: PointerEvent<HTMLElement>) => {
+    customTouchInteractionRef.current = event.pointerType === 'touch';
+    if (customTouchInteractionRef.current) {
+      setCustomHovered(false);
+      setCustomFocused(false);
+    }
+  };
+
+  const activateCustomFocus = () => {
+    if (!customTouchInteractionRef.current) setCustomFocused(true);
+  };
+
+  const activateCustomKeyboard = () => {
+    customTouchInteractionRef.current = false;
+    setCustomFocused(true);
+  };
+
+  const releaseCustomFocus = (event: FocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      customTouchInteractionRef.current = false;
+      setCustomFocused(false);
+    }
+  };
+
   return (
     <section
       className={`section scroll-section surface-paper ${styles.section}`}
@@ -721,22 +719,41 @@ export function CompanyCapabilities() {
       <div className={styles.capabilityGrid} role="list">
         {capabilities.map((capability) => {
           const isAgent = capability.visual === 'agent';
+          const isCustom = capability.visual === 'custom';
+          const active = isAgent ? agentActive : isCustom ? customActive : false;
 
           return (
             <article
               className={styles.capability}
               data-capability={capability.visual}
               data-agent-active={isAgent ? agentActive : undefined}
+              data-custom-active={isCustom ? customActive : undefined}
               role="listitem"
               key={capability.number}
-              onPointerDown={isAgent ? trackAgentPointer : undefined}
-              onPointerEnter={isAgent ? activateAgentHover : undefined}
-              onPointerLeave={isAgent ? () => setAgentHovered(false) : undefined}
-              onFocusCapture={isAgent ? activateAgentFocus : undefined}
-              onKeyDownCapture={isAgent ? activateAgentKeyboard : undefined}
-              onBlurCapture={isAgent ? releaseAgentFocus : undefined}
+              onPointerDown={
+                isAgent ? trackAgentPointer : isCustom ? trackCustomPointer : undefined
+              }
+              onPointerEnter={
+                isAgent ? activateAgentHover : isCustom ? activateCustomHover : undefined
+              }
+              onPointerLeave={
+                isAgent
+                  ? () => setAgentHovered(false)
+                  : isCustom
+                    ? () => setCustomHovered(false)
+                    : undefined
+              }
+              onFocusCapture={
+                isAgent ? activateAgentFocus : isCustom ? activateCustomFocus : undefined
+              }
+              onKeyDownCapture={
+                isAgent ? activateAgentKeyboard : isCustom ? activateCustomKeyboard : undefined
+              }
+              onBlurCapture={
+                isAgent ? releaseAgentFocus : isCustom ? releaseCustomFocus : undefined
+              }
             >
-              <CapabilityVisual kind={capability.visual} active={isAgent && agentActive} />
+              <CapabilityVisual kind={capability.visual} active={active} />
               <div className={styles.capabilityCopy}>
                 <div className={styles.capabilityLabel}>
                   <span>{capability.number}</span>

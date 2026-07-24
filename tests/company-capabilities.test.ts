@@ -28,6 +28,16 @@ const styles = readFileSync(
   new URL('../src/components/sections/CompanyCapabilities.module.css', import.meta.url),
   'utf8',
 );
+const customComponentUrl = new URL(
+  '../src/components/sections/CustomDevelopmentVisual.tsx',
+  import.meta.url,
+);
+const customStylesUrl = new URL(
+  '../src/components/sections/CustomDevelopmentVisual.module.css',
+  import.meta.url,
+);
+const customComponent = existsSync(customComponentUrl) ? readFileSync(customComponentUrl, 'utf8') : '';
+const customStyles = existsSync(customStylesUrl) ? readFileSync(customStylesUrl, 'utf8') : '';
 
 const integrations = [
   ['Odoo ERP', 'odoo.svg'],
@@ -108,7 +118,7 @@ describe('company capabilities section', () => {
     );
   });
 
-  it('keeps the complete Odoo launcher with official app artwork and a readable custom-development diff', () => {
+  it('keeps the complete Odoo launcher with official app artwork', () => {
     const hashes = new Set<string>();
 
     for (const { name, asset, source, sha256 } of officialOdooApps) {
@@ -125,12 +135,33 @@ describe('company capabilities section', () => {
     expect(component).not.toMatch(
       /styles\.(?:discuss|calendar|appointments|contacts|dashboard|pos|settings)Icon/,
     );
-    expect(component).toContain('className={styles.fileTree}');
-    expect(component).toContain('purchase_order.py');
-    expect(component).toContain('resolve_supplier');
-    expect(component).toContain('validate_quantity');
-    expect(component).toContain('className={`${styles.codeLine} ${styles.removedLine}`}');
-    expect(component).toContain('className={`${styles.codeLine} ${styles.addedLine}`}');
+  });
+
+  it('wires the custom-development card to the accepted two-file workflow', () => {
+    expect(component).toContain("import { CustomDevelopmentVisual } from './CustomDevelopmentVisual'");
+    expect(component).toContain("data-custom-active={isCustom ? customActive : undefined}");
+    expect(component).toContain('<CustomDevelopmentVisual active={active} />');
+
+    for (const phase of [
+      'idle',
+      'typing-purchase',
+      'selecting-inventory',
+      'opening-inventory',
+      'typing-inventory',
+      'verifying',
+      'complete',
+      'restoring',
+      'restored',
+    ]) {
+      expect(customComponent).toContain(`| '${phase}'`);
+    }
+    expect(customComponent).toContain('data-custom-phase={phase}');
+    expect(customComponent).toContain('data-code-file={activeFile}');
+    expect(customComponent).toContain('data-cursor-target={cursorTarget}');
+    expect(customComponent).toContain("phase === 'complete' || phase === 'restoring'");
+    expect(customComponent).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
+    expect(customStyles).toContain('.mouseCursor[data-cursor-target="inventory"]');
+    expect(customStyles).toContain('@media (prefers-reduced-motion: reduce)');
   });
 
   it('preserves the chrome-free responsive honeycomb and every downloaded brand asset', () => {
@@ -248,22 +279,22 @@ describe('company capabilities section', () => {
     expect(agentVisualSource.match(/data-agent-control/g)).toHaveLength(2);
     expect(component).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
     expect(component).toContain(
-      'onPointerEnter={isAgent ? activateAgentHover : undefined}',
+      'isAgent ? activateAgentHover : isCustom ? activateCustomHover : undefined',
     );
     expect(component).toContain(
-      'onPointerDown={isAgent ? trackAgentPointer : undefined}',
+      'isAgent ? trackAgentPointer : isCustom ? trackCustomPointer : undefined',
+    );
+    expect(component).toContain('? () => setAgentHovered(false)');
+    expect(component).toContain(
+      'isAgent ? activateAgentFocus : isCustom ? activateCustomFocus : undefined',
     );
     expect(component).toContain(
-      'onPointerLeave={isAgent ? () => setAgentHovered(false) : undefined}',
-    );
-    expect(component).toContain(
-      'onFocusCapture={isAgent ? activateAgentFocus : undefined}',
-    );
-    expect(component).toContain(
-      'onKeyDownCapture={isAgent ? activateAgentKeyboard : undefined}',
+      'isAgent ? activateAgentKeyboard : isCustom ? activateCustomKeyboard : undefined',
     );
     expect(component).toContain("touchInteractionRef.current = event.pointerType === 'touch'");
-    expect(component).toContain('onBlurCapture={isAgent ? releaseAgentFocus : undefined}');
+    expect(component).toContain(
+      'isAgent ? releaseAgentFocus : isCustom ? releaseCustomFocus : undefined',
+    );
     expect(component).toContain('const sequenceIdRef = useRef(0)');
     expect(component).toContain('if (sequenceIdRef.current === sequenceId) setPhase');
     expect(component).toContain("'--stack-x': `${stackCenterX - centerX}px`");
