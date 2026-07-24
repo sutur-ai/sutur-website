@@ -9,6 +9,10 @@ const header = readFileSync(
   new URL('../src/components/sections/Header.tsx', import.meta.url),
   'utf8',
 );
+const footer = readFileSync(
+  new URL('../src/components/sections/SiteFooter.tsx', import.meta.url),
+  'utf8',
+);
 const navigation = readFileSync(
   new URL('../src/components/sections/navigation.ts', import.meta.url),
   'utf8',
@@ -192,6 +196,17 @@ describe('website design-system theme', () => {
     expect(layout).toContain("icon: '/brand/design-system/sutur-agent-favicon.png'");
     expect(layout).toContain("apple: '/brand/design-system/sutur-agent-favicon.png'");
     expect(existsSync(new URL('../public/brand/design-system/sutur-agent-favicon.png', import.meta.url))).toBe(true);
+  });
+
+  it('renders the exact Sutur artwork as a full-bleed outlined footer logo', () => {
+    expect(footer).toContain('viewBox="0 0 2250 816"');
+    expect(footer).toContain("const footerLogoSource = '/brand/design-system/sutur-wordmark-soft.png'");
+    expect(footer).toContain('href={footerLogoSource}');
+    expect(footer).toContain('<feMorphology');
+    expect(footer).toContain('operator="erode"');
+    expect(footer).toContain('operator="out"');
+    expect(footer).not.toContain('aria-hidden="true">sutur</div>');
+    expect(css).toMatch(/\.footer-outline-logo\s*{[^}]*width:\s*calc\(100% \+ var\(--footer-inline-padding\) \+ var\(--footer-inline-padding\)\)/s);
   });
 
   it('keeps mobile navigation accessible, compact, and full-width', () => {

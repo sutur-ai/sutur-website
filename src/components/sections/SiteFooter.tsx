@@ -1,5 +1,7 @@
 import { sectionLinks } from '@/components/sections/navigation';
 
+const footerLogoSource = '/brand/design-system/sutur-wordmark-soft.png';
+
 export function SiteFooter() {
   return (
     <footer className="site-footer">
@@ -38,7 +40,39 @@ export function SiteFooter() {
         <span>One clear operating system.</span>
       </div>
 
-      <div className="footer-outline-wordmark" aria-hidden="true">sutur</div>
+      <svg
+        className="footer-outline-logo"
+        viewBox="0 0 2250 816"
+        preserveAspectRatio="xMidYMid meet"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <filter
+            id="footer-logo-outline"
+            x="0"
+            y="0"
+            width="2250"
+            height="816"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feMorphology
+              in="SourceAlpha"
+              operator="erode"
+              radius="7"
+              result="erodedLogo"
+            />
+            <feComposite in="SourceGraphic" in2="erodedLogo" operator="out" />
+          </filter>
+        </defs>
+        <image
+          href={footerLogoSource}
+          width="2250"
+          height="816"
+          filter="url(#footer-logo-outline)"
+        />
+      </svg>
     </footer>
   );
 }
