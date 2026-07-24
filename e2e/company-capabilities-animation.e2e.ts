@@ -10,6 +10,10 @@ async function waitForPhase(visual: Locator, phase: string, timeout = 12_000) {
   await expect(visual).toHaveAttribute('data-agent-phase', phase, { timeout });
 }
 
+async function waitForCustomPhase(visual: Locator, phase: string, timeout = 12_000) {
+  await expect(visual).toHaveAttribute('data-custom-phase', phase, { timeout });
+}
+
 function transitionDelayMs(value: string) {
   const firstDelay = value.split(',')[0].trim();
   return Number.parseFloat(firstDelay) * (firstDelay.endsWith('ms') ? 1 : 1000);
@@ -62,6 +66,23 @@ async function expectCursorCentered(cursor: Locator, app: Locator, label: string
     .toBeLessThan(0.22);
 }
 
+async function expectCustomCursorCentered(cursor: Locator, target: Locator, label: string) {
+  const [tip, targetBox] = await Promise.all([
+    cursor.evaluate((node) => {
+      const matrix = (node as SVGGraphicsElement).getScreenCTM();
+      if (!matrix) return null;
+      const point = new DOMPoint(3, 2.5).matrixTransform(matrix);
+      return { x: point.x, y: point.y };
+    }),
+    target.boundingBox(),
+  ]);
+  expect(tip, `${label} cursor tip must render`).not.toBeNull();
+  expect(targetBox, `${label} file row must render`).not.toBeNull();
+  if (!tip || !targetBox) return;
+  expect(Math.abs(tip.x - (targetBox.x + targetBox.width / 2)), `${label} cursor x`).toBeLessThanOrEqual(2);
+  expect(Math.abs(tip.y - (targetBox.y + targetBox.height / 2)), `${label} cursor y`).toBeLessThanOrEqual(2);
+}
+
 async function openCapabilities(page: Page) {
   await page.goto('/');
   const card = page.locator('[data-capability="agent"]');
@@ -70,6 +91,16 @@ async function openCapabilities(page: Page) {
     card,
     visual: card.locator('[data-agent-phase]'),
     prompt: card.locator('[data-agent-prompt] p'),
+  };
+}
+
+async function openCustomCapabilities(page: Page) {
+  await page.goto('/');
+  const card = page.locator('[data-capability="custom"]');
+  await card.scrollIntoViewIfNeeded();
+  return {
+    card,
+    visual: card.locator('[data-custom-phase]'),
   };
 }
 
@@ -119,6 +150,97 @@ test.beforeEach(async ({ page }) => {
 
 test.afterEach(async ({ page }) => {
   expect(runtimeErrorsByPage.get(page) ?? []).toEqual([]);
+});
+
+test('custom development types two files, verifies checks, restores, and rearms on a new hover edge', async ({ page }) => {
+  test.setTimeout(40_000);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const { card, visual } = await openCustomCapabilities(page);
+  await expect(
+    visual.locator('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+  ).toHaveCount(0);
+  await card.hover();
+
+  await waitForCustomPhase(visual, 'typing-purchase');
+  await expect.poll(async () => ((await visual.locator('[data-code-file="purchase_order.py"]').textContent()) ?? '').length).toBeGreaterThan(0);
+  await waitForCustomPhase(visual, 'selecting-inventory');
+  await expect(visual.locator('[data-cursor-target="inventory"]')).toBeVisible();
+  await waitForCustomPhase(visual, 'opening-inventory');
+  await expect(visual.locator('[data-file="inventory_sync.py"]')).toHaveAttribute('data-file-active', 'true');
+  await expectCustomCursorCentered(
+    visual.locator('[data-cursor-target="inventory"]'),
+    visual.locator('[data-cursor-target-row]'),
+    'automatic story',
+  );
+  await waitForCustomPhase(visual, 'typing-inventory');
+  await expect.poll(async () => ((await visual.locator('[data-code-file="inventory_sync.py"]').textContent()) ?? '').length).toBeGreaterThan(0);
+  await waitForCustomPhase(visual, 'verifying');
+  await expect(visual.locator('[data-test-result="running"]')).toBeVisible();
+  await waitForCustomPhase(visual, 'complete');
+  await expect(visual.locator('[data-test-result="passed"]')).toHaveText('8 passed in 0.42s');
+  await expect(visual.locator('[data-completion-toast="true"]')).toContainText('Development complete');
+  await waitForCustomPhase(visual, 'restoring');
+  await expect(visual.locator('[data-test-result="passed"]')).toHaveText('8 passed in 0.42s');
+  await expect(visual.locator('[data-completion-toast="true"]')).toContainText('2 files changed · 8 checks passed');
+  await waitForCustomPhase(visual, 'restored');
+  await expect(card).toHaveAttribute('data-custom-active', 'true');
+  await page.waitForTimeout(900);
+  await waitForCustomPhase(visual, 'restored');
+
+  await page.locator('#capabilities-title').hover();
+  await waitForCustomPhase(visual, 'idle');
+  await card.hover();
+  await waitForCustomPhase(visual, 'typing-purchase');
+});
+
+test('custom development stays touch-safe, supports keyboard and reduced motion, and targets the file exactly', async ({ page }) => {
+  test.setTimeout(30_000);
+  await page.setViewportSize({ width: 840, height: 1000 });
+  let { card, visual } = await openCustomCapabilities(page);
+  const customLink = card.locator('a');
+
+  await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await customLink.focus();
+  await page.waitForTimeout(100);
+  await expect(card).toHaveAttribute('data-custom-active', 'false');
+  await waitForCustomPhase(visual, 'idle');
+  await customLink.dispatchEvent('keydown', { key: 'Tab', bubbles: true });
+  await waitForCustomPhase(visual, 'typing-purchase');
+
+  for (const width of [1120, 480, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    ({ card, visual } = await openCustomCapabilities(page));
+    const cursor = visual.locator('[data-cursor-target]');
+    const target = visual.locator('[data-cursor-target-row]');
+    await expect.poll(async () => cursor.evaluate((node) => getComputedStyle(node).getPropertyValue('--cursor-target-x'))).not.toBe('');
+    await cursor.evaluate((node) => node.setAttribute('data-cursor-target', 'inventory'));
+    await page.waitForTimeout(800);
+    await expectCustomCursorCentered(cursor, target, `${width}px`);
+    const overflow = await visual.evaluate((node) => ({
+      x: node.scrollWidth > node.clientWidth + 1,
+      y: node.scrollHeight > node.clientHeight + 1,
+    }));
+    expect(overflow, `${width}px custom visual overflow`).toEqual({ x: false, y: false });
+  }
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 320, height: 1000 });
+  await page.reload({ waitUntil: 'networkidle' });
+  card = page.locator('[data-capability="custom"]');
+  visual = card.locator('[data-custom-phase]');
+  await card.scrollIntoViewIfNeeded();
+  await card.hover();
+  await waitForCustomPhase(visual, 'complete');
+  await expect(visual.locator('[data-test-result="passed"]')).toHaveText('8 passed in 0.42s');
+  const completion = visual.locator('[data-completion-toast="true"]');
+  await expectInside(completion, visual, '320px reduced-motion completion');
+  for (const selector of ['strong', 'span']) {
+    const label = completion.locator(selector);
+    expect(
+      await label.evaluate((node) => node.scrollWidth <= node.clientWidth),
+      `320px completion ${selector} must not truncate`,
+    ).toBe(true);
+  }
 });
 
 test('runs the accepted workflow, restores over open apps, and rearms only after pointer leave', async ({ page }) => {

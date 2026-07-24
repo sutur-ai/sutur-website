@@ -97,10 +97,6 @@
   border-color: rgb(var(--data-violet-rgb) / 0.7);
 }
 
-.customVisual {
-  border-color: rgb(var(--active-orange-rgb) / 0.55);
-}
-
 .agentVisual {
   isolation: isolate;
   container-type: inline-size;
@@ -359,127 +355,6 @@
   width: 2rem;
   height: 2rem;
   object-fit: contain;
-}
-
-/* Custom development editor */
-.editorShell {
-  display: grid;
-  grid-template-columns: 5.5rem minmax(0, 1fr);
-  height: calc(100% - 2.25rem);
-  background: var(--deep-interface-active);
-}
-
-.fileTree {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  padding: 0.75rem 0.5rem;
-  border-right: 1px solid var(--border-on-deep);
-  background: var(--deep-interface);
-  color: rgb(var(--soft-signal-rgb) / 0.52);
-  font-size: 0.4375rem;
-}
-
-.fileTree strong {
-  margin-bottom: 0.5rem;
-  color: rgb(var(--soft-signal-rgb) / 0.8);
-  font-size: 0.4375rem;
-  letter-spacing: 0.08em;
-}
-
-.fileTree span,
-.fileTree i {
-  overflow: hidden;
-  padding: 0.25rem;
-  font-style: normal;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.fileTree i {
-  padding-left: 0.75rem;
-}
-
-.fileTree .activeFile {
-  border-left: 3px solid var(--active-orange);
-  background: rgb(var(--active-orange-rgb) / 0.12);
-  color: var(--soft-signal);
-}
-
-.editorPane {
-  min-width: 0;
-}
-
-.editorTab {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 1.875rem;
-  padding: 0 0.625rem;
-  border-bottom: 1px solid var(--border-on-deep);
-  background: var(--deep-interface-hover);
-  color: rgb(var(--soft-signal-rgb) / 0.72);
-  font: 0.4375rem/1 var(--font-mono);
-}
-
-.editorTab i {
-  color: var(--active-orange);
-  font-style: normal;
-}
-
-.codeEditor {
-  display: grid;
-  padding: 0.625rem 0;
-  color: rgb(var(--soft-signal-rgb) / 0.82);
-  font: 0.4375rem/1.55 var(--font-mono);
-}
-
-.codeLine {
-  display: grid;
-  grid-template-columns: 1.375rem 0.6875rem minmax(0, 1fr);
-  min-width: 0;
-  padding: 1px 0.3125rem 1px 0;
-  border-left: 2px solid transparent;
-}
-
-.codeLine b {
-  color: rgb(var(--soft-signal-rgb) / 0.3);
-  font-weight: 400;
-  text-align: right;
-}
-
-.codeLine em {
-  color: rgb(var(--soft-signal-rgb) / 0.32);
-  font-style: normal;
-  text-align: center;
-}
-
-.codeLine i {
-  min-width: 0;
-  overflow: hidden;
-  font-style: normal;
-  text-overflow: clip;
-  white-space: nowrap;
-}
-
-.removedLine {
-  border-left-color: var(--active-orange);
-  background: rgb(var(--active-orange-rgb) / 0.14);
-  color: var(--orange-tint);
-}
-
-.removedLine em {
-  color: var(--active-orange);
-}
-
-.addedLine {
-  border-left-color: var(--data-violet);
-  background: rgb(var(--data-violet-rgb) / 0.18);
-  color: var(--soft-signal);
-}
-
-.addedLine em {
-  color: var(--data-violet);
 }
 
 /* Sutur Agent workflow */
@@ -1316,21 +1191,6 @@
   .appIcon img {
     width: 2.4375rem;
     height: 2.4375rem;
-  }
-
-  .editorShell {
-    grid-template-columns: 7.25rem minmax(0, 1fr);
-  }
-
-  .fileTree,
-  .fileTree strong,
-  .editorTab,
-  .codeEditor {
-    font-size: 0.5625rem;
-  }
-
-  .codeLine {
-    grid-template-columns: 1.75rem 0.875rem minmax(0, 1fr);
   }
 
   .capabilityCopy {
