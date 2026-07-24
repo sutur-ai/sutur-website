@@ -14,6 +14,10 @@ async function waitForCustomPhase(visual: Locator, phase: string, timeout = 12_0
   await expect(visual).toHaveAttribute('data-custom-phase', phase, { timeout });
 }
 
+async function waitForERPPhase(visual: Locator, phase: string, timeout = 12_000) {
+  await expect(visual).toHaveAttribute('data-erp-phase', phase, { timeout });
+}
+
 function transitionDelayMs(value: string) {
   const firstDelay = value.split(',')[0].trim();
   return Number.parseFloat(firstDelay) * (firstDelay.endsWith('ms') ? 1 : 1000);
@@ -101,6 +105,16 @@ async function openCustomCapabilities(page: Page) {
   return {
     card,
     visual: card.locator('[data-custom-phase]'),
+  };
+}
+
+async function openERPCapabilities(page: Page) {
+  await page.goto('/');
+  const card = page.locator('[data-capability="erp"]');
+  await card.scrollIntoViewIfNeeded();
+  return {
+    card,
+    visual: card.locator('[data-erp-phase]'),
   };
 }
 
@@ -240,6 +254,108 @@ test('custom development stays touch-safe, supports keyboard and reduced motion,
       await label.evaluate((node) => node.scrollWidth <= node.clientWidth),
       `320px completion ${selector} must not truncate`,
     ).toBe(true);
+  }
+});
+
+test('ERP sells one Mug only after its click, loads Payment, and proves the journal entry', async ({ page }) => {
+  test.setTimeout(35_000);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const { card, visual } = await openERPCapabilities(page);
+  await expect(
+    visual.locator('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+  ).toHaveCount(0);
+  await card.hover();
+
+  await waitForERPPhase(visual, 'selecting-pos');
+  await waitForERPPhase(visual, 'opening-pos');
+  await expect(visual.locator('[data-cart-state="empty"]')).toBeVisible();
+  await expect(visual.locator('[data-order-line]')).toHaveCount(0);
+
+  await waitForERPPhase(visual, 'adding-item');
+  await page.waitForTimeout(600);
+  await expect(visual.locator('[data-cart-state="empty"]')).toBeVisible();
+  await expect(visual.locator('[data-order-line]')).toHaveCount(0);
+  const mugClickAlignment = await visual.evaluate((node) => {
+    const target = node.querySelector('[data-erp-target="product"]')?.getBoundingClientRect();
+    const cursor = node.querySelector('[data-erp-cursor="product"]')?.getBoundingClientRect();
+    if (!target || !cursor) return Number.POSITIVE_INFINITY;
+    return Math.hypot(
+      cursor.left - (target.left + target.width / 2),
+      cursor.top - (target.top + target.height / 2),
+    );
+  });
+  expect(mugClickAlignment, 'Mug click cursor alignment').toBeLessThanOrEqual(4);
+  await waitForERPPhase(visual, 'item-added');
+  await expect(visual.locator('[data-order-line]')).toHaveCount(1);
+  await expect(visual.locator('[data-order-line]')).toContainText('Mug');
+  await expect(visual.locator('[data-cart-thumbnail="mug"]')).toBeVisible();
+
+  await waitForERPPhase(visual, 'selecting-payment');
+  await expect(visual.locator('[data-payment-state="ready"]')).toContainText('Payment');
+  await expect(visual.locator('[data-payment-spinner]')).toHaveCount(0);
+  await waitForERPPhase(visual, 'processing-payment');
+  await expect(visual.locator('[data-payment-state="loading"]')).toContainText('Processing payment');
+  await expect(visual.locator('[data-payment-spinner]')).toBeVisible();
+  await waitForERPPhase(visual, 'payment-success');
+  await expect(visual.locator('[data-erp-scene="receipt"]')).toContainText('Payment successful');
+
+  await waitForERPPhase(visual, 'selecting-accounting');
+  await expect(visual.locator('[data-erp-target="accounting"]')).toBeVisible();
+  await waitForERPPhase(visual, 'opening-accounting');
+  await waitForERPPhase(visual, 'journal-items');
+  await expect(visual.locator('[data-journal-row]')).toHaveCount(3);
+  await waitForERPPhase(visual, 'complete');
+  await expect(visual.locator('[data-entry-status="posted"]')).toHaveText('Posted');
+  await expect(visual.locator('[data-journal-table] footer')).toContainText('$18.00');
+  await expect(visual.locator('[data-completion-toast="true"]')).toContainText('Sale reconciled');
+
+  await page.locator('#capabilities-title').hover();
+  await waitForERPPhase(visual, 'idle');
+});
+
+test('ERP stays touch-safe and keeps enlarged Accounting proof contained through 320px', async ({ page }) => {
+  test.setTimeout(45_000);
+  await page.setViewportSize({ width: 840, height: 1000 });
+  let { card, visual } = await openERPCapabilities(page);
+  const erpLink = card.locator('a');
+
+  await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await erpLink.focus();
+  await page.waitForTimeout(100);
+  await expect(card).toHaveAttribute('data-erp-active', 'false');
+  await waitForERPPhase(visual, 'idle');
+  await erpLink.dispatchEvent('keydown', { key: 'Tab', bubbles: true });
+  await waitForERPPhase(visual, 'selecting-pos');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const width of [1120, 840, 680, 560, 420, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    ({ card, visual } = await openERPCapabilities(page));
+    await card.hover();
+    await waitForERPPhase(visual, 'complete');
+    await page.waitForTimeout(700);
+
+    const rows = visual.locator('[data-journal-row]');
+    await expect(rows).toHaveCount(3);
+    const proof = await rows.first().evaluate((row) => {
+      const reference = row.querySelector('small');
+      const visual = row.closest('[data-erp-phase]');
+      const table = row.closest('[data-journal-table]');
+      const rail = visual?.querySelector('[data-erp-progress]');
+      return {
+        fontSize: reference ? Number.parseFloat(getComputedStyle(reference).fontSize) : 0,
+        gap: table && rail
+          ? rail.getBoundingClientRect().top - table.getBoundingClientRect().bottom
+          : Number.NEGATIVE_INFINITY,
+      };
+    });
+    expect(proof.fontSize, `${width}px Accounting reference size`).toBeGreaterThanOrEqual(8.75);
+    expect(proof.gap, `${width}px Accounting table/progress separation`).toBeGreaterThanOrEqual(3);
+    const overflow = await visual.evaluate((node) => ({
+      x: node.scrollWidth > node.clientWidth + 1,
+      y: node.scrollHeight > node.clientHeight + 1,
+    }));
+    expect(overflow, `${width}px ERP visual overflow`).toEqual({ x: false, y: false });
   }
 });
 

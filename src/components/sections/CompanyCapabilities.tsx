@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent } from 'react';
 import styles from './CompanyCapabilities.module.css';
 import { CustomDevelopmentVisual } from './CustomDevelopmentVisual';
+import { ERPImplementationVisual } from './ERPImplementationVisual';
 import { ArrowIcon } from '@/components/ui/icons';
 import { SignalDot } from '@/components/ui/SignalDot';
 import {
@@ -80,37 +81,7 @@ const capabilities = [
   },
 ] as const;
 
-const odooApps = [
-  { name: 'Discuss', icon: '/brand/odoo-apps/discuss.png' },
-  { name: 'Calendar', icon: '/brand/odoo-apps/calendar.png' },
-  { name: 'Appointments', icon: '/brand/odoo-apps/appointments.png' },
-  { name: 'Contacts', icon: '/brand/odoo-apps/contacts.png' },
-  { name: 'CRM', icon: '/brand/odoo-modules/crm.png' },
-  { name: 'Sales', icon: '/brand/odoo-modules/sales.png' },
-  { name: 'Dashboards', icon: '/brand/odoo-apps/dashboards.png' },
-  { name: 'Point of Sale', icon: '/brand/odoo-apps/point-of-sale.png' },
-  { name: 'Accounting', icon: '/brand/odoo-modules/accounting.png' },
-  { name: 'Website', icon: '/brand/odoo-modules/ecommerce.png' },
-  { name: 'Inventory', icon: '/brand/odoo-modules/inventory.png' },
-  { name: 'Purchase', icon: '/brand/odoo-modules/purchasing.png' },
-  { name: 'Manufacturing', icon: '/brand/odoo-modules/manufacturing.png' },
-  { name: 'Settings', icon: '/brand/odoo-apps/settings.png' },
-] as const;
-
 export type VisualKind = (typeof capabilities)[number]['visual'];
-
-function WindowChrome({ title }: { title: string }) {
-  return (
-    <div className={styles.windowChrome}>
-      <div className={styles.windowControls}>
-        <i />
-        <i />
-        <i />
-      </div>
-      <span>{title}</span>
-    </div>
-  );
-}
 
 function useReducedMotion() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -592,34 +563,7 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
 
 export function CapabilityVisual({ kind, active = false }: { kind: VisualKind; active?: boolean }) {
   if (kind === 'erp') {
-    return (
-      <div className={`${styles.visual} ${styles.erpVisual}`} aria-hidden="true">
-        <div className={styles.productWindow}>
-          <WindowChrome title="Odoo · Apps" />
-          <div className={styles.odooHome}>
-            <div className={styles.odooTopbar}>
-              <b>odoo</b>
-              <div className={styles.odooProfile}>
-                <i className={styles.searchGlyph} />
-                <span>4</span>
-                <small>Sutur Workspace</small>
-                <i className={styles.profileGlyph}>A</i>
-              </div>
-            </div>
-            <div className={styles.appLauncher}>
-              {odooApps.map((app) => (
-                <div className={styles.odooApp} key={app.name}>
-                  <i className={styles.appIcon}>
-                    <img src={app.icon} alt="" />
-                  </i>
-                  <span>{app.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <ERPImplementationVisual active={active} />;
   }
 
   if (kind === 'custom') {
@@ -631,12 +575,16 @@ export function CapabilityVisual({ kind, active = false }: { kind: VisualKind; a
 
 export function CompanyCapabilities() {
   const touchInteractionRef = useRef(false);
+  const erpTouchInteractionRef = useRef(false);
   const customTouchInteractionRef = useRef(false);
   const [agentHovered, setAgentHovered] = useState(false);
   const [agentFocused, setAgentFocused] = useState(false);
+  const [erpHovered, setErpHovered] = useState(false);
+  const [erpFocused, setErpFocused] = useState(false);
   const [customHovered, setCustomHovered] = useState(false);
   const [customFocused, setCustomFocused] = useState(false);
   const agentActive = agentHovered || agentFocused;
+  const erpActive = erpHovered || erpFocused;
   const customActive = customHovered || customFocused;
 
   const activateAgentHover = (event: PointerEvent<HTMLElement>) => {
@@ -664,6 +612,34 @@ export function CompanyCapabilities() {
     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
       touchInteractionRef.current = false;
       setAgentFocused(false);
+    }
+  };
+
+  const activateErpHover = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'touch') setErpHovered(true);
+  };
+
+  const trackErpPointer = (event: PointerEvent<HTMLElement>) => {
+    erpTouchInteractionRef.current = event.pointerType === 'touch';
+    if (erpTouchInteractionRef.current) {
+      setErpHovered(false);
+      setErpFocused(false);
+    }
+  };
+
+  const activateErpFocus = () => {
+    if (!erpTouchInteractionRef.current) setErpFocused(true);
+  };
+
+  const activateErpKeyboard = () => {
+    erpTouchInteractionRef.current = false;
+    setErpFocused(true);
+  };
+
+  const releaseErpFocus = (event: FocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      erpTouchInteractionRef.current = false;
+      setErpFocused(false);
     }
   };
 
@@ -719,38 +695,72 @@ export function CompanyCapabilities() {
       <div className={styles.capabilityGrid} role="list">
         {capabilities.map((capability) => {
           const isAgent = capability.visual === 'agent';
+          const isErp = capability.visual === 'erp';
           const isCustom = capability.visual === 'custom';
-          const active = isAgent ? agentActive : isCustom ? customActive : false;
+          const active = isAgent ? agentActive : isErp ? erpActive : isCustom ? customActive : false;
 
           return (
             <article
               className={styles.capability}
               data-capability={capability.visual}
               data-agent-active={isAgent ? agentActive : undefined}
+              data-erp-active={isErp ? erpActive : undefined}
               data-custom-active={isCustom ? customActive : undefined}
               role="listitem"
               key={capability.number}
               onPointerDown={
-                isAgent ? trackAgentPointer : isCustom ? trackCustomPointer : undefined
+                isAgent
+                  ? trackAgentPointer
+                  : isErp
+                    ? trackErpPointer
+                    : isCustom
+                      ? trackCustomPointer
+                      : undefined
               }
               onPointerEnter={
-                isAgent ? activateAgentHover : isCustom ? activateCustomHover : undefined
+                isAgent
+                  ? activateAgentHover
+                  : isErp
+                    ? activateErpHover
+                    : isCustom
+                      ? activateCustomHover
+                      : undefined
               }
               onPointerLeave={
                 isAgent
                   ? () => setAgentHovered(false)
-                  : isCustom
-                    ? () => setCustomHovered(false)
-                    : undefined
+                  : isErp
+                    ? () => setErpHovered(false)
+                    : isCustom
+                      ? () => setCustomHovered(false)
+                      : undefined
               }
               onFocusCapture={
-                isAgent ? activateAgentFocus : isCustom ? activateCustomFocus : undefined
+                isAgent
+                  ? activateAgentFocus
+                  : isErp
+                    ? activateErpFocus
+                    : isCustom
+                      ? activateCustomFocus
+                      : undefined
               }
               onKeyDownCapture={
-                isAgent ? activateAgentKeyboard : isCustom ? activateCustomKeyboard : undefined
+                isAgent
+                  ? activateAgentKeyboard
+                  : isErp
+                    ? activateErpKeyboard
+                    : isCustom
+                      ? activateCustomKeyboard
+                      : undefined
               }
               onBlurCapture={
-                isAgent ? releaseAgentFocus : isCustom ? releaseCustomFocus : undefined
+                isAgent
+                  ? releaseAgentFocus
+                  : isErp
+                    ? releaseErpFocus
+                    : isCustom
+                      ? releaseCustomFocus
+                      : undefined
               }
             >
               <CapabilityVisual kind={capability.visual} active={active} />
