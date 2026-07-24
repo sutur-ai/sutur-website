@@ -946,6 +946,7 @@ button:disabled,
   max-width: none;
   justify-self: center;
   margin-top: 0;
+  opacity: 0.16;
 }
 
 .footer-outline-logo-artwork-compact {

@@ -60,7 +60,7 @@ export function SiteFooter() {
             <feMorphology
               in="SourceAlpha"
               operator="erode"
-              radius="3"
+              radius="2"
               result="erodedLogo"
             />
             <feComposite in="SourceGraphic" in2="erodedLogo" operator="out" />
@@ -77,7 +77,7 @@ export function SiteFooter() {
             <feMorphology
               in="SourceAlpha"
               operator="erode"
-              radius="8"
+              radius="6"
               result="erodedLogoCompact"
             />
             <feComposite in="SourceGraphic" in2="erodedLogoCompact" operator="out" />

@@ -205,11 +205,11 @@ describe('website design-system theme', () => {
     expect(footer).toContain('<feMorphology');
     expect(footer).toContain('operator="erode"');
     expect(footer).toContain('operator="out"');
-    expect(footer).toContain('radius="3"');
+    expect(footer).toContain('radius="2"');
     expect(footer).toContain('id="footer-logo-outline-compact"');
-    expect(footer).toContain('radius="8"');
+    expect(footer).toContain('radius="6"');
     expect(footer).not.toContain('aria-hidden="true">sutur</div>');
-    expect(css).toMatch(/\.footer-outline-logo\s*{[^}]*width:\s*min\(86vw,\s*82rem\)[^}]*justify-self:\s*center[^}]*margin-top:\s*0/s);
+    expect(css).toMatch(/\.footer-outline-logo\s*{[^}]*width:\s*min\(86vw,\s*82rem\)[^}]*justify-self:\s*center[^}]*margin-top:\s*0[^}]*opacity:\s*0\.16/s);
     expect(css).toMatch(/@media \(max-width:\s*440px\)[\s\S]*\.footer-outline-logo-artwork-default\s*{[^}]*display:\s*none[^}]*}[\s\S]*\.footer-outline-logo-artwork-compact\s*{[^}]*display:\s*block/s);
   });
 
