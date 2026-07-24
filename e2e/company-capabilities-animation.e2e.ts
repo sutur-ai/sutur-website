@@ -504,6 +504,8 @@ test('touch stays idle, keyboard focus activates, and reduced motion resolves to
 });
 
 test('all three capability windows share the first window size on mobile', async ({ page }) => {
+  const heights = new Map<number, number>();
+
   for (const width of [640, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');
@@ -521,6 +523,36 @@ test('all three capability windows share the first window size on mobile', async
     expect(boxes[1].height, `${width}px ERP window height`).toBeCloseTo(boxes[0].height, 0);
     expect(boxes[2].width, `${width}px custom window width`).toBeCloseTo(boxes[0].width, 0);
     expect(boxes[2].height, `${width}px custom window height`).toBeCloseTo(boxes[0].height, 0);
+    heights.set(width, boxes[0].height);
+  }
+
+  expect(heights.get(390)!, 'mobile window height must grow with available width').toBeGreaterThan(
+    heights.get(320)! + 20,
+  );
+  expect(heights.get(640)!, 'mobile window height must remain bounded').toBeLessThanOrEqual(320);
+});
+
+test('ERP launcher keeps all apps above the progress rail at narrow mobile widths', async ({ page }) => {
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const { visual } = await openERPCapabilities(page);
+    const apps = visual.locator('[class*="odooApp"]');
+    const progressRail = visual.locator('[class*="progressRail"]');
+
+    await expect(apps).toHaveCount(14);
+    const railBox = await progressRail.boundingBox();
+    expect(railBox, `${width}px progress rail must render`).not.toBeNull();
+    if (!railBox) continue;
+
+    for (let index = 0; index < 14; index += 1) {
+      const appBox = await apps.nth(index).boundingBox();
+      expect(appBox, `${width}px ERP app ${index + 1} must render`).not.toBeNull();
+      if (!appBox) continue;
+      expect(
+        appBox.y + appBox.height,
+        `${width}px ERP app ${index + 1} must stay above the progress rail`,
+      ).toBeLessThanOrEqual(railBox.y - 2);
+    }
   }
 });
 

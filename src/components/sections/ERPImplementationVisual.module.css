@@ -270,9 +270,9 @@
   .windowChrome > span { display: none; }
   .workspacePresence { grid-column: 2; }
   .odooProfile small, .searchGlyph { display: none; }
-  .appLauncher { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: .45rem .35rem 2.55rem; gap: .34rem .12rem; }
+  .appLauncher { grid-template-columns: repeat(5, minmax(0, 1fr)); padding: .45rem .35rem 2.55rem; gap: .34rem .12rem; }
   .odooApp { font-size: .36rem; }
-  .appIcon { width: 1.8rem; border-radius: .42rem; }
+  .appIcon { width: clamp(1.55rem, 9cqi, 1.8rem); border-radius: .42rem; }
   .registerBody { grid-template-columns: minmax(0, 1.02fr) minmax(6.8rem, .98fr); }
   .catalogue { padding: .38rem; }
   .catalogue > header > div { display: none; }

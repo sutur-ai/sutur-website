@@ -1079,7 +1079,7 @@
   }
 
   .visual {
-    height: clamp(14rem, 52vw, 20rem);
+    height: clamp(15rem, 72vw, 20rem);
   }
 }
 

@@ -283,7 +283,7 @@ describe('company capabilities section', () => {
     expect(agentVisual).not.toContain('styles.productWindow');
   });
 
-  it('changes from three columns to split rows, then gives every compact mobile window one shared height', () => {
+  it('changes from three columns to split rows, then gives every compact mobile window one shared fluid height', () => {
     expect(styles).toMatch(/\.capabilityGrid\s*{[^}]*grid-template-columns:\s*repeat\(3,/s);
     expect(styles).toMatch(
       /@media \(max-width: 1120px\)[\s\S]*?\.capabilityGrid\s*{[^}]*grid-template-columns:\s*1fr/s,
@@ -292,9 +292,12 @@ describe('company capabilities section', () => {
       /@media \(max-width: 840px\)[\s\S]*?\.capability\s*{[^}]*grid-template-columns:\s*1fr/s,
     );
     expect(styles).toMatch(
-      /@media \(max-width: 840px\)[\s\S]*?\.visual\s*{[^}]*height:\s*clamp\(14rem, 52vw, 20rem\)/s,
+      /@media \(max-width: 840px\)[\s\S]*?\.visual\s*{[^}]*height:\s*clamp\(15rem, 72vw, 20rem\)/s,
     );
     expect(styles).not.toMatch(/@media \(max-width: 840px\)[\s\S]*?\.visual\.agentVisual\s*{/s);
+    expect(erpStyles).toMatch(
+      /@container \(max-width: 21rem\)[\s\S]*?\.appLauncher\s*{[^}]*grid-template-columns:\s*repeat\(5,/s,
+    );
   });
 
   it('runs the accepted cancellable workflow, restores over open apps, and requires a new hover edge', () => {
