@@ -205,28 +205,41 @@ describe('company capabilities section', () => {
     );
   });
 
-  it('runs the Sutur Agent hover story as a cancellable, reduced-motion-safe workflow', () => {
+  it('runs the accepted cancellable workflow, restores over open apps, and requires a new hover edge', () => {
     for (const phase of [
       'idle',
       'collapsing',
       'typing',
+      'understanding',
       'checking',
       'drafting',
       'validated',
+      'selecting-teams',
       'opening-teams',
+      'selecting-gmail',
       'opening-gmail',
-      'complete',
+      'restoring',
+      'restored',
     ]) {
       expect(component).toContain(`| '${phase}'`);
     }
+    expect(component).not.toMatch(/\| '(?:complete|completed)'/);
     expect(component).toContain(
       'I am running late 1h over my schedule, check my teams meetings',
     );
-    expect(component).toContain('data-agent-phase={phase}');
-    expect(component).toContain('data-agent-task="teams"');
-    expect(component).toContain(
-      "data-agent-task={phase === 'complete' ? 'complete' : 'app-review'}",
-    );
+    expect(component).toContain('data-agent-phase={visiblePhase}');
+    expect(component).toContain('data-agent-task="understanding"');
+    expect(component).toContain("'opening-gmail': { next: 'restoring'");
+    expect(component).toContain("restoring: { next: 'restored'");
+    expect(component).not.toContain("'opening-gmail': { next: 'complete'");
+    expect(component).toContain('data-agent-user-avatar');
+    expect(component).toContain('/brand/design-system/sutur-agent-favicon.png');
+    expect(component).toContain('data-agent-review-workspace');
+    expect(component).toContain('data-agent-review-window="teams"');
+    expect(component).toContain('data-agent-review-window="gmail"');
+    expect(component).toContain('data-agent-restore-backdrop');
+    expect(component).toContain('data-agent-stack-layer');
+    expect(component).toContain('data-agent-app-stack');
     expect(component).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
     expect(component).toContain(
       'onPointerEnter={isAgent ? activateAgentHover : undefined}',
@@ -253,9 +266,7 @@ describe('company capabilities section', () => {
     expect(component).toContain("'--stack-exit-delay': `${cellIndex * 22}ms`");
     expect(component).toContain('data-agent-app="teams"');
     expect(component).toContain('data-agent-app="gmail"');
-    expect(component).toContain('data-agent-app-badge');
-    expect(component).toContain('data-agent-window="teams"');
-    expect(component).toContain('data-agent-window="gmail"');
+    expect(component.match(/<span data-agent-app-badge>1<\/span>/g)).toHaveLength(2);
     expect(styles).toMatch(
       /\.agentActive \.integrationCell\s*{[^}]*translate\(var\(--stack-x\), var\(--stack-y\)\)[^}]*scale\(0\.46\)/s,
     );
@@ -263,9 +274,15 @@ describe('company capabilities section', () => {
     expect(styles).toMatch(
       /\.agentActive \.integrationCell\s*{[^}]*transition-delay:\s*var\(--stack-enter-delay\)/s,
     );
+    expect(styles).toMatch(/\.agentReviewWorkspace\s*{[^}]*z-index:\s*4/s);
+    expect(styles).toMatch(/\.agentRestoreBackdrop\s*{[^}]*z-index:\s*5[^}]*agent-restore-backdrop-in/s);
+    expect(styles).toMatch(/\.integrationField\s*{[^}]*z-index:\s*6/s);
+    expect(styles).toMatch(/\.agentValidatedApps\s*{[^}]*z-index:\s*8/s);
+    expect(styles).toContain('@keyframes agent-macos-window-open');
     expect(styles).toMatch(
       /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.integrationCell,[\s\S]*?\.agentDesktop,[\s\S]*?\.agentCursor\s*{[^}]*transition:\s*none/s,
     );
+    expect(styles).toMatch(/\.agentRestoreBackdrop\s*{\s*opacity:\s*1;\s*animation:\s*none;/s);
   });
 
   it('keeps capability and global navigation pointed at live destinations', () => {

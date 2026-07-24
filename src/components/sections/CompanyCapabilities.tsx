@@ -22,24 +22,31 @@ export const AGENT_MEETINGS = [
 export const AGENT_SEQUENCE = {
   collapseMs: 700,
   typeIntervalMs: 18,
-  typedHoldMs: 420,
+  typedHoldMs: 220,
+  understandingMs: 900,
   calendarMs: 1900,
   draftsMs: 2100,
-  validatedMs: 720,
-  teamsOpenMs: 1500,
-  gmailOpenMs: 1500,
+  validatedMs: 820,
+  appSelectMs: 1350,
+  teamsOpenMs: 1650,
+  gmailOpenMs: 1750,
+  restoreMs: 1100,
 } as const;
 
-type AgentPhase =
+export type AgentPhase =
   | 'idle'
   | 'collapsing'
   | 'typing'
+  | 'understanding'
   | 'checking'
   | 'drafting'
   | 'validated'
+  | 'selecting-teams'
   | 'opening-teams'
+  | 'selecting-gmail'
   | 'opening-gmail'
-  | 'complete';
+  | 'restoring'
+  | 'restored';
 const integrationCount = integrationLayout.flat().length;
 
 const capabilities = [
@@ -119,156 +126,270 @@ function useReducedMotion() {
   return reducedMotion;
 }
 
-function AgentResultWindows({ phase }: { phase: AgentPhase }) {
-  const teamsOpen = phase !== 'validated';
-  const gmailOpen = phase === 'opening-gmail' || phase === 'complete';
+function AgentAvatar() {
+  return (
+    <span className={styles.agentAvatar}>
+      <img src="/brand/design-system/sutur-agent-favicon.png" alt="" />
+    </span>
+  );
+}
+
+function UserAvatar() {
+  return (
+    <span className={styles.agentUserAvatar} data-agent-user-avatar>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="8" r="3.25" />
+        <path d="M5.5 20c.55-4.15 2.75-6.25 6.5-6.25s5.95 2.1 6.5 6.25" />
+      </svg>
+    </span>
+  );
+}
+
+function AgentPersistentApps({ phase }: { phase: AgentPhase }) {
+  const teamsExpanded = phase === 'checking';
+  const gmailExpanded = phase === 'drafting';
+  const validated = [
+    'validated',
+    'selecting-teams',
+    'opening-teams',
+    'selecting-gmail',
+    'opening-gmail',
+  ].includes(phase);
 
   return (
-    <div
-      className={styles.agentResultWindows}
-      data-agent-task={phase === 'complete' ? 'complete' : 'app-review'}
-    >
+    <div className={styles.agentPersistentApps} data-agent-persistent-apps>
       <section
-        className={`${styles.agentAppWindow} ${teamsOpen ? styles.agentAppWindowOpen : ''}`}
+        className={`${styles.agentCompactApp} ${teamsExpanded ? styles.agentCompactAppExpanded : ''}`}
         data-agent-window="teams"
+        data-agent-app-collapsed={!teamsExpanded}
       >
         <header>
           <img src="/brand/integrations/microsoft-teams.svg" alt="" />
-          <p><strong>Teams</strong><span>3 times updated</span></p>
+          <p>
+            <strong>Teams calendar</strong>
+            <span>{teamsExpanded ? 'Checking today’s meetings' : '3 meetings found'}</span>
+          </p>
+          {validated || phase === 'drafting' ? <b>✓</b> : <i className={styles.agentSpinner} />}
         </header>
-        <div>
-          {AGENT_MEETINGS.map((meeting) => (
-            <div data-agent-window-row key={meeting.person}>
-              <time>{meeting.time}<i>&rarr;</i>{meeting.newTime}</time>
-              <span>{meeting.person}</span>
-              <b>+1h</b>
-            </div>
-          ))}
-        </div>
+        {teamsExpanded && (
+          <div className={styles.agentMeetingList}>
+            {AGENT_MEETINGS.map((meeting, index) => (
+              <div
+                className={styles.agentMeeting}
+                data-agent-meeting
+                data-agent-window-row
+                key={meeting.person}
+                style={{ '--item-index': index } as CSSProperties}
+              >
+                <time>{meeting.time}</time>
+                <p><strong>{meeting.title}</strong><span>{meeting.person}</span></p>
+                <i />
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section
-        className={`${styles.agentAppWindow} ${styles.agentGmailWindow} ${gmailOpen ? styles.agentAppWindowOpen : ''}`}
+        className={`${styles.agentCompactApp} ${styles.agentCompactGmail} ${gmailExpanded ? styles.agentCompactAppExpanded : ''}`}
         data-agent-window="gmail"
+        data-agent-app-collapsed={!gmailExpanded}
       >
         <header>
           <img src="/brand/integrations/gmail.svg" alt="" />
-          <p><strong>Gmail</strong><span>3 drafts ready</span></p>
+          <p>
+            <strong>Gmail drafts</strong>
+            <span>{gmailExpanded ? 'Personalizing 3 messages' : validated ? '3 drafts ready' : 'Waiting for meeting details'}</span>
+          </p>
+          {validated ? <b>✓</b> : gmailExpanded ? <i className={styles.agentSpinner} /> : <em>Next</em>}
         </header>
-        <div>
-          {AGENT_MEETINGS.map((meeting) => (
-            <div data-agent-draft data-agent-window-row key={meeting.person}>
-              <span>{meeting.person}</span>
-              <small>New meeting time · {meeting.newTime}</small>
-              <b>Ready</b>
-            </div>
-          ))}
-        </div>
+        {gmailExpanded && (
+          <div className={styles.agentDraftList}>
+            {AGENT_MEETINGS.map((meeting, index) => (
+              <div
+                className={styles.agentDraft}
+                data-agent-draft
+                data-agent-window-row
+                key={meeting.person}
+                style={{ '--item-index': index } as CSSProperties}
+              >
+                <span>{meeting.person.split(' ').map((name) => name[0]).join('')}</span>
+                <p><strong>{meeting.person}</strong><small>Move {meeting.time} · {meeting.title}</small></p>
+                <i>Drafting</i>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
 }
 
 function AgentTaskPanel({ phase }: { phase: AgentPhase }) {
-  const showingResults =
-    phase === 'validated' ||
-    phase === 'opening-teams' ||
-    phase === 'opening-gmail' ||
-    phase === 'complete';
+  if (['idle', 'collapsing', 'typing', 'restoring', 'restored'].includes(phase)) return null;
 
-  if (phase === 'idle' || phase === 'collapsing' || phase === 'typing') {
+  if (phase === 'understanding') {
     return (
-      <div className={styles.agentThinking} data-agent-task="understanding">
-        <span><i /><i /><i /></span>
-        <p>Understanding your request</p>
-      </div>
-    );
-  }
-
-  if (phase === 'checking') {
-    return (
-      <div className={styles.agentActionCard} data-agent-task="teams">
-        <div className={styles.agentActionHeader}>
-          <img src="/brand/integrations/microsoft-teams.svg" alt="" />
-          <p><strong>Teams calendar</strong><span>Checking today&apos;s meetings</span></p>
-          <i className={styles.agentSpinner} />
-        </div>
-        <div className={styles.agentMeetingList}>
-          {AGENT_MEETINGS.map((meeting, index) => (
-            <div
-              className={styles.agentMeeting}
-              data-agent-meeting
-              key={meeting.person}
-              style={{ '--item-index': index } as CSSProperties}
-            >
-              <time>{meeting.time}</time>
-              <p><strong>{meeting.title}</strong><span>{meeting.person}</span></p>
-              <i />
-            </div>
-          ))}
+      <div className={styles.agentMessage} data-agent-message data-agent-task="understanding">
+        <AgentAvatar />
+        <div className={styles.agentThinking}>
+          <span><i /><i /><i /></span>
+          <p>Understanding your request</p>
         </div>
       </div>
     );
   }
 
-  if (showingResults) return <AgentResultWindows phase={phase} />;
+  const status = phase === 'checking'
+    ? 'I’m checking today’s Teams meetings.'
+    : phase === 'drafting'
+      ? 'I found 3 meetings. I’m drafting the emails now.'
+      : 'Everything is ready for your review.';
 
   return (
-    <div className={`${styles.agentActionCard} ${styles.agentDraftCard}`} data-agent-task="drafting">
-      <div className={styles.agentActionHeader}>
-        <img src="/brand/integrations/gmail.svg" alt="" />
-        <p><strong>Email drafts</strong><span>Personalizing each message</span></p>
-        <i className={styles.agentSpinner} />
-      </div>
-      <div className={styles.agentDraftList}>
-        {AGENT_MEETINGS.map((meeting, index) => (
-          <div
-            className={styles.agentDraft}
-            data-agent-draft
-            key={meeting.person}
-            style={{ '--item-index': index } as CSSProperties}
-          >
-            <span>{meeting.person.split(' ').map((name) => name[0]).join('')}</span>
-            <p><strong>{meeting.person}</strong><small>Move {meeting.time} · {meeting.title}</small></p>
-            <i>Drafting</i>
-          </div>
-        ))}
+    <div className={styles.agentMessage} data-agent-message data-agent-task={phase}>
+      <AgentAvatar />
+      <div className={styles.agentMessageContent}>
+        <div className={styles.agentMessageBubble}>
+          <p>{status}</p>
+        </div>
+        <AgentPersistentApps phase={phase} />
       </div>
     </div>
   );
 }
 
-function AgentValidatedApps({ phase }: { phase: AgentPhase }) {
-  const showingValidation =
-    phase === 'validated' ||
-    phase === 'opening-teams' ||
-    phase === 'opening-gmail' ||
-    phase === 'complete';
-  const cursorTarget =
-    phase === 'opening-teams'
-      ? 'teams'
-      : phase === 'opening-gmail'
-        ? 'gmail'
-        : phase === 'validated'
-          ? 'ready'
-          : 'hidden';
-
+function TeamsCalendarWindow({ opening }: { opening: boolean }) {
   return (
-    <>
-      <div
-        className={`${styles.agentValidatedApps} ${showingValidation ? styles.agentValidatedAppsVisible : ''}`}
-        data-agent-validated-apps
-      >
-        <div className={styles.agentValidatedApp} data-agent-app="teams">
+    <section
+      className={`${styles.agentReviewWindow} ${styles.teamsReviewWindow} ${opening ? styles.agentReviewWindowOpening : ''}`}
+      data-agent-review-window="teams"
+      data-agent-window-opening={opening}
+    >
+      <header className={styles.reviewTitlebar}>
+        <div className={styles.reviewAppTitle}>
           <img src="/brand/integrations/microsoft-teams.svg" alt="" />
-          <span data-agent-app-badge>3</span>
+          <strong>Microsoft Teams</strong>
         </div>
-        <div className={styles.agentValidatedApp} data-agent-app="gmail">
-          <img src="/brand/integrations/gmail.svg" alt="" />
-          <span data-agent-app-badge>3</span>
+        <div className={styles.reviewWindowControls}><i /><i /><i /></div>
+      </header>
+      <div className={styles.teamsAppShell}>
+        <nav className={styles.teamsRail} aria-label="Teams sections">
+          {['Activity', 'Chat', 'Calendar', 'Calls'].map((item) => <span key={item} data-active={item === 'Calendar'}>{item.slice(0, 1)}<small>{item}</small></span>)}
+        </nav>
+        <div className={styles.teamsCalendar}>
+          <header><p><strong>Calendar</strong><span>Today · July 24</span></p><button type="button">New meeting</button></header>
+          <div className={styles.teamsDayHeader}><b>Today</b><span>Friday 24</span></div>
+          <div className={styles.teamsTimeline}>
+            {AGENT_MEETINGS.map((meeting) => (
+              <div className={styles.teamsCalendarRow} data-agent-calendar-event key={meeting.person}>
+                <time>{meeting.time}</time>
+                <article>
+                  <strong>{meeting.title}</strong>
+                  <span>{meeting.person}</span>
+                  <small>Move to {meeting.newTime}</small>
+                </article>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+    </section>
+  );
+}
 
+function GmailDraftWindow({ opening }: { opening: boolean }) {
+  return (
+    <section
+      className={`${styles.agentReviewWindow} ${styles.gmailReviewWindow} ${opening ? styles.agentReviewWindowOpening : ''}`}
+      data-agent-review-window="gmail"
+      data-agent-window-opening={opening}
+    >
+      <header className={`${styles.reviewTitlebar} ${styles.gmailTitlebar}`}>
+        <div className={styles.reviewAppTitle}>
+          <img src="/brand/integrations/gmail.svg" alt="" />
+          <strong>Gmail</strong>
+        </div>
+        <div className={styles.gmailSearch}>Search mail</div>
+        <div className={styles.reviewWindowControls}><i /><i /><i /></div>
+      </header>
+      <div className={styles.gmailAppShell}>
+        <nav className={styles.gmailRail} aria-label="Gmail folders">
+          <button type="button">+ Compose</button>
+          <span>Inbox</span><span data-active="true">Drafts <b>3</b></span><span>Sent</span>
+        </nav>
+        <div className={styles.gmailDrafts}>
+          <header><p><strong>Drafts</strong><span>3 messages</span></p><small>Saved just now</small></header>
+          {AGENT_MEETINGS.map((meeting) => (
+            <article data-agent-email-draft key={meeting.person}>
+              <span className={styles.gmailDraftAvatar}>{meeting.person.split(' ').map((name) => name[0]).join('')}</span>
+              <p>
+                <strong>To: {meeting.person}</strong>
+                <b>Can we move our {meeting.title.toLowerCase()}?</b>
+                <small>Hi {meeting.person.split(' ')[0]}, I’m running one hour late today. Could we move our {meeting.time} meeting to {meeting.newTime}?</small>
+              </p>
+              <em>Draft</em>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AgentReviewWorkspace({ phase }: { phase: AgentPhase }) {
+  const visible = ['opening-teams', 'selecting-gmail', 'opening-gmail', 'restoring'].includes(phase);
+  if (!visible) return null;
+  const gmailVisible = phase === 'opening-gmail' || phase === 'restoring';
+
+  return (
+    <div className={styles.agentReviewWorkspace} data-agent-review-workspace data-agent-review-phase={phase}>
+      <div className={styles.agentReviewSlot} data-agent-review-slot="teams">
+        <TeamsCalendarWindow opening={phase === 'opening-teams'} />
+      </div>
+      {gmailVisible && (
+        <div className={`${styles.agentReviewSlot} ${styles.agentReviewSlotGmail}`} data-agent-review-slot="gmail">
+          <GmailDraftWindow opening={phase === 'opening-gmail'} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AgentValidatedApps({ phase }: { phase: AgentPhase }) {
+  const showingValidation = [
+    'validated',
+    'selecting-teams',
+    'opening-teams',
+    'selecting-gmail',
+    'opening-gmail',
+  ].includes(phase);
+  if (!showingValidation) return null;
+
+  const cursorTarget = phase === 'selecting-teams'
+    ? 'teams'
+    : phase === 'selecting-gmail'
+      ? 'gmail'
+      : 'ready';
+
+  return (
+    <div
+      className={`${styles.agentValidatedApps} ${styles.agentValidatedAppsVisible}`}
+      data-agent-validated-apps
+      data-agent-selection={cursorTarget}
+    >
+      <div className={styles.agentValidatedApp} data-agent-app="teams">
+        <div className={styles.agentValidatedIconSurface} data-agent-app-surface>
+          <img src="/brand/integrations/microsoft-teams.svg" alt="" />
+        </div>
+        <span data-agent-app-badge>1</span>
+      </div>
+      <div className={styles.agentValidatedApp} data-agent-app="gmail">
+        <div className={styles.agentValidatedIconSurface} data-agent-app-surface>
+          <img src="/brand/integrations/gmail.svg" alt="" />
+        </div>
+        <span data-agent-app-badge>1</span>
+      </div>
       <svg
         className={styles.agentCursor}
         data-agent-cursor={cursorTarget}
@@ -277,7 +398,7 @@ function AgentValidatedApps({ phase }: { phase: AgentPhase }) {
       >
         <path d="M3 2.5v20.4l5.1-4.9 3.3 7.2 4.2-2-3.4-7.1h7.1L3 2.5Z" />
       </svg>
-    </>
+    </div>
   );
 }
 
@@ -286,6 +407,10 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
   const sequenceIdRef = useRef(0);
   const [phase, setPhase] = useState<AgentPhase>('idle');
   const [typedPrompt, setTypedPrompt] = useState('');
+  const visiblePhase = phase;
+  const visiblePrompt = typedPrompt;
+  const showingWorkflow = !['idle', 'restoring', 'restored'].includes(visiblePhase);
+  const visiblyActive = showingWorkflow && active;
 
   useEffect(() => {
     const sequenceId = ++sequenceIdRef.current;
@@ -298,7 +423,7 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
 
     if (reducedMotion) {
       setTypedPrompt(AGENT_PROMPT);
-      setPhase('complete');
+      setPhase('restored');
       return;
     }
 
@@ -333,7 +458,7 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
         window.clearInterval(typingTimer);
         holdTimer = window.setTimeout(
           () => {
-            if (sequenceIdRef.current === sequenceId) setPhase('checking');
+            if (sequenceIdRef.current === sequenceId) setPhase('understanding');
           },
           AGENT_SEQUENCE.typedHoldMs,
         );
@@ -348,11 +473,15 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
 
   useEffect(() => {
     const phaseSequence = {
+      understanding: { next: 'checking', duration: AGENT_SEQUENCE.understandingMs },
       checking: { next: 'drafting', duration: AGENT_SEQUENCE.calendarMs },
       drafting: { next: 'validated', duration: AGENT_SEQUENCE.draftsMs },
-      validated: { next: 'opening-teams', duration: AGENT_SEQUENCE.validatedMs },
-      'opening-teams': { next: 'opening-gmail', duration: AGENT_SEQUENCE.teamsOpenMs },
-      'opening-gmail': { next: 'complete', duration: AGENT_SEQUENCE.gmailOpenMs },
+      validated: { next: 'selecting-teams', duration: AGENT_SEQUENCE.validatedMs },
+      'selecting-teams': { next: 'opening-teams', duration: AGENT_SEQUENCE.appSelectMs },
+      'opening-teams': { next: 'selecting-gmail', duration: AGENT_SEQUENCE.teamsOpenMs },
+      'selecting-gmail': { next: 'opening-gmail', duration: AGENT_SEQUENCE.appSelectMs },
+      'opening-gmail': { next: 'restoring', duration: AGENT_SEQUENCE.gmailOpenMs },
+      restoring: { next: 'restored', duration: AGENT_SEQUENCE.restoreMs },
     } as const;
     const currentStep = phaseSequence[phase as keyof typeof phaseSequence];
     if (!currentStep) return;
@@ -372,8 +501,8 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
 
   return (
     <div
-      className={`${styles.visual} ${styles.agentVisual} ${active ? styles.agentActive : ''}`}
-      data-agent-phase={phase}
+      className={`${styles.visual} ${styles.agentVisual} ${visiblyActive ? styles.agentActive : ''}`}
+      data-agent-phase={visiblePhase}
       aria-hidden="true"
     >
       <div className={styles.agentDesktop} data-agent-desktop>
@@ -384,23 +513,31 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
         </div>
         <div className={styles.agentConversation}>
           <div className={styles.agentIdentity}>
-            <span>S</span>
+            <AgentAvatar />
             <p><strong>Sutur Agent</strong><small>Connected to Teams and Gmail</small></p>
           </div>
-          <div className={styles.agentPromptBubble} data-agent-prompt>
-            <small>You</small>
-            <p>{typedPrompt}<i className={phase === 'typing' ? styles.agentCaret : ''} /></p>
+          <div className={styles.agentUserMessage} data-agent-user-message>
+            <div className={styles.agentPromptBubble} data-agent-prompt>
+              <small>You</small>
+              <p>{visiblePrompt}<i className={visiblePhase === 'typing' ? styles.agentCaret : ''} /></p>
+            </div>
+            <UserAvatar />
           </div>
-          <AgentTaskPanel phase={phase} />
+          <AgentTaskPanel phase={visiblePhase} />
         </div>
-        <span className={styles.agentAppDockLabel}>13 apps</span>
       </div>
 
-      <AgentValidatedApps phase={phase} />
+      <AgentReviewWorkspace phase={visiblePhase} />
+      {visiblePhase === 'restoring' && (
+        <div className={styles.agentRestoreBackdrop} data-agent-restore-backdrop />
+      )}
+      <AgentValidatedApps phase={visiblePhase} />
+      <span className={styles.agentAppDockLabel}>13 apps</span>
 
-      <div className={styles.integrationField}>
+      <div className={styles.integrationField} data-agent-stack-layer>
         <svg
           className={styles.integrationGrid}
+          data-agent-app-stack
           viewBox={INTEGRATION_VIEW_BOX}
           preserveAspectRatio="xMidYMid meet"
         >
