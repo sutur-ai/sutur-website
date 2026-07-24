@@ -885,8 +885,6 @@ button:disabled,
 
 /* Footer */
 .site-footer {
-  --footer-inline-padding: max(var(--page-gutter), calc((100vw - var(--content-width)) / 2));
-  --footer-inline-offset: calc(0rem - var(--footer-inline-padding));
   display: grid;
   grid-template-columns: minmax(16rem, 2fr) repeat(2, 1fr);
   gap: var(--space-5);
@@ -944,10 +942,14 @@ button:disabled,
 
 .footer-outline-logo {
   grid-column: 1 / -1;
-  width: calc(100% + var(--footer-inline-padding) + var(--footer-inline-padding));
+  width: min(86vw, 82rem);
   max-width: none;
-  margin-top: clamp(1rem, 3vw, 2.5rem);
-  margin-inline: var(--footer-inline-offset);
+  justify-self: center;
+  margin-top: 0;
+}
+
+.footer-outline-logo-artwork-compact {
+  display: none;
 }
 
 @media (min-width: 1440px) {
@@ -1130,6 +1132,14 @@ button:disabled,
   .site-header .wordmark img,
   .site-header.is-floating .wordmark img {
     height: 1.25rem;
+  }
+
+  .footer-outline-logo-artwork-default {
+    display: none;
+  }
+
+  .footer-outline-logo-artwork-compact {
+    display: block;
   }
 
 }

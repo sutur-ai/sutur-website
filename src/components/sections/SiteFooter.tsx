@@ -60,17 +60,42 @@ export function SiteFooter() {
             <feMorphology
               in="SourceAlpha"
               operator="erode"
-              radius="7"
+              radius="3"
               result="erodedLogo"
             />
             <feComposite in="SourceGraphic" in2="erodedLogo" operator="out" />
           </filter>
+          <filter
+            id="footer-logo-outline-compact"
+            x="0"
+            y="0"
+            width="2250"
+            height="816"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feMorphology
+              in="SourceAlpha"
+              operator="erode"
+              radius="8"
+              result="erodedLogoCompact"
+            />
+            <feComposite in="SourceGraphic" in2="erodedLogoCompact" operator="out" />
+          </filter>
         </defs>
         <image
+          className="footer-outline-logo-artwork-default"
           href={footerLogoSource}
           width="2250"
           height="816"
           filter="url(#footer-logo-outline)"
+        />
+        <image
+          className="footer-outline-logo-artwork-compact"
+          href={footerLogoSource}
+          width="2250"
+          height="816"
+          filter="url(#footer-logo-outline-compact)"
         />
       </svg>
     </footer>
