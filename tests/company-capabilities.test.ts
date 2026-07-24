@@ -38,6 +38,16 @@ const customStylesUrl = new URL(
 );
 const customComponent = existsSync(customComponentUrl) ? readFileSync(customComponentUrl, 'utf8') : '';
 const customStyles = existsSync(customStylesUrl) ? readFileSync(customStylesUrl, 'utf8') : '';
+const erpComponentUrl = new URL(
+  '../src/components/sections/ERPImplementationVisual.tsx',
+  import.meta.url,
+);
+const erpStylesUrl = new URL(
+  '../src/components/sections/ERPImplementationVisual.module.css',
+  import.meta.url,
+);
+const erpComponent = existsSync(erpComponentUrl) ? readFileSync(erpComponentUrl, 'utf8') : '';
+const erpStyles = existsSync(erpStylesUrl) ? readFileSync(erpStylesUrl, 'utf8') : '';
 
 const integrations = [
   ['Odoo ERP', 'odoo.svg'],
@@ -101,19 +111,19 @@ describe('company capabilities section', () => {
     expect(styles).toMatch(
       /\.visual\s*{[^}]*height:\s*var\(--capability-visual-height\)[^}]*background:\s*var\(--deep-interface\)/s,
     );
-    expect(styles).toMatch(/\.productWindow\s*{[^}]*inset:\s*0[^}]*border:\s*0/s);
+    expect(erpStyles).toMatch(/\.productWindow\s*{[^}]*inset:\s*0[^}]*overflow:\s*hidden/s);
     expect(styles).not.toContain('backdrop-filter');
     expect(styles).not.toContain('gradient(');
   });
 
   it('uses only Sutur signal colors in product-window chrome', () => {
-    expect(component).toContain('function WindowChrome');
-    expect(component).toContain('className={styles.windowControls}');
-    expect(styles).toMatch(/\.windowControls i\s*{[^}]*background:\s*var\(--active-orange\)/s);
-    expect(styles).toMatch(
+    expect(erpComponent).toContain('function WindowChrome');
+    expect(erpComponent).toContain('className={styles.windowControls}');
+    expect(erpStyles).toMatch(/\.windowControls i\s*{[^}]*background:\s*var\(--active-orange\)/s);
+    expect(erpStyles).toMatch(
       /\.windowControls i:nth-child\(2\)\s*{[^}]*background:\s*var\(--soft-signal\)/s,
     );
-    expect(styles).toMatch(
+    expect(erpStyles).toMatch(
       /\.windowControls i:nth-child\(3\)\s*{[^}]*background:\s*var\(--data-violet\)/s,
     );
   });
@@ -123,16 +133,16 @@ describe('company capabilities section', () => {
 
     for (const { name, asset, source, sha256 } of officialOdooApps) {
       const assetUrl = new URL(`../public/brand/${asset}`, import.meta.url);
-      expect(component).toContain(`name: '${name}'`);
-      expect(component).toContain(`icon: '/brand/${asset}'`);
+      expect(erpComponent).toContain(`name: '${name}'`);
+      expect(erpComponent).toContain(`icon: '/brand/${asset}'`);
       expect(existsSync(assetUrl)).toBe(true);
       expect(source).toMatch(/^odoo\/(?:odoo|enterprise)@19\.0:/);
       expect(createHash('sha256').update(readFileSync(assetUrl)).digest('hex')).toBe(sha256);
       hashes.add(sha256);
     }
     expect(hashes.size).toBe(officialOdooApps.length);
-    expect(component).toContain('<img src={app.icon} alt="" />');
-    expect(component).not.toMatch(
+    expect(erpComponent).toContain('<img src={app.icon} alt="" />');
+    expect(erpComponent).not.toMatch(
       /styles\.(?:discuss|calendar|appointments|contacts|dashboard|pos|settings)Icon/,
     );
   });
@@ -162,6 +172,47 @@ describe('company capabilities section', () => {
     expect(customComponent).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
     expect(customStyles).toContain('.mouseCursor[data-cursor-target="inventory"]');
     expect(customStyles).toContain('@media (prefers-reduced-motion: reduce)');
+  });
+
+  it('wires the ERP card to the approved causal POS-to-Accounting workflow', () => {
+    expect(component).toContain("import { ERPImplementationVisual } from './ERPImplementationVisual'");
+    expect(component).toContain("data-erp-active={isErp ? erpActive : undefined}");
+    expect(component).toContain('<ERPImplementationVisual active={active} />');
+
+    for (const phase of [
+      'idle',
+      'selecting-pos',
+      'opening-pos',
+      'adding-item',
+      'item-added',
+      'selecting-payment',
+      'processing-payment',
+      'payment-success',
+      'selecting-accounting',
+      'opening-accounting',
+      'journal-items',
+      'complete',
+      'restoring',
+      'restored',
+    ]) {
+      expect(erpComponent).toContain(`| '${phase}'`);
+    }
+
+    expect(erpComponent).toContain('data-erp-phase={phase}');
+    expect(erpComponent).toContain("phase === 'item-added' || phase === 'selecting-payment'");
+    expect(erpComponent).toContain("data-cart-state={hasItem ? 'filled' : 'empty'}");
+    expect(erpComponent).toContain("phase === 'processing-payment'");
+    expect(erpComponent).toContain('Processing payment…');
+    expect(erpComponent).toContain('Payment successful');
+    expect(erpComponent).toContain('Sutur Shop/0001');
+    expect(erpComponent).not.toContain('Open Register');
+    expect(erpComponent).not.toContain('Close Session');
+    expect(erpComponent).not.toContain('Posting Session');
+    expect(erpComponent).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
+    expect(erpStyles).toContain('.orderThumbnail');
+    expect(erpStyles).toContain('[data-payment-state="loading"]');
+    expect(erpStyles).toContain('.journalRow span small');
+    expect(erpStyles).toContain('@media (prefers-reduced-motion: reduce)');
   });
 
   it('preserves the chrome-free responsive honeycomb and every downloaded brand asset', () => {
@@ -279,23 +330,23 @@ describe('company capabilities section', () => {
     expect(agentVisualSource).not.toContain('<button');
     expect(agentVisualSource.match(/data-agent-control/g)).toHaveLength(2);
     expect(component).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
-    expect(component).toContain(
-      'isAgent ? activateAgentHover : isCustom ? activateCustomHover : undefined',
-    );
-    expect(component).toContain(
-      'isAgent ? trackAgentPointer : isCustom ? trackCustomPointer : undefined',
-    );
+    expect(component).toContain('? activateAgentHover');
+    expect(component).toContain('? activateErpHover');
+    expect(component).toContain('? activateCustomHover');
+    expect(component).toContain('? trackAgentPointer');
+    expect(component).toContain('? trackErpPointer');
+    expect(component).toContain('? trackCustomPointer');
     expect(component).toContain('? () => setAgentHovered(false)');
-    expect(component).toContain(
-      'isAgent ? activateAgentFocus : isCustom ? activateCustomFocus : undefined',
-    );
-    expect(component).toContain(
-      'isAgent ? activateAgentKeyboard : isCustom ? activateCustomKeyboard : undefined',
-    );
+    expect(component).toContain('? activateAgentFocus');
+    expect(component).toContain('? activateErpFocus');
+    expect(component).toContain('? activateCustomFocus');
+    expect(component).toContain('? activateAgentKeyboard');
+    expect(component).toContain('? activateErpKeyboard');
+    expect(component).toContain('? activateCustomKeyboard');
     expect(component).toContain("touchInteractionRef.current = event.pointerType === 'touch'");
-    expect(component).toContain(
-      'isAgent ? releaseAgentFocus : isCustom ? releaseCustomFocus : undefined',
-    );
+    expect(component).toContain('? releaseAgentFocus');
+    expect(component).toContain('? releaseErpFocus');
+    expect(component).toContain('? releaseCustomFocus');
     expect(component).toContain('const sequenceIdRef = useRef(0)');
     expect(component).toContain('if (sequenceIdRef.current === sequenceId) setPhase');
     expect(component).toContain("'--stack-x': `${stackCenterX - centerX}px`");
