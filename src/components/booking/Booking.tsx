@@ -237,7 +237,7 @@ export function Booking() {
             </span>
             <textarea
               name="tellUsMore"
-              rows={4}
+              rows={3}
               maxLength={BOOKING_FIELD_LIMITS.tellUsMore}
               placeholder="What would you like to improve?"
               value={details.tellUsMore}

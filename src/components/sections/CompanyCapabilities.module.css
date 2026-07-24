@@ -1245,7 +1245,7 @@
     gap: var(--space-4);
   }
 
-  .visual.agentVisual {
+  .visual {
     height: clamp(14rem, 52vw, 20rem);
   }
 }
@@ -1263,10 +1263,6 @@
   .capability {
     grid-template-columns: 1fr;
     gap: var(--space-4);
-  }
-
-  .visual {
-    height: var(--capability-visual-height);
   }
 
   .capabilityCopy {

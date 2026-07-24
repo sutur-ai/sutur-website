@@ -387,6 +387,27 @@ test('touch stays idle, keyboard focus activates, and reduced motion resolves to
   await expect(reducedVisual.locator('g[data-integration]')).toHaveCount(13);
 });
 
+test('all three capability windows share the first window size on mobile', async ({ page }) => {
+  for (const width of [640, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('/');
+
+    const windows = page.locator('[data-capability] > div:first-child');
+    await expect(windows).toHaveCount(3);
+    const boxes = await windows.evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const box = node.getBoundingClientRect();
+        return { width: box.width, height: box.height };
+      }),
+    );
+
+    expect(boxes[1].width, `${width}px ERP window width`).toBeCloseTo(boxes[0].width, 0);
+    expect(boxes[1].height, `${width}px ERP window height`).toBeCloseTo(boxes[0].height, 0);
+    expect(boxes[2].width, `${width}px custom window width`).toBeCloseTo(boxes[0].width, 0);
+    expect(boxes[2].height, `${width}px custom window height`).toBeCloseTo(boxes[0].height, 0);
+  }
+});
+
 test('restored honeycomb stays contained through every responsive regime', async ({ page }) => {
   test.setTimeout(60_000);
   await page.emulateMedia({ reducedMotion: 'reduce' });

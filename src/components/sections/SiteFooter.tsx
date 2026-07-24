@@ -37,6 +37,8 @@ export function SiteFooter() {
         <span>© 2026 Sutur. All rights reserved.</span>
         <span>One clear operating system.</span>
       </div>
+
+      <div className="footer-outline-wordmark" aria-hidden="true">sutur</div>
     </footer>
   );
 }
