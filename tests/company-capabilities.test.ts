@@ -240,6 +240,12 @@ describe('company capabilities section', () => {
     expect(component).toContain('data-agent-restore-backdrop');
     expect(component).toContain('data-agent-stack-layer');
     expect(component).toContain('data-agent-app-stack');
+    const agentVisualSource = component.slice(
+      component.indexOf('function AgentAvatar'),
+      component.indexOf('export function CapabilityVisual'),
+    );
+    expect(agentVisualSource).not.toContain('<button');
+    expect(agentVisualSource.match(/data-agent-control/g)).toHaveLength(2);
     expect(component).toContain("window.matchMedia('(prefers-reduced-motion: reduce)')");
     expect(component).toContain(
       'onPointerEnter={isAgent ? activateAgentHover : undefined}',

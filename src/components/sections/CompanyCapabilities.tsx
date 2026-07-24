@@ -278,7 +278,7 @@ function TeamsCalendarWindow({ opening }: { opening: boolean }) {
           {['Activity', 'Chat', 'Calendar', 'Calls'].map((item) => <span key={item} data-active={item === 'Calendar'}>{item.slice(0, 1)}<small>{item}</small></span>)}
         </nav>
         <div className={styles.teamsCalendar}>
-          <header><p><strong>Calendar</strong><span>Today · July 24</span></p><button type="button">New meeting</button></header>
+          <header><p><strong>Calendar</strong><span>Today · July 24</span></p><span data-agent-control>New meeting</span></header>
           <div className={styles.teamsDayHeader}><b>Today</b><span>Friday 24</span></div>
           <div className={styles.teamsTimeline}>
             {AGENT_MEETINGS.map((meeting) => (
@@ -315,7 +315,7 @@ function GmailDraftWindow({ opening }: { opening: boolean }) {
       </header>
       <div className={styles.gmailAppShell}>
         <nav className={styles.gmailRail} aria-label="Gmail folders">
-          <button type="button">+ Compose</button>
+          <span data-agent-control>+ Compose</span>
           <span>Inbox</span><span data-active="true">Drafts <b>3</b></span><span>Sent</span>
         </nav>
         <div className={styles.gmailDrafts}>

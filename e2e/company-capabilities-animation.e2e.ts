@@ -126,6 +126,9 @@ test('runs the accepted workflow, restores over open apps, and rearms only after
   await page.setViewportSize({ width: 1440, height: 1000 });
   const { card, visual, prompt } = await openCapabilities(page);
   const cells = visual.locator('g[data-integration]');
+  await expect(
+    visual.locator('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+  ).toHaveCount(0);
   await observeDirectRestore(visual);
   await card.hover();
 
