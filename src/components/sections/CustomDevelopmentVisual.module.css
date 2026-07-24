@@ -32,9 +32,9 @@
 }
 
 .windowControls { display: flex; gap: clamp(.3rem, .8cqi, .45rem); }
-.windowControls i { width: clamp(.45rem, 1cqi, .58rem); height: clamp(.45rem, 1cqi, .58rem); border-radius: 50%; background: var(--active-orange); }
-.windowControls i:nth-child(2) { background: var(--soft-signal); }
-.windowControls i:nth-child(3) { background: var(--data-violet); }
+.windowControls i { width: clamp(.45rem, 1cqi, .58rem); height: clamp(.45rem, 1cqi, .58rem); background: var(--active-orange); }
+.windowControls i:nth-child(2) { border-radius: 50%; background: var(--soft-signal); }
+.windowControls i:nth-child(3) { border-radius: 50%; background: var(--data-violet); }
 
 .editorPresence { display: flex; min-width: 0; align-items: center; justify-self: end; gap: .45rem; }
 .editorPresence b { display: grid; width: clamp(1.2rem, 2.9cqi, 1.55rem); aspect-ratio: 1; place-items: center; border: 1px solid rgb(var(--soft-signal-rgb) / .2); border-radius: 50%; background: var(--data-violet); color: var(--white); font-size: clamp(.45rem, 1cqi, .58rem); }

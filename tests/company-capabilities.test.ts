@@ -116,16 +116,25 @@ describe('company capabilities section', () => {
     expect(styles).not.toContain('gradient(');
   });
 
-  it('uses only Sutur signal colors in product-window chrome', () => {
+  it('keeps ERP and custom windows on the Sutur theme with square orange close controls', () => {
     expect(erpComponent).toContain('function WindowChrome');
     expect(erpComponent).toContain('className={styles.windowControls}');
-    expect(erpStyles).toMatch(/\.windowControls i\s*{[^}]*background:\s*var\(--active-orange\)/s);
-    expect(erpStyles).toMatch(
-      /\.windowControls i:nth-child\(2\)\s*{[^}]*background:\s*var\(--soft-signal\)/s,
-    );
-    expect(erpStyles).toMatch(
-      /\.windowControls i:nth-child\(3\)\s*{[^}]*background:\s*var\(--data-violet\)/s,
-    );
+    for (const productWindowStyles of [erpStyles, customStyles]) {
+      const firstControlRule = productWindowStyles.match(/\.windowControls i\s*{([^}]*)}/s)?.[1];
+      expect(firstControlRule).toContain('background: var(--active-orange)');
+      expect(firstControlRule).not.toContain('border-radius');
+      expect(productWindowStyles).toMatch(
+        /\.windowControls i:nth-child\(2\)\s*{[^}]*border-radius:\s*50%[^}]*background:\s*var\(--soft-signal\)/s,
+      );
+      expect(productWindowStyles).toMatch(
+        /\.windowControls i:nth-child\(3\)\s*{[^}]*border-radius:\s*50%[^}]*background:\s*var\(--data-violet\)/s,
+      );
+    }
+    expect(erpStyles).toMatch(/\.erpVisual\s*{[^}]*--erp-canvas:\s*var\(--deep-interface-active\)/s);
+    expect(erpStyles).toMatch(/\.posRegister\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
+    expect(erpStyles).toMatch(/\.receiptScene\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
+    expect(erpStyles).toMatch(/\.accountingScene\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
+    expect(erpStyles).toMatch(/\.progressRail\s*{[^}]*background:\s*var\(--erp-panel\)/s);
   });
 
   it('keeps the complete Odoo launcher with official app artwork', () => {
