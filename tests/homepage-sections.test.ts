@@ -19,7 +19,7 @@ describe('homepage narrative sections', () => {
     expect(whyUs).toContain('id="why-us"');
     expect(whyUs).toContain('Why us<SignalDot />');
     expect(whyUs).toContain('<blockquote className="why-us-quote">');
-    expect(whyUs).toContain('We start with how your team actually works');
+    expect(whyUs).toContain('We are a team of skilled engineers');
     expect(whyUs).toContain('why-us-quote-mark is-open');
     expect(whyUs).toContain('why-us-quote-mark is-close');
     expect(css).toMatch(/\.why-us blockquote p\s*{[^}]*font-weight:\s*var\(--weight-bold\)/s);
@@ -28,7 +28,7 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.why-us-quote-mark\.is-close\s*{[^}]*right:\s*0[^}]*bottom:\s*0/s);
   });
 
-  it('removes the homepage Team section and adds three explicit placeholder reviews', () => {
+  it('removes the homepage Team section and shows three reviews with no placeholder framing', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
     const whyUs = page.indexOf('<WhyUs />');
     const reviewSection = page.indexOf('<Reviews />');
@@ -40,7 +40,8 @@ describe('homepage narrative sections', () => {
     expect(booking).toBeGreaterThan(reviewSection);
     expect(reviews).toContain('id="reviews"');
     expect(reviews).toContain('Reviews<SignalDot />');
-    expect(reviews).toContain('These are layout placeholders');
+    expect(reviews).not.toMatch(/[Pp]laceholder/);
+    expect(css).not.toMatch(/\.review-placeholder/);
     expect(reviews).toContain('const reviews = [');
     expect(reviews).toContain("featured: true");
     expect(reviews).toContain('review-card${review.featured ? \' is-featured\' : \'\'}');
@@ -69,7 +70,7 @@ describe('homepage narrative sections', () => {
     expect(faq.match(/<details/g)).toHaveLength(4);
     expect(faq.match(/<summary/g)).toHaveLength(4);
     expect(faq.match(/<ExpandIcon \/>/g)).toHaveLength(4);
-    expect(faq).toContain('Do we need to use Odoo already?');
+    expect(faq).toContain('Do we need to use Odoo?');
     expect(faq).toContain('What happens after the discovery call?');
   });
 });

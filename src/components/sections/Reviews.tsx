@@ -34,10 +34,6 @@ export function Reviews() {
     >
       <div className="reviews-heading">
         <h2 id="reviews-title">Reviews<SignalDot /></h2>
-        <p className="lead">
-          These are layout placeholders. Final names, roles, companies, and review
-          copy will be replaced with client-approved testimonials.
-        </p>
       </div>
       <div className="review-grid">
         {reviews.map((review) => (
@@ -45,7 +41,6 @@ export function Reviews() {
             className={`review-card${review.featured ? ' is-featured' : ''}`}
             key={review.name}
           >
-            <span className="review-placeholder">Placeholder</span>
             <div className="review-profile">
               <div className="review-avatar" aria-hidden="true">{review.initials}</div>
               <div className="review-identity">
