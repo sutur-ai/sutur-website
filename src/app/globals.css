@@ -453,6 +453,48 @@ button:disabled,
   bottom: 0;
 }
 
+/*
+ * A slim band continuing the Why us surface. It carries its own padding rather
+ * than --section-space so it reads as a footnote to the quote above it, and so
+ * the logos never land in the floating CTA's corner of the viewport.
+ */
+.founders-from {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--page-gutter) var(--space-7);
+  text-align: center;
+}
+
+.founders-from-label {
+  color: var(--data-violet);
+  font-size: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.founders-from-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(var(--space-4), 5vw, var(--space-7));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.founders-from-list img {
+  display: block;
+  width: auto;
+  height: 2.75rem;
+}
+
+/* Each mark carries different padding and weight; match them by eye, not by box. */
+.founders-from-list img[data-brand='uclouvain'] {
+  height: 2.25rem;
+}
+
 
 .reviews {
   overflow: hidden;
