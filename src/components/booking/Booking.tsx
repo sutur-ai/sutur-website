@@ -12,7 +12,10 @@ import {
   validateBookingDetails,
 } from '@/lib/booking/details';
 
-const calendlyEventUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
+// ponytail: public event URL, safe to ship in the bundle; env var stays as an override.
+const calendlyEventUrl =
+  process.env.NEXT_PUBLIC_CALENDLY_URL ||
+  'https://calendly.com/elias-chaptini-sutur/30min';
 
 const emptyDetails: BookingDetails = {
   firstName: '',
