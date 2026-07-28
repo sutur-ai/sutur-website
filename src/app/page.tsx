@@ -22,8 +22,8 @@ export default function Home() {
             <em>Automate the busywork<SignalDot /></em>
           </h1>
           <p className="lead">
-            We bring your operation into one Odoo setup, then let practical
-            agents handle the repetitive work your team should not have to chase.
+            We place all your business needs onto one platform, then have agents
+            handle the tasks your team should not waste time on.
           </p>
           <div className="hero-actions">
             <a className="button" href="#book">

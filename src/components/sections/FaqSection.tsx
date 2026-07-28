@@ -15,7 +15,7 @@ export function FaqSection() {
       <div className="faq-list">
         <details open>
           <summary>
-            <span>Do we need to use Odoo already?</span>
+            <span>Do we need to use Odoo?</span>
             <ExpandIcon />
           </summary>
           <p>

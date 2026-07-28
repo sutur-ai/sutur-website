@@ -11,8 +11,9 @@ export function WhyUs() {
       <blockquote className="why-us-quote">
         <span className="why-us-quote-mark is-open" aria-hidden="true">“</span>
         <p>
-          We start with how your team actually works, then build the smallest
-          system that removes friction without taking control away from your team
+          We are a team of skilled engineers eager to push businesses forward by
+          leveraging software. We make our schedule work for you and around your
+          business so that the integration is seamless.
         </p>
         <span className="why-us-quote-mark is-close" aria-hidden="true">”</span>
       </blockquote>
