@@ -330,6 +330,7 @@ export function ERPImplementationVisual({ active }: { active: boolean }) {
   return (
     <div
       className={`${layoutStyles.visual} ${styles.erpVisual}`}
+      data-active={active}
       data-erp-phase={phase}
       aria-hidden="true"
     >

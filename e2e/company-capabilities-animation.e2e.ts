@@ -503,6 +503,27 @@ test('touch stays idle, keyboard focus activates, and reduced motion resolves to
   await expect(reducedVisual.locator('g[data-integration]')).toHaveCount(13);
 });
 
+test('ERP and custom windows rest light, then adopt the existing dark-purple hover theme', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/');
+
+  for (const kind of ['erp', 'custom'] as const) {
+    const card = page.locator(`[data-capability="${kind}"]`);
+    const visual = card.locator(`[data-${kind}-phase]`);
+    const productWindow = visual.locator('> div');
+    await card.scrollIntoViewIfNeeded();
+
+    await expect(productWindow).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    await card.hover();
+    await expect(card).toHaveAttribute(`data-${kind}-active`, 'true');
+    await expect(productWindow).toHaveCSS('background-color', 'rgb(42, 13, 51)');
+
+    await page.locator('#capabilities-title').hover();
+    await expect(card).toHaveAttribute(`data-${kind}-active`, 'false');
+    await expect(productWindow).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  }
+});
+
 test('all three capability windows share the first window size on mobile', async ({ page }) => {
   const heights = new Map<number, number>();
 
