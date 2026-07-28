@@ -1,20 +1,25 @@
 import { SignalDot } from '@/components/ui/SignalDot';
 
-const universities = [
+const institutions = [
   {
     name: 'University of Toronto',
     brand: 'utoronto',
-    logo: '/brand/universities/university-of-toronto.svg',
+    logo: '/brand/founders/university-of-toronto.svg',
   },
   {
     name: 'UCLouvain',
     brand: 'uclouvain',
-    logo: '/brand/universities/uclouvain.svg',
+    logo: '/brand/founders/uclouvain.svg',
   },
   {
     name: 'American University of Beirut',
     brand: 'aub',
-    logo: '/brand/universities/american-university-of-beirut.png',
+    logo: '/brand/founders/american-university-of-beirut.png',
+  },
+  {
+    name: 'Boston Consulting Group',
+    brand: 'bcg',
+    logo: '/brand/founders/boston-consulting-group.png',
   },
 ];
 
@@ -33,12 +38,12 @@ export function FoundersFrom() {
         Founders from<SignalDot />
       </h2>
       <ul className="founders-from-list">
-        {universities.map((university) => (
-          <li key={university.brand}>
+        {institutions.map((institution) => (
+          <li key={institution.brand}>
             <img
-              src={university.logo}
-              alt={university.name}
-              data-brand={university.brand}
+              src={institution.logo}
+              alt={institution.name}
+              data-brand={institution.brand}
             />
           </li>
         ))}

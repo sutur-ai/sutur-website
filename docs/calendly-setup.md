@@ -1,6 +1,8 @@
 # Connect the booking calendar
 
-The booking section keeps the required lead form and Calendly calendar together on one page. Calendly's own final scheduling action reserves the selected slot and sends the booking notifications. Until a real event URL is configured, the form remains unavailable instead of pretending an email draft can reserve a time.
+The booking section keeps the required lead form and Calendly calendar together on one page. Calendly's own final scheduling action reserves the selected slot and sends the booking notifications.
+
+The live event is `https://calendly.com/elias-chaptini-sutur/30min`, hardcoded in `src/components/booking/Booking.tsx`. `NEXT_PUBLIC_CALENDLY_URL` still overrides it if you need to point a build at a different event.
 
 ## One-time Calendly setup
 
@@ -14,8 +16,7 @@ The booking section keeps the required lead form and Calendly calendar together 
    4. Business name — required, one line.
    5. Tell us more — optional, multiple lines.
 5. Set availability, video-call details, reminders, and confirmation copy in Calendly.
-6. Copy the public event URL. It must look like `https://calendly.com/account/event-name`.
-7. Add it to the GitHub repository and redeploy:
+6. The public event URL must look like `https://calendly.com/account/event-name`. To swap events, edit the constant in `Booking.tsx`, or override the build:
 
 ```bash
 gh variable set NEXT_PUBLIC_CALENDLY_URL --body "https://calendly.com/account/event-name"

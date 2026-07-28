@@ -28,7 +28,7 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.why-us-quote-mark\.is-close\s*{[^}]*right:\s*0[^}]*bottom:\s*0/s);
   });
 
-  it('credits the three founder universities in a band under Why us', () => {
+  it('credits the founders’ institutions in a band under Why us', () => {
     const founders = readIfExists('../src/components/sections/FoundersFrom.tsx');
     const whyUs = page.indexOf('<WhyUs />');
     const foundersSection = page.indexOf('<FoundersFrom />');
@@ -41,9 +41,10 @@ describe('homepage narrative sections', () => {
     expect(founders).toContain('University of Toronto');
     expect(founders).toContain('UCLouvain');
     expect(founders).toContain('American University of Beirut');
-    expect(founders.match(/logo: '\/brand\/universities\//g)).toHaveLength(3);
+    expect(founders).toContain('Boston Consulting Group');
+    expect(founders.match(/logo: '\/brand\/founders\//g)).toHaveLength(4);
     // Every mark is named for screen readers rather than left as decoration.
-    expect(founders).toContain('alt={university.name}');
+    expect(founders).toContain('alt={institution.name}');
     // A snap stop here would strand a thin band in the middle of the viewport.
     expect(founders).not.toMatch(/className="[^"]*scroll-section/);
     expect(css).toMatch(/\.founders-from-label\s*{[^}]*letter-spacing:\s*var\(--tracking-label\)/s);
