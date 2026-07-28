@@ -28,6 +28,28 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.why-us-quote-mark\.is-close\s*{[^}]*right:\s*0[^}]*bottom:\s*0/s);
   });
 
+  it('credits the three founder universities in a band under Why us', () => {
+    const founders = readIfExists('../src/components/sections/FoundersFrom.tsx');
+    const whyUs = page.indexOf('<WhyUs />');
+    const foundersSection = page.indexOf('<FoundersFrom />');
+    const reviews = page.indexOf('<Reviews />');
+
+    expect(page).toContain("import { FoundersFrom } from '@/components/sections/FoundersFrom'");
+    expect(foundersSection).toBeGreaterThan(whyUs);
+    expect(reviews).toBeGreaterThan(foundersSection);
+    expect(founders).toContain('Founders from<SignalDot />');
+    expect(founders).toContain('University of Toronto');
+    expect(founders).toContain('UCLouvain');
+    expect(founders).toContain('American University of Beirut');
+    expect(founders.match(/logo: '\/brand\/universities\//g)).toHaveLength(3);
+    // Every mark is named for screen readers rather than left as decoration.
+    expect(founders).toContain('alt={university.name}');
+    // A snap stop here would strand a thin band in the middle of the viewport.
+    expect(founders).not.toMatch(/className="[^"]*scroll-section/);
+    expect(css).toMatch(/\.founders-from-label\s*{[^}]*letter-spacing:\s*var\(--tracking-label\)/s);
+    expect(css).toMatch(/\.founders-from-list\s*{[^}]*flex-wrap:\s*wrap/s);
+  });
+
   it('removes the homepage Team section and shows three reviews with no placeholder framing', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
     const whyUs = page.indexOf('<WhyUs />');
