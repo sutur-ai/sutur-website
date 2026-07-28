@@ -210,12 +210,14 @@ test('custom development types two files, verifies checks, restores, and rearms 
   await waitForCustomPhase(visual, 'typing-purchase');
 });
 
-test('custom development stays touch-safe, supports keyboard and reduced motion, and targets the file exactly', async ({ page }) => {
+test('custom development supports touch toggling, keyboard, reduced motion, and exact file targeting', async ({ page }) => {
   test.setTimeout(30_000);
   await page.setViewportSize({ width: 840, height: 1000 });
   let { card, visual } = await openCustomCapabilities(page);
   const customLink = card.locator('a');
 
+  await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await expect(card).toHaveAttribute('data-custom-active', 'true');
   await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
   await customLink.focus();
   await page.waitForTimeout(100);
@@ -316,12 +318,14 @@ test('ERP sells one Mug only after its click, loads Payment, and proves the jour
   await waitForERPPhase(visual, 'idle');
 });
 
-test('ERP stays touch-safe and keeps enlarged Accounting proof contained through 320px', async ({ page }) => {
+test('ERP supports touch toggling and keeps enlarged Accounting proof contained through 320px', async ({ page }) => {
   test.setTimeout(45_000);
   await page.setViewportSize({ width: 840, height: 1000 });
   let { card, visual } = await openERPCapabilities(page);
   const erpLink = card.locator('a');
 
+  await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await expect(card).toHaveAttribute('data-erp-active', 'true');
   await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
   await erpLink.focus();
   await page.waitForTimeout(100);
@@ -475,12 +479,14 @@ test('stack enters bottom-right-first, exits top-left-first, and stale timers st
   await waitForPhase(visual, 'idle');
 });
 
-test('touch stays idle, keyboard focus activates, and reduced motion resolves to restored', async ({ page }) => {
+test('touch toggles activation, keyboard focus activates, and reduced motion resolves to restored', async ({ page }) => {
   await page.setViewportSize({ width: 840, height: 1000 });
   const { card, visual } = await openCapabilities(page);
   const agentLink = card.locator('a');
   const erpLink = page.locator('[data-capability="erp"] a');
 
+  await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await expect(card).toHaveAttribute('data-agent-active', 'true');
   await card.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
   await agentLink.focus();
   await page.waitForTimeout(100);
@@ -504,6 +510,41 @@ test('touch stays idle, keyboard focus activates, and reduced motion resolves to
   await waitForPhase(reducedVisual, 'restored');
   await expect(reducedVisual.locator('[data-agent-review-workspace]')).toHaveCount(0);
   await expect(reducedVisual.locator('g[data-integration]')).toHaveCount(13);
+});
+
+test('mobile taps activate one capability card at a time and allow toggling it off', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const kinds = ['agent', 'erp', 'custom'] as const;
+
+  for (const [index, kind] of kinds.entries()) {
+    const card = page.locator(`[data-capability="${kind}"]`);
+    const visual = card.locator(`[data-${kind}-phase]`);
+    await card.scrollIntoViewIfNeeded();
+    await visual.dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+    await expect(card).toHaveAttribute(`data-${kind}-active`, 'true');
+
+    if (index > 0) {
+      const previous = kinds[index - 1];
+      await expect(page.locator(`[data-capability="${previous}"]`)).toHaveAttribute(
+        `data-${previous}-active`,
+        'false',
+      );
+    }
+  }
+
+  const customCard = page.locator('[data-capability="custom"]');
+  await customCard.locator('[data-custom-phase]').dispatchEvent(
+    'pointerdown',
+    { pointerType: 'touch', bubbles: true },
+  );
+  await expect(customCard).toHaveAttribute('data-custom-active', 'false');
+
+  const agentCard = page.locator('[data-capability="agent"]');
+  await agentCard.locator('a').dispatchEvent('pointerdown', { pointerType: 'touch', bubbles: true });
+  await expect(agentCard).toHaveAttribute('data-agent-active', 'false');
 });
 
 test('ERP and custom windows rest light, then adopt the existing dark-purple hover theme at once', async ({ page }) => {

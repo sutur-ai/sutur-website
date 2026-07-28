@@ -584,9 +584,10 @@ export function CompanyCapabilities() {
   const [erpFocused, setErpFocused] = useState(false);
   const [customHovered, setCustomHovered] = useState(false);
   const [customFocused, setCustomFocused] = useState(false);
-  const agentActive = agentHovered || agentFocused;
-  const erpActive = erpHovered || erpFocused;
-  const customActive = customHovered || customFocused;
+  const [touchActive, setTouchActive] = useState<VisualKind | null>(null);
+  const agentActive = agentHovered || agentFocused || touchActive === 'agent';
+  const erpActive = erpHovered || erpFocused || touchActive === 'erp';
+  const customActive = customHovered || customFocused || touchActive === 'custom';
 
   const activateAgentHover = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType !== 'touch') setAgentHovered(true);
@@ -597,6 +598,9 @@ export function CompanyCapabilities() {
     if (touchInteractionRef.current) {
       setAgentHovered(false);
       setAgentFocused(false);
+      if (!(event.target as Element).closest('a')) {
+        setTouchActive((current) => current === 'agent' ? null : 'agent');
+      }
     }
   };
 
@@ -625,6 +629,9 @@ export function CompanyCapabilities() {
     if (erpTouchInteractionRef.current) {
       setErpHovered(false);
       setErpFocused(false);
+      if (!(event.target as Element).closest('a')) {
+        setTouchActive((current) => current === 'erp' ? null : 'erp');
+      }
     }
   };
 
@@ -653,6 +660,9 @@ export function CompanyCapabilities() {
     if (customTouchInteractionRef.current) {
       setCustomHovered(false);
       setCustomFocused(false);
+      if (!(event.target as Element).closest('a')) {
+        setTouchActive((current) => current === 'custom' ? null : 'custom');
+      }
     }
   };
 
