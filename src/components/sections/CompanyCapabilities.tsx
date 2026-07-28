@@ -480,7 +480,11 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
       <div className={styles.agentDesktop} data-agent-desktop>
         <div className={styles.agentDesktopChrome}>
           <div className={styles.windowControls}><i /><i /><i /></div>
-          <p><strong>Sutur Agent</strong><span>Workspace assistant</span></p>
+          <img
+            className={styles.agentDesktopMark}
+            src="/brand/design-system/sutur-icon-soft.png"
+            alt=""
+          />
           <i className={styles.agentOnline}>Live</i>
         </div>
         <div className={styles.agentConversation}>

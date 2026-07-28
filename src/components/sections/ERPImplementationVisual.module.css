@@ -1,4 +1,19 @@
 .erpVisual {
+  --erp-canvas: var(--surface-card);
+  --erp-panel: var(--surface-soft);
+  --erp-panel-raised: var(--violet-tint);
+  --erp-tile: rgb(var(--deep-interface-rgb) / .06);
+  --erp-tile-strong: rgb(var(--deep-interface-rgb) / .11);
+  --erp-text: var(--deep-interface);
+  --erp-text-muted: var(--text-secondary);
+  --erp-border: var(--border);
+  container-type: inline-size;
+  border-color: var(--border);
+  background: var(--erp-canvas);
+  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
+}
+
+.erpVisual[data-active="true"] {
   --erp-canvas: var(--deep-interface-active);
   --erp-panel: var(--deep-interface);
   --erp-panel-raised: var(--deep-interface-hover);
@@ -7,7 +22,6 @@
   --erp-text: var(--soft-signal);
   --erp-text-muted: rgb(var(--soft-signal-rgb) / .58);
   --erp-border: var(--border-on-deep);
-  container-type: inline-size;
   border-color: rgb(var(--active-orange-rgb) / .55);
   background: var(--deep-interface);
 }
@@ -19,6 +33,7 @@
   border-radius: inherit;
   background: var(--erp-canvas);
   color: var(--erp-text);
+  transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome {
@@ -29,13 +44,14 @@
   grid-template-columns: minmax(5rem, 1fr) auto minmax(5rem, 1fr);
   align-items: center;
   padding: 0 clamp(.65rem, 2.2cqi, 1.15rem);
-  border-bottom: 1px solid var(--border-on-deep);
-  background: #240b2d;
+  border-bottom: 1px solid var(--erp-border);
+  background: var(--erp-panel-raised);
+  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome > span {
   overflow: hidden;
-  color: rgb(var(--soft-signal-rgb) / .58);
+  color: var(--erp-text-muted);
   font: clamp(.48rem, 1.05cqi, .65rem)/1 var(--font-mono);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -46,27 +62,27 @@
 .windowControls i:nth-child(2) { border-radius: 50%; background: var(--soft-signal); }
 .windowControls i:nth-child(3) { border-radius: 50%; background: var(--data-violet); }
 .workspacePresence { display: flex; min-width: 0; align-items: center; justify-self: end; gap: .45rem; }
-.workspacePresence b { display: grid; width: clamp(1.2rem, 2.9cqi, 1.55rem); aspect-ratio: 1; place-items: center; border: 1px solid rgb(var(--soft-signal-rgb) / .2); border-radius: 50%; background: var(--data-violet); color: white; font-size: clamp(.45rem, 1cqi, .58rem); }
-.workspacePresence em { overflow: hidden; color: rgb(var(--soft-signal-rgb) / .62); font: clamp(.42rem, .9cqi, .56rem)/1 var(--font-mono); font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.workspacePresence b { display: grid; width: clamp(1.2rem, 2.9cqi, 1.55rem); aspect-ratio: 1; place-items: center; border: 1px solid var(--erp-border); border-radius: 50%; background: var(--data-violet); color: white; font-size: clamp(.45rem, 1cqi, .58rem); }
+.workspacePresence em { overflow: hidden; color: var(--erp-text-muted); font: clamp(.42rem, .9cqi, .56rem)/1 var(--font-mono); font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
 
 .sceneViewport { position: relative; height: calc(100% - 2.25rem); overflow: hidden; background: var(--erp-canvas); }
 .odooHome, .posRegister, .receiptScene, .accountingScene { position: absolute; inset: 0; overflow: hidden; animation: scene-in 420ms var(--ease-out) both; }
 
-.odooTopbar { display: flex; height: 1.75rem; align-items: center; justify-content: space-between; padding: 0 clamp(.65rem, 2cqi, 1rem); border-bottom: 1px solid var(--erp-border); background: var(--erp-panel-raised); color: var(--erp-text); }
+.odooTopbar { display: flex; height: 1.75rem; align-items: center; justify-content: space-between; padding: 0 clamp(.65rem, 2cqi, 1rem); border-bottom: 1px solid var(--erp-border); background: var(--erp-panel-raised); color: var(--erp-text); transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out); }
 .odooBrand { display: flex; min-width: 0; align-items: center; gap: clamp(.35rem, 1.1cqi, .65rem); }
 .odooBrand > b { font-size: clamp(.75rem, 1.8cqi, 1rem); letter-spacing: -.055em; }
-.odooBrand > strong { overflow: hidden; padding-left: clamp(.35rem, 1cqi, .65rem); border-left: 1px solid rgb(255 255 255 / .25); font-size: clamp(.46rem, 1.05cqi, .62rem); text-overflow: ellipsis; white-space: nowrap; }
-.appGridGlyph { color: rgb(255 255 255 / .72); font-size: clamp(.65rem, 1.5cqi, .85rem); }
-.odooProfile { display: flex; min-width: 0; align-items: center; gap: clamp(.32rem, .9cqi, .5rem); color: rgb(255 255 255 / .72); }
+.odooBrand > strong { overflow: hidden; padding-left: clamp(.35rem, 1cqi, .65rem); border-left: 1px solid var(--erp-border); font-size: clamp(.46rem, 1.05cqi, .62rem); text-overflow: ellipsis; white-space: nowrap; }
+.appGridGlyph { color: var(--erp-text-muted); font-size: clamp(.65rem, 1.5cqi, .85rem); }
+.odooProfile { display: flex; min-width: 0; align-items: center; gap: clamp(.32rem, .9cqi, .5rem); color: var(--erp-text-muted); }
 .odooProfile > span { display: grid; width: clamp(.72rem, 1.65cqi, .9rem); aspect-ratio: 1; place-items: center; border-radius: 50%; background: var(--active-orange); color: #2a0d33; font-size: clamp(.3rem, .7cqi, .4rem); font-weight: 600; }
 .odooProfile small { overflow: hidden; max-width: 9rem; font-size: clamp(.38rem, .85cqi, .5rem); text-overflow: ellipsis; white-space: nowrap; }
 .profileGlyph { display: grid; width: clamp(1rem, 2.3cqi, 1.25rem); aspect-ratio: 1; place-items: center; border-radius: .3rem; background: #9b7b96; color: white; font-size: clamp(.4rem, .9cqi, .52rem); font-style: normal; font-weight: 600; }
-.searchGlyph { position: relative; width: clamp(.48rem, 1.15cqi, .62rem); aspect-ratio: 1; border: 1px solid rgb(255 255 255 / .68); border-radius: 50%; }
-.searchGlyph::after { position: absolute; right: -.2rem; bottom: -.12rem; width: .25rem; height: 1px; background: rgb(255 255 255 / .68); content: ""; transform: rotate(45deg); }
+.searchGlyph { position: relative; width: clamp(.48rem, 1.15cqi, .62rem); aspect-ratio: 1; border: 1px solid var(--erp-text-muted); border-radius: 50%; }
+.searchGlyph::after { position: absolute; right: -.2rem; bottom: -.12rem; width: .25rem; height: 1px; background: var(--erp-text-muted); content: ""; transform: rotate(45deg); }
 
 .odooHome { background: var(--erp-panel); }
 .appLauncher { display: grid; height: calc(100% - 1.75rem); grid-template-columns: repeat(5, minmax(0, 1fr)); align-content: center; padding: clamp(.6rem, 2cqi, 1rem) clamp(.75rem, 2.7cqi, 1.4rem) 2.25rem; gap: clamp(.45rem, 1.6cqi, .9rem) clamp(.2rem, .9cqi, .5rem); }
-.odooApp { display: grid; position: relative; min-width: 0; justify-items: center; gap: clamp(.2rem, .6cqi, .35rem); color: rgb(255 255 255 / .8); font-size: clamp(.38rem, .88cqi, .54rem); text-align: center; }
+.odooApp { display: grid; position: relative; min-width: 0; justify-items: center; gap: clamp(.2rem, .6cqi, .35rem); color: var(--erp-text); font-size: clamp(.38rem, .88cqi, .54rem); text-align: center; }
 .odooApp > span { overflow: hidden; max-width: 100%; text-overflow: ellipsis; white-space: nowrap; }
 .appIcon { display: grid; width: clamp(2.2rem, 5.6cqi, 3.2rem); aspect-ratio: 1; place-items: center; overflow: hidden; border: 1px solid rgb(255 255 255 / .2); border-radius: clamp(.55rem, 1.3cqi, .75rem); background: white; box-shadow: 0 .25rem .75rem rgb(25 5 31 / .18); transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out); }
 .appIcon img { width: 86%; height: 86%; object-fit: contain; }
@@ -175,7 +191,7 @@
 .journalTable footer span:first-child { color: var(--erp-text-muted); }
 .accountingLoader { top: 1.75rem; bottom: 2rem; }
 
-.mouseCursor { position: absolute; z-index: 40; top: var(--cursor-target-y, 56%); left: var(--cursor-target-x, 52%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--soft-signal); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .5)); opacity: 1; pointer-events: none; transition: top 520ms var(--ease-out), left 520ms var(--ease-out), opacity 180ms var(--ease-out); }
+.mouseCursor { position: absolute; z-index: 40; top: var(--cursor-target-y, 56%); left: var(--cursor-target-x, 52%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--erp-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .35)); opacity: 1; pointer-events: none; transition: top 520ms var(--ease-out), left 520ms var(--ease-out), fill var(--motion-medium) var(--ease-out), opacity 180ms var(--ease-out); }
 .mouseCursor path { stroke: #190620; stroke-width: 1.45; stroke-linejoin: round; transform-box: view-box; transform-origin: 0 0; vector-effect: non-scaling-stroke; }
 .mouseCursor[data-erp-cursor="hidden"] { opacity: 0; }
 .mouseCursor[data-cursor-click="true"] path { animation: cursor-click 240ms var(--ease-out) 560ms both; }

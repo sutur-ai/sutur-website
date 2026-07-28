@@ -1,5 +1,23 @@
 .customVisual {
+  --custom-canvas: var(--surface-card);
+  --custom-panel: var(--surface-soft);
+  --custom-panel-raised: var(--violet-tint);
+  --custom-text: var(--deep-interface);
+  --custom-text-muted: var(--text-secondary);
+  --custom-border: var(--border);
   container-type: inline-size;
+  border-color: var(--custom-border);
+  background: var(--custom-canvas);
+  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
+}
+
+.customVisual[data-active="true"] {
+  --custom-canvas: var(--deep-interface-active);
+  --custom-panel: var(--deep-interface);
+  --custom-panel-raised: var(--deep-interface-hover);
+  --custom-text: var(--soft-signal);
+  --custom-text-muted: rgb(var(--soft-signal-rgb) / .58);
+  --custom-border: var(--border-on-deep);
   border-color: rgb(var(--active-orange-rgb) / 0.55);
   background: var(--deep-interface);
 }
@@ -9,8 +27,9 @@
   inset: 0;
   overflow: hidden;
   border-radius: inherit;
-  background: var(--deep-interface-active);
-  color: var(--soft-signal);
+  background: var(--custom-canvas);
+  color: var(--custom-text);
+  transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome {
@@ -19,13 +38,14 @@
   grid-template-columns: minmax(5rem, 1fr) auto minmax(5rem, 1fr);
   align-items: center;
   padding: 0 clamp(.65rem, 2.2cqi, 1.15rem);
-  border-bottom: 1px solid var(--border-on-deep);
-  background: #240b2d;
+  border-bottom: 1px solid var(--custom-border);
+  background: var(--custom-panel-raised);
+  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome > span {
   overflow: hidden;
-  color: rgb(var(--soft-signal-rgb) / .58);
+  color: var(--custom-text-muted);
   font: clamp(.48rem, 1.05cqi, .65rem)/1 var(--font-mono);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -37,8 +57,8 @@
 .windowControls i:nth-child(3) { border-radius: 50%; background: var(--data-violet); }
 
 .editorPresence { display: flex; min-width: 0; align-items: center; justify-self: end; gap: .45rem; }
-.editorPresence b { display: grid; width: clamp(1.2rem, 2.9cqi, 1.55rem); aspect-ratio: 1; place-items: center; border: 1px solid rgb(var(--soft-signal-rgb) / .2); border-radius: 50%; background: var(--data-violet); color: var(--white); font-size: clamp(.45rem, 1cqi, .58rem); }
-.editorPresence em { overflow: hidden; color: rgb(var(--soft-signal-rgb) / .62); font: clamp(.42rem, .9cqi, .56rem)/1 var(--font-mono); font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.editorPresence b { display: grid; width: clamp(1.2rem, 2.9cqi, 1.55rem); aspect-ratio: 1; place-items: center; border: 1px solid var(--custom-border); border-radius: 50%; background: var(--data-violet); color: var(--white); font-size: clamp(.45rem, 1cqi, .58rem); }
+.editorPresence em { overflow: hidden; color: var(--custom-text-muted); font: clamp(.42rem, .9cqi, .56rem)/1 var(--font-mono); font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
 .editorPresence[data-presence="typing"] b { animation: presence-pulse 900ms ease-in-out infinite; }
 
 .editorShell {
@@ -48,7 +68,8 @@
   height: calc(100% - clamp(2.25rem, 5.2cqi, 2.65rem));
   grid-template-columns: var(--tree-width) minmax(0, 1fr);
   padding-bottom: clamp(1.1rem, 2.7cqi, 1.35rem);
-  background: #1f0827;
+  background: var(--custom-canvas);
+  transition: background-color var(--motion-medium) var(--ease-out);
 }
 
 .fileTree {
@@ -56,39 +77,39 @@
   min-width: 0;
   flex-direction: column;
   padding: clamp(.55rem, 1.8cqi, .9rem) clamp(.35rem, 1.1cqi, .55rem);
-  border-right: 1px solid var(--border-on-deep);
-  background: var(--deep-interface);
-  color: rgb(var(--soft-signal-rgb) / .52);
+  border-right: 1px solid var(--custom-border);
+  background: var(--custom-panel);
+  color: var(--custom-text-muted);
   font: clamp(.42rem, 1.05cqi, .62rem)/1.3 var(--font-mono);
 }
 
-.fileTree strong { margin-bottom: clamp(.4rem, 1.2cqi, .65rem); color: rgb(var(--soft-signal-rgb) / .74); font-size: .9em; letter-spacing: .08em; }
+.fileTree strong { margin-bottom: clamp(.4rem, 1.2cqi, .65rem); color: var(--custom-text); font-size: .9em; letter-spacing: .08em; }
 .fileTree span, .fileTree i { overflow: hidden; padding: clamp(.18rem, .55cqi, .32rem); font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
 .fileTree .folder { padding-left: clamp(.38rem, 1.2cqi, .7rem); }
 .fileTree i { position: relative; padding-left: clamp(.75rem, 2.2cqi, 1.2rem); }
 .fileTree i::before { position: absolute; left: clamp(.24rem, .75cqi, .42rem); color: #6f9bd1; content: "◆"; font-size: .65em; }
-.fileTree .activeFile { border-left: 3px solid var(--active-orange); background: rgb(var(--active-orange-rgb) / .13); color: var(--soft-signal); }
+.fileTree .activeFile { border-left: 3px solid var(--active-orange); background: rgb(var(--active-orange-rgb) / .13); color: var(--custom-text); }
 
-.editorPane { position: relative; min-width: 0; overflow: hidden; background: #240b2d; }
-.breadcrumbs { display: flex; height: clamp(1.2rem, 3cqi, 1.55rem); align-items: center; padding: 0 clamp(.48rem, 1.4cqi, .75rem); gap: .4rem; border-bottom: 1px solid rgb(var(--soft-signal-rgb) / .07); color: rgb(var(--soft-signal-rgb) / .38); font: clamp(.4rem, .9cqi, .54rem)/1 var(--font-mono); }
-.breadcrumbs b { color: rgb(var(--soft-signal-rgb) / .2); font-weight: 400; }
+.editorPane { position: relative; min-width: 0; overflow: hidden; background: var(--custom-panel-raised); transition: background-color var(--motion-medium) var(--ease-out); }
+.breadcrumbs { display: flex; height: clamp(1.2rem, 3cqi, 1.55rem); align-items: center; padding: 0 clamp(.48rem, 1.4cqi, .75rem); gap: .4rem; border-bottom: 1px solid var(--custom-border); color: var(--custom-text-muted); font: clamp(.4rem, .9cqi, .54rem)/1 var(--font-mono); }
+.breadcrumbs b { color: var(--custom-text-muted); font-weight: 400; }
 
-.editorTab { display: flex; width: fit-content; max-width: 72%; height: clamp(1.6rem, 3.8cqi, 2rem); align-items: center; justify-content: space-between; padding: 0 clamp(.5rem, 1.5cqi, .8rem); gap: clamp(.75rem, 2.4cqi, 1.4rem); border-top: 2px solid var(--active-orange); border-right: 1px solid var(--border-on-deep); background: var(--deep-interface-hover); color: rgb(var(--soft-signal-rgb) / .8); font: clamp(.43rem, 1cqi, .61rem)/1 var(--font-mono); }
+.editorTab { display: flex; width: fit-content; max-width: 72%; height: clamp(1.6rem, 3.8cqi, 2rem); align-items: center; justify-content: space-between; padding: 0 clamp(.5rem, 1.5cqi, .8rem); gap: clamp(.75rem, 2.4cqi, 1.4rem); border-top: 2px solid var(--active-orange); border-right: 1px solid var(--custom-border); background: var(--custom-panel); color: var(--custom-text); font: clamp(.43rem, 1cqi, .61rem)/1 var(--font-mono); }
 .editorTab span { display: flex; min-width: 0; align-items: center; gap: .4rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .editorTab span i { color: #e7c34f; font-size: .85em; font-style: normal; font-weight: 600; }
 .editorTab > b { color: var(--active-orange); font-size: .7em; }
 
-.codeEditor { display: grid; align-content: start; min-height: 100%; padding: clamp(.65rem, 1.8cqi, 1rem) 0; color: rgb(var(--soft-signal-rgb) / .82); font: clamp(.43rem, 1.12cqi, .68rem)/1.55 var(--font-mono); }
+.codeEditor { display: grid; align-content: start; min-height: 100%; padding: clamp(.65rem, 1.8cqi, 1rem) 0; color: var(--custom-text); font: clamp(.43rem, 1.12cqi, .68rem)/1.55 var(--font-mono); }
 .codeLine { display: grid; min-width: 0; grid-template-columns: clamp(1.35rem, 3.5cqi, 2rem) clamp(.65rem, 1.7cqi, .9rem) minmax(0, 1fr); padding: 1px clamp(.3rem, 1cqi, .55rem) 1px 0; border-left: 2px solid transparent; }
-.codeLine > b { color: rgb(var(--soft-signal-rgb) / .28); font-weight: 400; text-align: right; }
-.codeLine > em { color: rgb(var(--soft-signal-rgb) / .26); font-style: normal; text-align: center; }
-.codeLine > i { min-width: 0; overflow: hidden; color: rgb(var(--soft-signal-rgb) / .86); font-style: normal; text-overflow: clip; white-space: pre; }
+.codeLine > b { color: var(--custom-text-muted); font-weight: 400; text-align: right; }
+.codeLine > em { color: var(--custom-text-muted); font-style: normal; text-align: center; }
+.codeLine > i { min-width: 0; overflow: hidden; color: var(--custom-text); font-style: normal; text-overflow: clip; white-space: pre; }
 .codeLine:first-child > i { color: #c69de8; }
 .addedLine { border-left-color: var(--data-violet); background: rgb(var(--data-violet-rgb) / .16); }
 .addedLine > em { color: var(--data-violet); }
 .caret { display: inline-block; width: 1px; height: 1.05em; margin-left: 1px; background: var(--active-orange); animation: caret-blink 560ms steps(1, end) infinite; vertical-align: -.12em; }
 
-.mouseCursor { position: absolute; z-index: 8; top: 57%; left: calc(var(--tree-width) + 49%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--soft-signal); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .62)); opacity: .86; pointer-events: none; transform: translate(-12.5%, -8.93%) scale(.9); transform-origin: 12.5% 8.93%; transition: top 720ms var(--ease-out), left 720ms var(--ease-out), transform 160ms var(--ease-out), opacity 180ms var(--ease-out); }
+.mouseCursor { position: absolute; z-index: 8; top: 57%; left: calc(var(--tree-width) + 49%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--custom-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .42)); opacity: .86; pointer-events: none; transform: translate(-12.5%, -8.93%) scale(.9); transform-origin: 12.5% 8.93%; transition: top 720ms var(--ease-out), left 720ms var(--ease-out), fill var(--motion-medium) var(--ease-out), transform 160ms var(--ease-out), opacity 180ms var(--ease-out); }
 .mouseCursor path { stroke: #190620; stroke-width: 1.45; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .mouseCursor[data-cursor-target="inventory"] { top: var(--cursor-target-y); left: var(--cursor-target-x); opacity: 1; }
 .mouseCursor[data-cursor-click="true"] { animation: cursor-click 420ms var(--ease-out) both; }

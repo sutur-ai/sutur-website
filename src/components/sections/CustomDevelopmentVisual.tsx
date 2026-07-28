@@ -195,6 +195,7 @@ export function CustomDevelopmentVisual({ active }: { active: boolean }) {
   return (
     <div
       className={`${layoutStyles.visual} ${styles.customVisual}`}
+      data-active={active}
       data-custom-phase={phase}
       aria-hidden="true"
     >
