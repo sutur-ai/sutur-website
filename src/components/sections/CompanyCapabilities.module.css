@@ -11,7 +11,7 @@
 
 .intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(17.5rem, 0.65fr);
+  grid-template-columns: 1fr;
   align-items: flex-end;
   gap: clamp(var(--space-5), 8vw, var(--space-8));
 }
@@ -26,13 +26,6 @@
   font-weight: var(--weight-bold);
 }
 
-.summary {
-  max-width: 28.125rem;
-  margin: 0 0 var(--space-2);
-  color: var(--text-secondary);
-  font-size: var(--type-body-large);
-  line-height: var(--leading-body);
-}
 
 .capabilityGrid {
   display: grid;
@@ -121,16 +114,6 @@
   text-transform: uppercase;
 }
 
-.capability h3 {
-  max-width: 14ch;
-  margin: 0 0 var(--space-3);
-  color: var(--deep-interface);
-  font-family: var(--font-body);
-  font-size: var(--type-card-heading);
-  font-weight: var(--weight-book);
-  letter-spacing: -0.025em;
-  line-height: 1.06;
-}
 
 .capabilityCopy > p {
   margin: 0;
@@ -996,8 +979,7 @@
     min-height: 23.125rem;
   }
 
-  .capabilityCopy > p,
-  .summary {
+  .capabilityCopy > p {
     font-size: 1.0625rem;
   }
 }
@@ -1008,9 +990,6 @@
     gap: 1.75rem;
   }
 
-  .summary {
-    max-width: 40.625rem;
-  }
 
   .capabilityGrid {
     grid-template-columns: 1fr;
@@ -1063,9 +1042,6 @@
     padding: var(--space-1) var(--space-2) 0.625rem;
   }
 
-  .capability h3 {
-    max-width: 15ch;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
