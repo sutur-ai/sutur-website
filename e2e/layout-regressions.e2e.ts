@@ -1,48 +1,48 @@
 import { expect, test } from '@playwright/test';
 
-test('footer ends with a large outlined Sutur wordmark below the copyright line', async ({ page }) => {
+test('footer ends with the current outlined Sutur artwork below the copyright line', async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');
 
     const footer = page.locator('.site-footer');
-    const wordmark = footer.locator('.footer-outline-wordmark');
+    const copyright = footer.locator('.copyright');
+    const logo = footer.locator('.footer-outline-logo');
     await footer.scrollIntoViewIfNeeded();
 
-    await expect(wordmark).toHaveCount(1);
-    await expect(wordmark).toHaveText('sutur');
-    await expect(wordmark).toHaveAttribute('aria-hidden', 'true');
+    await expect(footer.locator('.footer-outline-wordmark')).toHaveCount(0);
+    await expect(copyright).toContainText('© 2026 Sutur. All rights reserved.');
+    await expect(logo).toHaveCount(1);
+    await expect(logo).toHaveAttribute('aria-hidden', 'true');
+    await expect(logo.locator('image').first()).toHaveAttribute(
+      'href',
+      '/brand/design-system/sutur-wordmark-soft.png',
+    );
 
     const metrics = await footer.evaluate((node) => {
       const copyright = node.querySelector('.copyright')!;
-      const wordmark = node.querySelector('.footer-outline-wordmark')!;
-      const footerStyle = getComputedStyle(node);
-      const wordmarkStyle = getComputedStyle(wordmark);
+      const logo = node.querySelector('.footer-outline-logo')!;
       const footerBox = node.getBoundingClientRect();
       const copyrightBox = copyright.getBoundingClientRect();
-      const wordmarkBox = wordmark.getBoundingClientRect();
+      const logoBox = logo.getBoundingClientRect();
       return {
         followsCopyright: Boolean(
-          copyright.compareDocumentPosition(wordmark) & Node.DOCUMENT_POSITION_FOLLOWING,
+          copyright.compareDocumentPosition(logo) & Node.DOCUMENT_POSITION_FOLLOWING,
         ),
-        footerBackground: footerStyle.backgroundColor,
-        fill: wordmarkStyle.color,
-        strokeColor: wordmarkStyle.webkitTextStrokeColor,
-        strokeWidth: Number.parseFloat(wordmarkStyle.webkitTextStrokeWidth),
-        fontSize: Number.parseFloat(wordmarkStyle.fontSize),
-        belowCopyright: wordmarkBox.top >= copyrightBox.bottom,
+        isLastElement: node.lastElementChild === logo,
+        belowCopyright: logoBox.top >= copyrightBox.bottom,
+        wideEnough: logoBox.width >= Math.min(footerBox.width * 0.75, 1_000),
         contained:
-          wordmarkBox.left >= footerBox.left - 1 &&
-          wordmarkBox.right <= footerBox.right + 1,
+          logoBox.left >= footerBox.left - 1 &&
+          logoBox.right <= footerBox.right + 1 &&
+          logoBox.bottom <= footerBox.bottom + 1,
       };
     });
 
     expect(metrics.followsCopyright).toBe(true);
-    expect(metrics.fill).toBe(metrics.footerBackground);
-    expect(metrics.strokeColor).not.toBe(metrics.footerBackground);
-    expect(metrics.strokeWidth).toBeGreaterThanOrEqual(1);
-    expect(metrics.fontSize).toBeGreaterThanOrEqual(width * 0.15);
+    expect(metrics.isLastElement).toBe(true);
     expect(metrics.belowCopyright).toBe(true);
+    expect(metrics.wideEnough).toBe(true);
     expect(metrics.contained).toBe(true);
   }
 });

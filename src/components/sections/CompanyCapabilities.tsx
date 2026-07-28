@@ -55,7 +55,6 @@ const capabilities = [
   {
     number: '01',
     label: 'AI agent architecture',
-    title: 'An AI layer that understands the full picture',
     description:
       'We connect your ERP, documents, messages, and internal knowledge through a permission-aware agent architecture. It brings context into every step and removes repetitive follow-through.',
     cta: 'Design your agent architecture',
@@ -64,7 +63,6 @@ const capabilities = [
   {
     number: '02',
     label: 'ERP implementation',
-    title: 'One reliable system for the whole operation',
     description:
       'We implement Odoo around your real operation — from CRM and accounting to inventory, purchasing, and delivery — so your team works from one source of truth.',
     cta: 'Plan your ERP implementation',
@@ -73,7 +71,6 @@ const capabilities = [
   {
     number: '03',
     label: 'Custom development',
-    title: 'Built for you, grounded in Lebanon',
     description:
       'We design software around your workflow and the Lebanese market, including bilingual teams, local payment realities, and the exceptions generic products miss.',
     cta: 'Discuss your custom build',
@@ -520,8 +517,8 @@ function AgentCapabilityVisual({ active }: { active: boolean }) {
           {integrationLayout.flatMap((row, rowIndex) => (
             row.map(({ app, centerX, centerY, points }, appIndex) => {
               const isCore = app.brand === 'sutur';
-              const logoWidth = isCore ? 74 : app.format === 'wide' ? 62 : 44;
-              const logoHeight = isCore ? 31 : app.format === 'wide' ? 38 : 44;
+              const logoWidth = isCore ? 34 : app.format === 'wide' ? 62 : 44;
+              const logoHeight = isCore ? 40 : app.format === 'wide' ? 38 : 44;
               const cellIndex = integrationLayout
                 .slice(0, rowIndex)
                 .reduce((count, layoutRow) => count + layoutRow.length, appIndex);
@@ -689,11 +686,6 @@ export function CompanyCapabilities() {
             {' '}<em>Three ways to move it forward<SignalDot /></em>
           </h2>
         </div>
-        <p className={styles.summary}>
-          We create the operating foundation, the tools that fit, and the
-          intelligence layer above them. Every engagement starts with how your
-          business actually works.
-        </p>
       </div>
 
       <div className={styles.capabilityGrid} role="list">
@@ -773,7 +765,6 @@ export function CompanyCapabilities() {
                   <span>{capability.number}</span>
                   <p>{capability.label}</p>
                 </div>
-                <h3>{capability.title}<SignalDot /></h3>
                 <p>{capability.description}</p>
                 <a href="#book" aria-label={`${capability.cta} — book a discovery call`}>
                   {capability.cta} <ArrowIcon />

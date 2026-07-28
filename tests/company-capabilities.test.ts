@@ -136,21 +136,48 @@ describe('company capabilities section', () => {
     expect(erpStyles).toMatch(/\.posRegister\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
     expect(erpStyles).toMatch(/\.receiptScene\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
     expect(erpStyles).toMatch(/\.accountingScene\s*{[^}]*background:\s*var\(--erp-canvas\)/s);
-    expect(erpStyles).toMatch(/\.progressRail\s*{[^}]*background:\s*var\(--erp-panel\)/s);
+    expect(erpStyles).toMatch(
+      /\.progressRail\s*{[^}]*background:\s*var\(--deep-interface\)/s,
+    );
+    expect(erpStyles).toMatch(
+      /\.progressRail > span\s*{[^}]*color:\s*rgb\(var\(--soft-signal-rgb\) \/ \.72\)/s,
+    );
+    expect(erpStyles).toMatch(
+      /\.progressRail:is\([\s\S]*?\) \[data-step="accounting"\]\s*{\s*color:\s*#76d69d/s,
+    );
   });
 
-  it('removes the section ornaments and shifts emphasis from card titles to the offer numbers', () => {
+  it('removes the intro summary and the three large card headlines without leaving dead styles', () => {
+    for (const removedCopy of [
+      'We create the operating foundation, the tools that fit, and the intelligence layer above them.',
+      'Every engagement starts with how your business actually works.',
+      'An AI layer that understands the full picture',
+      'One reliable system for the whole operation',
+      'Built for you, grounded in Lebanon',
+    ]) {
+      expect(component).not.toContain(removedCopy);
+    }
+    expect(component).not.toContain('<h3>{capability.title}');
+    expect(styles).not.toContain('.summary');
+    expect(styles).not.toContain('.capability h3');
+    expect(styles).toMatch(/\.intro\s*{[^}]*grid-template-columns:\s*1fr/s);
+  });
+
+  it('keeps the section ornament-free and emphasizes the offer numbers', () => {
     expect(styles).not.toContain('.section::before');
     expect(styles).not.toContain('.section::after');
     expect(styles).toMatch(
       /\.capabilityLabel span\s*{[^}]*font-family:\s*var\(--font-display\)[^}]*font-weight:\s*var\(--weight-bold\)/s,
     );
-    expect(styles).toMatch(
-      /\.capability h3\s*{[^}]*font-family:\s*var\(--font-body\)[^}]*font-weight:\s*var\(--weight-book\)/s,
-    );
   });
 
-  it('uses the standalone S mark in the center of the AI Agent window chrome', () => {
+  it('uses the standalone S mark in the honeycomb core and AI Agent window chrome', () => {
+    expect(geometrySource).toContain(
+      "label: 'Sutur Agent', icon: '/brand/design-system/sutur-icon-soft.png', brand: 'sutur'",
+    );
+    expect(geometrySource).not.toContain("icon: '/brand/sutur-logo-en.png', brand: 'sutur'");
+    expect(component).toContain('const logoWidth = isCore ? 34');
+    expect(component).toContain('const logoHeight = isCore ? 40');
     expect(component).toContain('className={styles.agentDesktopMark}');
     expect(component).toContain('src="/brand/design-system/sutur-icon-soft.png"');
     expect(component).not.toContain('<p><strong>Sutur Agent</strong><span>Workspace assistant</span></p>');
@@ -172,6 +199,11 @@ describe('company capabilities section', () => {
     expect(customStyles).toMatch(
       /\.customVisual\[data-active="true"\]\s*{[^}]*--custom-canvas:\s*var\(--deep-interface-active\)[^}]*--custom-text:\s*var\(--soft-signal\)/s,
     );
+    for (const productWindowStyles of [erpStyles, customStyles]) {
+      expect(productWindowStyles).not.toMatch(
+        /(?:background-color|border-color|\bcolor|\bfill)\s+var\(--motion-medium\)/,
+      );
+    }
   });
 
   it('keeps the complete Odoo launcher with official app artwork', () => {

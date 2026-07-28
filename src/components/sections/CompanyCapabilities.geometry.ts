@@ -8,7 +8,7 @@ export const integrationRows = [
   [
     { label: 'Discord', icon: '/brand/integrations/discord.svg', brand: 'discord', format: 'square' },
     { label: 'Obsidian', icon: '/brand/integrations/obsidian.svg', brand: 'obsidian', format: 'square' },
-    { label: 'Sutur Agent', icon: '/brand/sutur-logo-en.png', brand: 'sutur', format: 'core' },
+    { label: 'Sutur Agent', icon: '/brand/design-system/sutur-icon-soft.png', brand: 'sutur', format: 'core' },
     { label: 'SAP', icon: '/brand/integrations/sap.svg', brand: 'sap', format: 'wide' },
     { label: 'AutoCAD', icon: '/brand/integrations/autocad.svg', brand: 'autocad', format: 'square' },
   ],

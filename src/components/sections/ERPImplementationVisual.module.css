@@ -10,7 +10,7 @@
   container-type: inline-size;
   border-color: var(--border);
   background: var(--erp-canvas);
-  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
+  transition: box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
 }
 
 .erpVisual[data-active="true"] {
@@ -33,7 +33,6 @@
   border-radius: inherit;
   background: var(--erp-canvas);
   color: var(--erp-text);
-  transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome {
@@ -46,7 +45,6 @@
   padding: 0 clamp(.65rem, 2.2cqi, 1.15rem);
   border-bottom: 1px solid var(--erp-border);
   background: var(--erp-panel-raised);
-  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome > span {
@@ -68,7 +66,7 @@
 .sceneViewport { position: relative; height: calc(100% - 2.25rem); overflow: hidden; background: var(--erp-canvas); }
 .odooHome, .posRegister, .receiptScene, .accountingScene { position: absolute; inset: 0; overflow: hidden; animation: scene-in 420ms var(--ease-out) both; }
 
-.odooTopbar { display: flex; height: 1.75rem; align-items: center; justify-content: space-between; padding: 0 clamp(.65rem, 2cqi, 1rem); border-bottom: 1px solid var(--erp-border); background: var(--erp-panel-raised); color: var(--erp-text); transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out); }
+.odooTopbar { display: flex; height: 1.75rem; align-items: center; justify-content: space-between; padding: 0 clamp(.65rem, 2cqi, 1rem); border-bottom: 1px solid var(--erp-border); background: var(--erp-panel-raised); color: var(--erp-text); }
 .odooBrand { display: flex; min-width: 0; align-items: center; gap: clamp(.35rem, 1.1cqi, .65rem); }
 .odooBrand > b { font-size: clamp(.75rem, 1.8cqi, 1rem); letter-spacing: -.055em; }
 .odooBrand > strong { overflow: hidden; padding-left: clamp(.35rem, 1cqi, .65rem); border-left: 1px solid var(--erp-border); font-size: clamp(.46rem, 1.05cqi, .62rem); text-overflow: ellipsis; white-space: nowrap; }
@@ -191,15 +189,15 @@
 .journalTable footer span:first-child { color: var(--erp-text-muted); }
 .accountingLoader { top: 1.75rem; bottom: 2rem; }
 
-.mouseCursor { position: absolute; z-index: 40; top: var(--cursor-target-y, 56%); left: var(--cursor-target-x, 52%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--erp-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .35)); opacity: 1; pointer-events: none; transition: top 520ms var(--ease-out), left 520ms var(--ease-out), fill var(--motion-medium) var(--ease-out), opacity 180ms var(--ease-out); }
+.mouseCursor { position: absolute; z-index: 40; top: var(--cursor-target-y, 56%); left: var(--cursor-target-x, 52%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--erp-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .35)); opacity: 1; pointer-events: none; transition: top 520ms var(--ease-out), left 520ms var(--ease-out), opacity 180ms var(--ease-out); }
 .mouseCursor path { stroke: #190620; stroke-width: 1.45; stroke-linejoin: round; transform-box: view-box; transform-origin: 0 0; vector-effect: non-scaling-stroke; }
 .mouseCursor[data-erp-cursor="hidden"] { opacity: 0; }
 .mouseCursor[data-cursor-click="true"] path { animation: cursor-click 240ms var(--ease-out) 560ms both; }
 
-.progressRail { display: grid; position: absolute; z-index: 25; right: 0; bottom: 0; left: 0; height: 2rem; grid-template-columns: auto minmax(.8rem, 1fr) auto minmax(.8rem, 1fr) auto; align-items: center; padding: 0 clamp(.65rem, 2cqi, 1.1rem); gap: clamp(.3rem, .8cqi, .5rem); border-top: 1px solid var(--erp-border); background: var(--erp-panel); box-shadow: 0 -.25rem .8rem rgb(var(--deep-active-rgb) / .2); }
-.progressRail > span { display: flex; align-items: center; gap: clamp(.25rem, .65cqi, .4rem); color: var(--erp-text-muted); font-size: clamp(.32rem, .73cqi, .44rem); font-weight: 600; white-space: nowrap; }
-.progressRail > span i { width: clamp(.55rem, 1.25cqi, .7rem); aspect-ratio: 1; border: 1px solid rgb(var(--soft-signal-rgb) / .35); border-radius: 50%; background: var(--erp-tile); }
-.progressRail > b { height: 1px; background: var(--erp-border); }
+.progressRail { display: grid; position: absolute; z-index: 25; right: 0; bottom: 0; left: 0; height: 2rem; grid-template-columns: auto minmax(.8rem, 1fr) auto minmax(.8rem, 1fr) auto; align-items: center; padding: 0 clamp(.65rem, 2cqi, 1.1rem); gap: clamp(.3rem, .8cqi, .5rem); border-top: 1px solid var(--border-on-deep); background: var(--deep-interface); box-shadow: 0 -.25rem .8rem rgb(var(--deep-active-rgb) / .2); }
+.progressRail > span { display: flex; align-items: center; gap: clamp(.25rem, .65cqi, .4rem); color: rgb(var(--soft-signal-rgb) / .72); font-size: clamp(.32rem, .73cqi, .44rem); font-weight: 600; white-space: nowrap; }
+.progressRail > span i { width: clamp(.55rem, 1.25cqi, .7rem); aspect-ratio: 1; border: 1px solid rgb(var(--soft-signal-rgb) / .35); border-radius: 50%; background: var(--deep-interface-hover); }
+.progressRail > b { height: 1px; background: var(--border-on-deep); }
 .progressRail:is(
   [data-erp-progress="opening-pos"],
   [data-erp-progress="adding-item"],
@@ -225,7 +223,7 @@
   [data-erp-progress="journal-items"],
   [data-erp-progress="complete"],
   [data-erp-progress="restoring"]
-) [data-step="accounting"] { color: #32764d; }
+) [data-step="accounting"] { color: #76d69d; }
 
 .progressRail:is(
   [data-erp-progress="opening-pos"],

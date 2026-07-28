@@ -71,20 +71,24 @@ async function expectCursorCentered(cursor: Locator, app: Locator, label: string
 }
 
 async function expectCustomCursorCentered(cursor: Locator, target: Locator, label: string) {
-  const [tip, targetBox] = await Promise.all([
-    cursor.evaluate((node) => {
-      const matrix = (node as SVGGraphicsElement).getScreenCTM();
-      if (!matrix) return null;
-      const point = new DOMPoint(3, 2.5).matrixTransform(matrix);
-      return { x: point.x, y: point.y };
-    }),
-    target.boundingBox(),
-  ]);
-  expect(tip, `${label} cursor tip must render`).not.toBeNull();
-  expect(targetBox, `${label} file row must render`).not.toBeNull();
-  if (!tip || !targetBox) return;
-  expect(Math.abs(tip.x - (targetBox.x + targetBox.width / 2)), `${label} cursor x`).toBeLessThanOrEqual(2);
-  expect(Math.abs(tip.y - (targetBox.y + targetBox.height / 2)), `${label} cursor y`).toBeLessThanOrEqual(2);
+  await expect
+    .poll(async () => {
+      const [tip, targetBox] = await Promise.all([
+        cursor.evaluate((node) => {
+          const matrix = (node as SVGGraphicsElement).getScreenCTM();
+          if (!matrix) return null;
+          const point = new DOMPoint(3, 2.5).matrixTransform(matrix);
+          return { x: point.x, y: point.y };
+        }),
+        target.boundingBox(),
+      ]);
+      if (!tip || !targetBox) return Number.POSITIVE_INFINITY;
+      return Math.max(
+        Math.abs(tip.x - (targetBox.x + targetBox.width / 2)),
+        Math.abs(tip.y - (targetBox.y + targetBox.height / 2)),
+      );
+    }, { message: `${label} cursor must settle over the file row`, timeout: 1_000 })
+    .toBeLessThanOrEqual(2);
 }
 
 async function openCapabilities(page: Page) {
@@ -179,13 +183,12 @@ test('custom development types two files, verifies checks, restores, and rearms 
   await expect.poll(async () => ((await visual.locator('[data-code-file="purchase_order.py"]').textContent()) ?? '').length).toBeGreaterThan(0);
   await waitForCustomPhase(visual, 'selecting-inventory');
   await expect(visual.locator('[data-cursor-target="inventory"]')).toBeVisible();
-  await waitForCustomPhase(visual, 'opening-inventory');
-  await expect(visual.locator('[data-file="inventory_sync.py"]')).toHaveAttribute('data-file-active', 'true');
   await expectCustomCursorCentered(
     visual.locator('[data-cursor-target="inventory"]'),
     visual.locator('[data-cursor-target-row]'),
     'automatic story',
   );
+  await expect(visual.locator('[data-file="inventory_sync.py"]')).toHaveAttribute('data-file-active', 'true');
   await waitForCustomPhase(visual, 'typing-inventory');
   await expect.poll(async () => ((await visual.locator('[data-code-file="inventory_sync.py"]').textContent()) ?? '').length).toBeGreaterThan(0);
   await waitForCustomPhase(visual, 'verifying');
@@ -503,7 +506,7 @@ test('touch stays idle, keyboard focus activates, and reduced motion resolves to
   await expect(reducedVisual.locator('g[data-integration]')).toHaveCount(13);
 });
 
-test('ERP and custom windows rest light, then adopt the existing dark-purple hover theme', async ({ page }) => {
+test('ERP and custom windows rest light, then adopt the existing dark-purple hover theme at once', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
 
@@ -511,9 +514,23 @@ test('ERP and custom windows rest light, then adopt the existing dark-purple hov
     const card = page.locator(`[data-capability="${kind}"]`);
     const visual = card.locator(`[data-${kind}-phase]`);
     const productWindow = visual.locator('> div');
+    const windowChrome = productWindow.locator('> :first-child');
     await card.scrollIntoViewIfNeeded();
 
     await expect(productWindow).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    for (const surface of [visual, productWindow, windowChrome]) {
+      const transition = await surface.evaluate((node) => {
+        const style = getComputedStyle(node);
+        return { property: style.transitionProperty, duration: style.transitionDuration };
+      });
+      expect(transition.property, `${kind} theme properties must not transition independently`).not.toMatch(
+        /background|border|color|fill/,
+      );
+      if (transition.property === 'all') {
+        expect(transition.duration, `${kind} implicit transitions must be disabled`).toBe('0s');
+      }
+    }
+
     await card.hover();
     await expect(card).toHaveAttribute(`data-${kind}-active`, 'true');
     await expect(productWindow).toHaveCSS('background-color', 'rgb(42, 13, 51)');
@@ -521,6 +538,26 @@ test('ERP and custom windows rest light, then adopt the existing dark-purple hov
     await page.locator('#capabilities-title').hover();
     await expect(card).toHaveAttribute(`data-${kind}-active`, 'false');
     await expect(productWindow).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  }
+});
+
+test('ERP light theme keeps its bottom progress rail dark purple with readable states', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const card = page.locator('[data-capability="erp"]');
+  const visual = card.locator('[data-erp-phase]');
+  const rail = card.locator('[class*="progressRail"]');
+  await card.scrollIntoViewIfNeeded();
+  await expect(card).toHaveAttribute('data-erp-active', 'false');
+  await expect(rail).toHaveCSS('background-color', 'rgb(59, 20, 71)');
+  await expect(rail.locator('> span').first()).toHaveCSS('color', 'rgba(234, 209, 229, 0.72)');
+
+  await card.hover();
+  await expect(visual).toHaveAttribute('data-erp-phase', 'complete');
+  for (const step of ['pos', 'sale', 'accounting']) {
+    await expect(rail.locator(`[data-step="${step}"]`)).toHaveCSS('color', 'rgb(118, 214, 157)');
   }
 });
 

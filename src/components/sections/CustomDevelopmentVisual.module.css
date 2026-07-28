@@ -8,7 +8,7 @@
   container-type: inline-size;
   border-color: var(--custom-border);
   background: var(--custom-canvas);
-  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out), box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
+  transition: box-shadow var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out);
 }
 
 .customVisual[data-active="true"] {
@@ -29,7 +29,6 @@
   border-radius: inherit;
   background: var(--custom-canvas);
   color: var(--custom-text);
-  transition: background-color var(--motion-medium) var(--ease-out), color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome {
@@ -40,7 +39,6 @@
   padding: 0 clamp(.65rem, 2.2cqi, 1.15rem);
   border-bottom: 1px solid var(--custom-border);
   background: var(--custom-panel-raised);
-  transition: background-color var(--motion-medium) var(--ease-out), border-color var(--motion-medium) var(--ease-out);
 }
 
 .windowChrome > span {
@@ -69,7 +67,6 @@
   grid-template-columns: var(--tree-width) minmax(0, 1fr);
   padding-bottom: clamp(1.1rem, 2.7cqi, 1.35rem);
   background: var(--custom-canvas);
-  transition: background-color var(--motion-medium) var(--ease-out);
 }
 
 .fileTree {
@@ -90,7 +87,7 @@
 .fileTree i::before { position: absolute; left: clamp(.24rem, .75cqi, .42rem); color: #6f9bd1; content: "◆"; font-size: .65em; }
 .fileTree .activeFile { border-left: 3px solid var(--active-orange); background: rgb(var(--active-orange-rgb) / .13); color: var(--custom-text); }
 
-.editorPane { position: relative; min-width: 0; overflow: hidden; background: var(--custom-panel-raised); transition: background-color var(--motion-medium) var(--ease-out); }
+.editorPane { position: relative; min-width: 0; overflow: hidden; background: var(--custom-panel-raised); }
 .breadcrumbs { display: flex; height: clamp(1.2rem, 3cqi, 1.55rem); align-items: center; padding: 0 clamp(.48rem, 1.4cqi, .75rem); gap: .4rem; border-bottom: 1px solid var(--custom-border); color: var(--custom-text-muted); font: clamp(.4rem, .9cqi, .54rem)/1 var(--font-mono); }
 .breadcrumbs b { color: var(--custom-text-muted); font-weight: 400; }
 
@@ -109,7 +106,7 @@
 .addedLine > em { color: var(--data-violet); }
 .caret { display: inline-block; width: 1px; height: 1.05em; margin-left: 1px; background: var(--active-orange); animation: caret-blink 560ms steps(1, end) infinite; vertical-align: -.12em; }
 
-.mouseCursor { position: absolute; z-index: 8; top: 57%; left: calc(var(--tree-width) + 49%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--custom-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .42)); opacity: .86; pointer-events: none; transform: translate(-12.5%, -8.93%) scale(.9); transform-origin: 12.5% 8.93%; transition: top 720ms var(--ease-out), left 720ms var(--ease-out), fill var(--motion-medium) var(--ease-out), transform 160ms var(--ease-out), opacity 180ms var(--ease-out); }
+.mouseCursor { position: absolute; z-index: 8; top: 57%; left: calc(var(--tree-width) + 49%); width: clamp(1rem, 2.7cqi, 1.45rem); overflow: visible; fill: var(--custom-text); filter: drop-shadow(0 2px 3px rgb(0 0 0 / .42)); opacity: .86; pointer-events: none; transform: translate(-12.5%, -8.93%) scale(.9); transform-origin: 12.5% 8.93%; transition: top 720ms var(--ease-out), left 720ms var(--ease-out), transform 160ms var(--ease-out), opacity 180ms var(--ease-out); }
 .mouseCursor path { stroke: #190620; stroke-width: 1.45; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .mouseCursor[data-cursor-target="inventory"] { top: var(--cursor-target-y); left: var(--cursor-target-x); opacity: 1; }
 .mouseCursor[data-cursor-click="true"] { animation: cursor-click 420ms var(--ease-out) both; }

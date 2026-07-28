@@ -124,7 +124,6 @@ describe('website design-system theme', () => {
     expect(page).toContain('Choose a time that works<SignalDot />');
     expect(capabilitiesComponent).toContain('One connected business<SignalDot />');
     expect(capabilitiesComponent).toContain('<em>Three ways to move it forward<SignalDot /></em>');
-    expect(capabilitiesComponent).toContain('<h3>{capability.title}<SignalDot /></h3>');
 
     expect(css).toMatch(/\.signal-dot\s*{[^}]*display:\s*inline-block[^}]*width:\s*0\.16em[^}]*height:\s*0\.16em[^}]*background:\s*var\(--active-orange\)/s);
   });
