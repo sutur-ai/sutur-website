@@ -197,19 +197,23 @@ describe('website design-system theme', () => {
     expect(existsSync(new URL('../public/brand/design-system/sutur-agent-favicon.png', import.meta.url))).toBe(true);
   });
 
-  it('renders the exact Sutur artwork as a restrained thin outlined footer logo', () => {
-    expect(footer).toContain('viewBox="0 0 2250 816"');
-    expect(footer).toContain("const footerLogoSource = '/brand/design-system/sutur-wordmark-soft.png'");
-    expect(footer).toContain('href={footerLogoSource}');
-    expect(footer).toContain('<feMorphology');
-    expect(footer).toContain('operator="erode"');
-    expect(footer).toContain('operator="out"');
-    expect(footer).toContain('radius="2"');
-    expect(footer).toContain('id="footer-logo-outline-compact"');
-    expect(footer).toContain('radius="6"');
-    expect(footer).not.toContain('aria-hidden="true">sutur</div>');
-    expect(css).toMatch(/\.footer-outline-logo\s*{[^}]*width:\s*min\(86vw,\s*82rem\)[^}]*justify-self:\s*center[^}]*margin-top:\s*0[^}]*opacity:\s*0\.16/s);
-    expect(css).toMatch(/@media \(max-width:\s*440px\)[\s\S]*\.footer-outline-logo-artwork-default\s*{[^}]*display:\s*none[^}]*}[\s\S]*\.footer-outline-logo-artwork-compact\s*{[^}]*display:\s*block/s);
+  it('renders the English and Arabic soft wordmarks in the footer without the oversized contour mark', () => {
+    expect(footer).toContain('className="footer-logo-lockup"');
+    expect(footer).toContain('/brand/design-system/sutur-wordmark-soft.png');
+    expect(footer).toContain('/brand/design-system/sutur-wordmark-arabic-soft.png');
+    expect(footer).toContain('<span aria-hidden="true">|</span>');
+    expect(footer).not.toContain('footer-outline-logo');
+    expect(footer).not.toContain('<feMorphology');
+    expect(footer).not.toContain('href={footerLogoSource}');
+    expect(css).toContain('.footer-logo-lockup');
+    expect(css).not.toContain('.footer-outline-logo');
+    expect(css).not.toContain('.footer-outline-logo-artwork-compact');
+  });
+
+  it('keeps browser title text to SUTUR only', () => {
+    expect(layout).toContain("default: 'SUTUR'");
+    expect(layout).toContain("title: 'SUTUR'");
+    expect(layout).not.toContain('Sutur — One clear operating system');
   });
 
   it('keeps mobile navigation accessible, compact, and full-width', () => {
