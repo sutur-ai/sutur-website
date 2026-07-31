@@ -4,8 +4,8 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://sutur.ai'),
   title: {
-    default: 'Sutur — One clear operating system',
-    template: '%s — Sutur',
+    default: 'SUTUR',
+    template: '%s | SUTUR',
   },
   description:
     'Tailored Odoo ERP, custom development, and practical AI agents for clearer operations.',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Sutur',
-    title: 'Sutur — One clear operating system',
+    title: 'SUTUR',
     description:
       'Tailored Odoo ERP, custom development, and practical AI agents for clearer operations.',
   },
