@@ -97,8 +97,12 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/b,\s*strong\s*{[^}]*font-weight:\s*var\(--weight-bold\)/s);
   });
 
-  it('keeps the site flat-first with no CSS gradients', () => {
-    expect(fullCss).not.toMatch(/(?:linear|radial|conic)-gradient\(/);
+  it('keeps the site flat-first with no painted CSS gradients', () => {
+    const paintCss = fullCss.replace(
+      /(?:-webkit-)?mask-image:\s*linear-gradient\([\s\S]*?\);/g,
+      '',
+    );
+    expect(paintCss).not.toMatch(/(?:linear|radial|conic)-gradient\(/);
   });
 
   it('uses orange only as an active signal and rounds controls as pills', () => {
@@ -197,11 +201,15 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/\.site-header \.wordmark\s*{[^}]*width:\s*5\.875rem[^}]*height:\s*2\.125rem[^}]*overflow:\s*hidden/s);
     expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*height:\s*2\.125rem/s);
     expect(css).toContain('.site-header .wordmark img.wordmark-logo-arabic');
-    expect(css).toMatch(/opacity\s+760ms\s+var\(--ease-standard\)/);
-    expect(css).toMatch(/transform\s+760ms\s+var\(--ease-standard\)/);
-    expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-english\s*{[^}]*z-index:\s*2[^}]*opacity:\s*1/s);
+    expect(css).toContain('@property --logo-wipe');
+    expect(css).toMatch(/\.site-header \.wordmark\s*{[^}]*--logo-wipe:\s*150%/s);
+    expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-english\s*{[^}]*z-index:\s*3[^}]*opacity:\s*1/s);
+    expect(css).toMatch(/\.site-header \.wordmark::after\s*{[^}]*z-index:\s*2[^}]*background:\s*var\(--deep-interface\)/s);
+    expect(css).toMatch(/mask-image:\s*linear-gradient\([\s\S]*135deg,[\s\S]*#000 var\(--logo-wipe\),[\s\S]*transparent calc\(var\(--logo-wipe\) \+ 12%\)/s);
+    expect(css).toMatch(/--logo-wipe\s+1100ms\s+cubic-bezier\(0\.45, 0, 0\.55, 1\)/);
     expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-arabic\s*{[^}]*z-index:\s*1[^}]*opacity:\s*1[^}]*transform:\s*translateY\(-50%\)/s);
-    expect(css).toMatch(/\.site-header \.wordmark:hover \.wordmark-logo-english,[\s\S]*\.site-header \.wordmark:focus-visible \.wordmark-logo-english\s*{[^}]*opacity:\s*0[^}]*transform:\s*translateX\(0\.55rem\) translateY\(-42%\)/s);
+    expect(css).toMatch(/\.site-header \.wordmark:hover,[\s\S]*\.site-header \.wordmark:focus-visible\s*{[^}]*--logo-wipe:\s*-12%/s);
+    expect(css).not.toMatch(/\.wordmark-logo-english[\s\S]{0,300}opacity:\s*0/);
     expect(layout).toContain("icon: '/brand/design-system/sutur-agent-favicon.png'");
     expect(layout).toContain("apple: '/brand/design-system/sutur-agent-favicon.png'");
     expect(existsSync(new URL('../public/brand/design-system/sutur-agent-favicon.png', import.meta.url))).toBe(true);
