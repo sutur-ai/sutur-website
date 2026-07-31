@@ -194,30 +194,26 @@ main {
   object-fit: contain;
   transform: translateY(-50%);
   transition:
-    opacity 600ms var(--ease-standard),
-    transform 600ms var(--ease-standard),
+    opacity 760ms var(--ease-standard),
+    transform 760ms var(--ease-standard),
     height var(--motion-fast) var(--ease-out);
 }
 
 .site-header .wordmark img.wordmark-logo-english {
+  z-index: 2;
   opacity: 1;
 }
 
 .site-header .wordmark img.wordmark-logo-arabic {
-  opacity: 0;
-  transform: translateX(-0.75rem) translateY(-65%);
+  z-index: 1;
+  opacity: 1;
+  transform: translateY(-50%);
 }
 
 .site-header .wordmark:hover .wordmark-logo-english,
 .site-header .wordmark:focus-visible .wordmark-logo-english {
   opacity: 0;
-  transform: translateX(0.75rem) translateY(-35%);
-}
-
-.site-header .wordmark:hover .wordmark-logo-arabic,
-.site-header .wordmark:focus-visible .wordmark-logo-arabic {
-  opacity: 1;
-  transform: translateY(-50%) translateX(0);
+  transform: translateX(0.55rem) translateY(-42%);
 }
 
 .site-header.is-floating .wordmark img {
