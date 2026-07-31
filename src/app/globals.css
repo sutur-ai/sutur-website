@@ -171,6 +171,7 @@ main {
 }
 
 .wordmark {
+  position: relative;
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
@@ -178,14 +179,53 @@ main {
   text-decoration: none;
 }
 
+.site-header .wordmark {
+  width: 5.875rem;
+  height: 2.125rem;
+  overflow: hidden;
+}
+
 .site-header .wordmark img {
+  position: absolute;
+  top: 50%;
+  left: 0;
   width: auto;
   height: 2.125rem;
   object-fit: contain;
-  transition: height var(--motion-fast) var(--ease-out);
+  transform: translateY(-50%);
+  transition:
+    opacity var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out),
+    height var(--motion-fast) var(--ease-out);
+}
+
+.site-header .wordmark-logo-english {
+  opacity: 1;
+}
+
+.site-header .wordmark-logo-arabic {
+  opacity: 0;
+  transform: translateY(-50%) translateX(-0.625rem);
+}
+
+.site-header .wordmark:hover .wordmark-logo-english,
+.site-header .wordmark:focus-visible .wordmark-logo-english {
+  opacity: 0;
+  transform: translateY(-50%) translateX(0.625rem);
+}
+
+.site-header .wordmark:hover .wordmark-logo-arabic,
+.site-header .wordmark:focus-visible .wordmark-logo-arabic {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
 }
 
 .site-header.is-floating .wordmark img {
+  height: 1.75rem;
+}
+
+.site-header.is-floating .wordmark {
+  width: 4.8125rem;
   height: 1.75rem;
 }
 
@@ -1060,6 +1100,12 @@ button:disabled,
     gap: 0.4375rem;
   }
 
+  .site-header .wordmark,
+  .site-header.is-floating .wordmark {
+    width: 4.125rem;
+    height: 1.5rem;
+  }
+
   .site-header .wordmark img,
   .site-header.is-floating .wordmark img {
     height: 1.5rem;
@@ -1177,6 +1223,12 @@ button:disabled,
 @media (max-width: 440px) {
   .site-header .wordmark img,
   .site-header.is-floating .wordmark img {
+    height: 1.25rem;
+  }
+
+  .site-header .wordmark,
+  .site-header.is-floating .wordmark {
+    width: 3.4375rem;
     height: 1.25rem;
   }
 

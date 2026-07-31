@@ -47,10 +47,19 @@ export function Header() {
       <header className={`site-header${scrolled ? ' is-floating' : ''}`}>
         <a className="wordmark" href="#top" aria-label="Sutur home">
           <img
+            className="wordmark-logo wordmark-logo-english"
             src="/brand/design-system/sutur-wordmark-soft.png"
-            alt="sutur"
-            width={124}
-            height={45}
+            alt="Sutur"
+            width={2250}
+            height={816}
+          />
+          <img
+            className="wordmark-logo wordmark-logo-arabic"
+            src="/brand/design-system/sutur-wordmark-arabic-soft.png"
+            alt=""
+            width={2250}
+            height={1055}
+            aria-hidden="true"
           />
         </a>
 
