@@ -196,9 +196,12 @@ describe('website design-system theme', () => {
     expect(header).toContain('alt="Sutur"');
     expect(css).toMatch(/\.site-header \.wordmark\s*{[^}]*width:\s*5\.875rem[^}]*height:\s*2\.125rem[^}]*overflow:\s*hidden/s);
     expect(css).toMatch(/\.site-header \.wordmark img\s*{[^}]*height:\s*2\.125rem/s);
-    expect(css).toContain('.site-header .wordmark-logo-arabic');
-    expect(css).toMatch(/\.site-header \.wordmark:hover \.wordmark-logo-english,[\s\S]*\.site-header \.wordmark:focus-visible \.wordmark-logo-english\s*{[^}]*opacity:\s*0[^}]*translateX\(0\.625rem\)/s);
-    expect(css).toMatch(/\.site-header \.wordmark:hover \.wordmark-logo-arabic,[\s\S]*\.site-header \.wordmark:focus-visible \.wordmark-logo-arabic\s*{[^}]*opacity:\s*1[^}]*translateX\(0\)/s);
+    expect(css).toContain('.site-header .wordmark img.wordmark-logo-arabic');
+    expect(css).toMatch(/opacity\s+600ms\s+var\(--ease-standard\)/);
+    expect(css).toMatch(/transform\s+600ms\s+var\(--ease-standard\)/);
+    expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-arabic\s*{[^}]*opacity:\s*0[^}]*transform:\s*translateX\(-0\.75rem\) translateY\(-65%\)/s);
+    expect(css).toMatch(/\.site-header \.wordmark:hover \.wordmark-logo-english,[\s\S]*\.site-header \.wordmark:focus-visible \.wordmark-logo-english\s*{[^}]*opacity:\s*0[^}]*transform:\s*translateX\(0\.75rem\) translateY\(-35%\)/s);
+    expect(css).toMatch(/\.site-header \.wordmark:hover \.wordmark-logo-arabic,[\s\S]*\.site-header \.wordmark:focus-visible \.wordmark-logo-arabic\s*{[^}]*opacity:\s*1[^}]*translateY\(-50%\)/s);
     expect(layout).toContain("icon: '/brand/design-system/sutur-agent-favicon.png'");
     expect(layout).toContain("apple: '/brand/design-system/sutur-agent-favicon.png'");
     expect(existsSync(new URL('../public/brand/design-system/sutur-agent-favicon.png', import.meta.url))).toBe(true);
