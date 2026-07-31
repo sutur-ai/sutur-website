@@ -16,7 +16,7 @@ const completeDetails = {
 };
 
 describe('booking details validation', () => {
-  it('accepts and trims all required lead fields', () => {
+  it('accepts and trims the lead fields', () => {
     const result = validateBookingDetails({
       ...completeDetails,
       firstName: ' Ada ',
@@ -35,7 +35,6 @@ describe('booking details validation', () => {
     'city',
     'phone',
     'email',
-    'businessName',
   ] as const)('requires %s', (field) => {
     const result = validateBookingDetails({
       ...completeDetails,
@@ -43,6 +42,16 @@ describe('booking details validation', () => {
     });
 
     expect(result.errors[field]).toBeTruthy();
+  });
+
+  it('keeps business name optional', () => {
+    const result = validateBookingDetails({
+      ...completeDetails,
+      businessName: '   ',
+    });
+
+    expect(result.values.businessName).toBe('');
+    expect(result.errors.businessName).toBeUndefined();
   });
 
   it('rejects a country value outside the dropdown options', () => {

@@ -27,7 +27,7 @@ export const BOOKING_FIELD_LIMITS: Readonly<
 };
 
 const requiredMessages: Record<
-  Exclude<keyof BookingDetails, 'tellUsMore'>,
+  Exclude<keyof BookingDetails, 'businessName' | 'tellUsMore'>,
   string
 > = {
   firstName: 'Enter your first name.',
@@ -36,7 +36,6 @@ const requiredMessages: Record<
   city: 'Enter your city.',
   phone: 'Enter your phone number.',
   email: 'Enter your email address.',
-  businessName: 'Enter your business name.',
 };
 
 const COUNTRY_SET = new Set<string>(COUNTRIES);

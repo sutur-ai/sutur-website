@@ -242,7 +242,7 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/@media \(max-width: 760px\)[\s\S]*\.floating-cta\s*{[^}]*display:\s*none/s);
   });
 
-  it('keeps the required lead form and Calendly scheduler together without a modal', () => {
+  it('switches from the lead form to Calendly after valid details without a modal', () => {
     expect(bookingComponent).toContain("'use client'");
     expect(bookingComponent).toContain('validateBookingDetails');
     expect(bookingComponent).toContain('<form');
@@ -267,13 +267,12 @@ describe('website design-system theme', () => {
     expect(bookingComponent).toContain('name="city"');
     expect(bookingComponent).toContain('className="booking-label-text"');
     expect(bookingComponent).toContain('<small>(optional)</small>');
-    expect(bookingComponent).toContain('Complete your details to unlock available times.');
-    expect(bookingComponent).toContain("calendarReady ? 'is-ready' : 'is-locked'");
-    expect(bookingComponent).toContain('if (calendarReady)');
-    expect(bookingComponent).toContain('setCalendarReady(false)');
-    expect(bookingComponent).toContain('setCalendarUrl(baseCalendarUrl)');
+    expect(bookingComponent).toContain('Business name <small>(optional)</small>');
+    expect(bookingComponent).not.toMatch(/name="businessName"\s+required/);
+    expect(bookingComponent).toContain('{step === 1 ? (');
+    expect(bookingComponent).toContain('setStep(2)');
+    expect(bookingComponent).toMatch(/<\/form>\s*\) : \(\s*<section/);
     expect(bookingComponent).toContain('getCalendlyEmbedUrl(calendlyEventUrl, values)');
-    expect(bookingComponent).toContain("window.matchMedia('(max-width: 1024px)')");
     expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.firstName}');
     expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.email}');
     expect(bookingComponent).toContain('maxLength={BOOKING_FIELD_LIMITS.businessName}');
@@ -288,7 +287,7 @@ describe('website design-system theme', () => {
     expect(bookingComponent).not.toContain('card-scene');
     expect(css).toContain('.booking-flow');
     expect(css).toContain('.booking-lead-form');
-    expect(css).toContain('.booking-calendar-gate');
+    expect(css).not.toContain('.booking-calendar-gate');
     expect(css).not.toContain('.booking-modal');
     expect(css).not.toContain('.card-scene');
   });

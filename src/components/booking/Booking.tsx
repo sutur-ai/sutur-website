@@ -30,22 +30,18 @@ const emptyDetails: BookingDetails = {
 
 export function Booking() {
   const formRef = useRef<HTMLFormElement>(null);
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLElement>(null);
   const baseCalendarUrl = getCalendlyEmbedUrl(calendlyEventUrl);
   const [details, setDetails] = useState(emptyDetails);
   const [errors, setErrors] = useState<BookingDetailErrors>({});
   const [calendarUrl, setCalendarUrl] = useState(baseCalendarUrl);
-  const [calendarReady, setCalendarReady] = useState(false);
+  const [step, setStep] = useState<1 | 2>(1);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => setIsHydrated(true), []);
 
   function updateDetail(field: keyof BookingDetails, value: string) {
     setDetails((current) => ({ ...current, [field]: value }));
-    if (calendarReady) {
-      setCalendarReady(false);
-      setCalendarUrl(baseCalendarUrl);
-    }
     if (errors[field]) {
       setErrors((current) => ({ ...current, [field]: undefined }));
     }
@@ -70,22 +66,15 @@ export function Booking() {
     if (!prefilledUrl) return;
 
     setCalendarUrl(prefilledUrl);
-    setCalendarReady(true);
+    setStep(2);
     window.requestAnimationFrame(() => {
-      if (window.matchMedia('(max-width: 1024px)').matches) {
-        const reduceMotion = window.matchMedia(
-          '(prefers-reduced-motion: reduce)',
-        ).matches;
-        calendarRef.current?.scrollIntoView({
-          behavior: reduceMotion ? 'auto' : 'smooth',
-          block: 'start',
-        });
-      }
+      calendarRef.current?.focus();
     });
   }
 
   return (
     <div className="booking-flow">
+      {step === 1 ? (
       <form
         ref={formRef}
         className="booking-lead-form"
@@ -216,10 +205,11 @@ export function Booking() {
           </label>
 
           <label>
-            Business name
+            <span className="booking-label-text">
+              Business name <small>(optional)</small>
+            </span>
             <input
               name="businessName"
-              required
               maxLength={BOOKING_FIELD_LIMITS.businessName}
               autoComplete="organization"
               value={details.businessName}
@@ -270,11 +260,12 @@ export function Booking() {
           Your details are used only to prepare and schedule this call.
         </p>
       </form>
-
+      ) : (
       <section
         ref={calendarRef}
         className="booking-calendar"
         aria-labelledby="booking-calendar-title"
+        tabIndex={-1}
       >
         <div className="booking-calendar-heading">
           <div>
@@ -285,11 +276,7 @@ export function Booking() {
         </div>
 
         {calendarUrl ? (
-          <div
-            className={`booking-calendar-stage ${
-              calendarReady ? 'is-ready' : 'is-locked'
-            }`}
-          >
+          <div className="booking-calendar-stage">
             <iframe
               key={calendarUrl}
               className="booking-calendar-frame"
@@ -297,17 +284,8 @@ export function Booking() {
               title="Book a Sutur discovery call"
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
-              tabIndex={calendarReady ? 0 : -1}
-              aria-hidden={!calendarReady}
+              tabIndex={0}
             />
-            {!calendarReady && (
-              <div className="booking-calendar-gate" role="status">
-                <strong>
-                  Complete your details to unlock available times.
-                </strong>
-                <span>Your calendar stays on this page.</span>
-              </div>
-            )}
           </div>
         ) : (
           <div className="booking-calendar-unavailable">
@@ -324,6 +302,7 @@ export function Booking() {
             : 'No details can be submitted while online scheduling is unavailable.'}
         </p>
       </section>
+      )}
     </div>
   );
 }
