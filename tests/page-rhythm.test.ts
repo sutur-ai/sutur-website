@@ -206,7 +206,7 @@ describe('website design-system theme', () => {
     expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-english\s*{[^}]*z-index:\s*3[^}]*opacity:\s*1/s);
     expect(css).toMatch(/\.site-header \.wordmark::after\s*{[^}]*z-index:\s*2[^}]*background:\s*var\(--deep-interface\)/s);
     expect(css).toMatch(/mask-image:\s*linear-gradient\([\s\S]*135deg,[\s\S]*#000 var\(--logo-wipe\),[\s\S]*transparent calc\(var\(--logo-wipe\) \+ 12%\)/s);
-    expect(css).toMatch(/--logo-wipe\s+1100ms\s+cubic-bezier\(0\.45, 0, 0\.55, 1\)/);
+    expect(css).toMatch(/--logo-wipe\s+1100ms\s+linear/);
     expect(css).toMatch(/\.site-header \.wordmark img\.wordmark-logo-arabic\s*{[^}]*z-index:\s*1[^}]*opacity:\s*1[^}]*transform:\s*translateY\(-50%\)/s);
     expect(css).toMatch(/\.site-header \.wordmark:hover,[\s\S]*\.site-header \.wordmark:focus-visible\s*{[^}]*--logo-wipe:\s*-12%/s);
     expect(css).not.toMatch(/\.wordmark-logo-english[\s\S]{0,300}opacity:\s*0/);
