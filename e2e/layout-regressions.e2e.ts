@@ -47,6 +47,44 @@ test('footer ends with the current outlined Sutur artwork below the copyright li
   }
 });
 
+test('reviews stay structured and contained from desktop through 320px', async ({ page }) => {
+  for (const width of [1440, 1025, 1024, 760, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('/');
+
+    const reviews = page.locator('#reviews');
+    await reviews.scrollIntoViewIfNeeded();
+
+    await expect(reviews.locator('.review-card')).toHaveCount(3);
+    await expect(reviews.locator('.review-identity h3')).toHaveText([
+      'Charles Arbid',
+      'Ibrahim Jarkass',
+      'Dr. Amin Chaptini',
+    ]);
+    await expect(reviews.locator('.review-company')).toHaveText([
+      'Retailinc',
+      'FixPro',
+      'Chaptini Smile Clinic',
+    ]);
+    await expect(reviews.locator('blockquote')).toHaveCount(0);
+
+    const metrics = await reviews.evaluate((node) => {
+      const sectionBox = node.getBoundingClientRect();
+      const cards = [...node.querySelectorAll('.review-card')];
+      return {
+        documentFitsViewport: document.documentElement.scrollWidth <= window.innerWidth,
+        cardsContained: cards.every((card) => {
+          const cardBox = card.getBoundingClientRect();
+          return cardBox.left >= sectionBox.left - 1 && cardBox.right <= sectionBox.right + 1;
+        }),
+      };
+    });
+
+    expect(metrics.documentFitsViewport, `${width}px document overflow`).toBe(true);
+    expect(metrics.cardsContained, `${width}px review containment`).toBe(true);
+  }
+});
+
 test('booking fields stay compact without shrinking accessible controls', async ({ page }) => {
   for (const { width, maxFormHeight } of [
     { width: 1440, maxFormHeight: 760 },

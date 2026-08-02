@@ -51,7 +51,7 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.founders-from-list\s*{[^}]*flex-wrap:\s*wrap/s);
   });
 
-  it('removes the homepage Team section and shows three reviews with no placeholder framing', () => {
+  it('shows three real client identities without invented testimonial copy', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
     const whyUs = page.indexOf('<WhyUs />');
     const reviewSection = page.indexOf('<Reviews />');
@@ -66,17 +66,24 @@ describe('homepage narrative sections', () => {
     expect(reviews).not.toMatch(/[Pp]laceholder/);
     expect(css).not.toMatch(/\.review-placeholder/);
     expect(reviews).toContain('const reviews = [');
-    expect(reviews).toContain("featured: true");
-    expect(reviews).toContain('review-card${review.featured ? \' is-featured\' : \'\'}');
+    expect(reviews).toContain("name: 'Charles Arbid'");
+    expect(reviews).toContain("company: 'Retailinc'");
+    expect(reviews).toContain("name: 'Ibrahim Jarkass'");
+    expect(reviews).toContain("company: 'FixPro'");
+    expect(reviews).toContain("name: 'Dr. Amin Chaptini'");
+    expect(reviews).toContain("company: 'Chaptini Smile Clinic'");
+    expect(reviews).toContain("position: 'Owner & Head Dentist'");
+    expect(reviews).toContain('className="review-card"');
+    expect(reviews).toContain('className="review-meta"');
     expect(reviews).toContain('className="review-avatar"');
     expect(reviews).toContain('className="review-company"');
     expect(reviews).toContain('className="review-position"');
     expect(reviews.match(/name: '/g)).toHaveLength(3);
     expect(reviews.match(/company: '/g)).toHaveLength(3);
     expect(reviews.match(/position: '/g)).toHaveLength(3);
-    expect(reviews.match(/review: '/g)).toHaveLength(3);
-    expect(reviews).not.toMatch(/★★★★★|five stars/);
-    expect(css).toMatch(/\.review-card\.is-featured\s*{[^}]*transform:\s*scale\(1\.04\)/s);
+    expect(reviews).not.toMatch(/review: '|<blockquote|★★★★★|five stars/);
+    expect(css).not.toMatch(/\.review-card\.is-featured/);
+    expect(css).toMatch(/\.review-grid\s*{[^}]*border-top:\s*1px solid var\(--border-strong\)/s);
   });
 
   it('adds an accessible Q&A section immediately before booking', () => {
