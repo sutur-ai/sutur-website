@@ -51,7 +51,7 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.founders-from-list\s*{[^}]*flex-wrap:\s*wrap/s);
   });
 
-  it('shows three real client identities without invented testimonial copy', () => {
+  it('shows three real client outcomes without invented quotations', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
     const whyUs = page.indexOf('<WhyUs />');
     const reviewSection = page.indexOf('<Reviews />');
@@ -62,7 +62,7 @@ describe('homepage narrative sections', () => {
     expect(reviewSection).toBeGreaterThan(whyUs);
     expect(booking).toBeGreaterThan(reviewSection);
     expect(reviews).toContain('id="reviews"');
-    expect(reviews).toContain('Reviews<SignalDot />');
+    expect(reviews).toContain('Client outcomes<SignalDot />');
     expect(reviews).not.toMatch(/[Pp]laceholder/);
     expect(css).not.toMatch(/\.review-placeholder/);
     expect(reviews).toContain('const reviews = [');
@@ -76,12 +76,15 @@ describe('homepage narrative sections', () => {
     expect(reviews).toContain('className="review-card"');
     expect(reviews).toContain('className="review-meta"');
     expect(reviews).toContain('className="review-avatar"');
+    expect(reviews).toContain('className="review-outcome"');
     expect(reviews).toContain('className="review-company"');
     expect(reviews).toContain('className="review-position"');
     expect(reviews.match(/name: '/g)).toHaveLength(3);
     expect(reviews.match(/company: '/g)).toHaveLength(3);
     expect(reviews.match(/position: '/g)).toHaveLength(3);
-    expect(reviews).not.toMatch(/review: '|<blockquote|★★★★★|five stars/);
+    expect(reviews.match(/outcome:/g)).toHaveLength(3);
+    expect(reviews.match(/image: '\/brand\/clients\//g)).toHaveLength(3);
+    expect(reviews).not.toMatch(/review: '|<blockquote|★★★★★|five stars|“|”/);
     expect(css).not.toMatch(/\.review-card\.is-featured/);
     expect(css).toMatch(/\.review-grid\s*{[^}]*border-top:\s*1px solid var\(--border-strong\)/s);
   });

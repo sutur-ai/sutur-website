@@ -66,22 +66,36 @@ test('reviews stay structured and contained from desktop through 320px', async (
       'FixPro',
       'Chaptini Smile Clinic',
     ]);
+    await expect(reviews.locator('.review-outcome')).toHaveCount(3);
+    await expect(reviews.locator('.review-avatar')).toHaveCount(3);
+    await expect.poll(async () => reviews.locator('.review-avatar').evaluateAll((avatars) => (
+      avatars.every((avatar) => {
+        const image = avatar as HTMLImageElement;
+        return image.complete && image.naturalWidth >= 100;
+      })
+    ))).toBe(true);
     await expect(reviews.locator('blockquote')).toHaveCount(0);
 
     const metrics = await reviews.evaluate((node) => {
       const sectionBox = node.getBoundingClientRect();
       const cards = [...node.querySelectorAll('.review-card')];
+      const avatars = [...node.querySelectorAll('.review-avatar')];
       return {
         documentFitsViewport: document.documentElement.scrollWidth <= window.innerWidth,
         cardsContained: cards.every((card) => {
           const cardBox = card.getBoundingClientRect();
           return cardBox.left >= sectionBox.left - 1 && cardBox.right <= sectionBox.right + 1;
         }),
+        avatarsLoaded: avatars.every((avatar) => {
+          const image = avatar as HTMLImageElement;
+          return image.complete && image.naturalWidth >= 100;
+        }),
       };
     });
 
     expect(metrics.documentFitsViewport, `${width}px document overflow`).toBe(true);
     expect(metrics.cardsContained, `${width}px review containment`).toBe(true);
+    expect(metrics.avatarsLoaded, `${width}px review portraits`).toBe(true);
   }
 });
 

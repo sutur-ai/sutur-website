@@ -28,7 +28,7 @@ describe('site-wide square signal punctuation', () => {
     expect(combined).toContain('Connect your business<SignalDot />');
     expect(combined).toContain('One connected business<SignalDot />');
     expect(combined).toContain('Why us<SignalDot />');
-    expect(combined).toContain('Reviews<SignalDot />');
+    expect(combined).toContain('Client outcomes<SignalDot />');
     expect(combined).toContain('Questions & answers<SignalDot />');
     expect(combined).toContain('Choose a time that works<SignalDot />');
   });

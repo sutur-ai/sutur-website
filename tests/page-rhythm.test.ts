@@ -160,7 +160,7 @@ describe('website design-system theme', () => {
     for (const link of [
       "['Capabilities', '#capabilities']",
       "['Why us', '#why-us']",
-      "['Reviews', '#reviews']",
+      "['Outcomes', '#reviews']",
       "['FAQ', '#questions']",
     ]) {
       expect(navigation).toContain(link);
