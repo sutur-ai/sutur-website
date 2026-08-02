@@ -2,26 +2,22 @@ import { SignalDot } from '@/components/ui/SignalDot';
 
 const reviews = [
   {
-    initials: 'MH',
-    name: 'Maya Haddad',
-    company: 'Cedar Retail Group',
-    position: 'Operations Director',
-    review: 'Sutur turned a scattered set of daily processes into one clear operating flow our team could actually follow.',
+    initials: 'CA',
+    name: 'Charles Arbid',
+    company: 'Retailinc',
+    position: 'President',
   },
   {
-    initials: 'KN',
-    name: 'Karim Nassar',
-    company: 'Northstar Trading',
-    position: 'Managing Partner',
-    review: 'The work stayed grounded in the operation. We gained a connected system without forcing the business into a generic template.',
-    featured: true,
+    initials: 'IJ',
+    name: 'Ibrahim Jarkass',
+    company: 'FixPro',
+    position: 'CEO',
   },
   {
-    initials: 'LM',
-    name: 'Leila Mansour',
-    company: 'Atelier Foods',
-    position: 'General Manager',
-    review: 'The repetitive follow-up finally moved out of spreadsheets, while our team kept control of the decisions that matter.',
+    initials: 'AC',
+    name: 'Dr. Amin Chaptini',
+    company: 'Chaptini Smile Clinic',
+    position: 'Owner & Head Dentist',
   },
 ];
 
@@ -33,25 +29,27 @@ export function Reviews() {
       aria-labelledby="reviews-title"
     >
       <div className="reviews-heading">
+        <p className="reviews-label">Selected clients</p>
         <h2 id="reviews-title">Reviews<SignalDot /></h2>
       </div>
       <div className="review-grid">
-        {reviews.map((review) => (
+        {reviews.map((review, index) => (
           <article
-            className={`review-card${review.featured ? ' is-featured' : ''}`}
+            className="review-card"
             key={review.name}
           >
+            <div className="review-meta" aria-hidden="true">
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <span>Client</span>
+            </div>
             <div className="review-profile">
               <div className="review-avatar" aria-hidden="true">{review.initials}</div>
               <div className="review-identity">
                 <h3>{review.name}</h3>
-                <p className="review-company">{review.company}</p>
                 <p className="review-position">{review.position}</p>
               </div>
             </div>
-            <blockquote className="review-copy">
-              <p>“{review.review}”</p>
-            </blockquote>
+            <p className="review-company">{review.company}</p>
           </article>
         ))}
       </div>
