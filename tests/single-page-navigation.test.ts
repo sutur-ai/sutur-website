@@ -48,7 +48,7 @@ describe('single-page website architecture', () => {
     const expectedLinks = [
       ["Capabilities", '#capabilities'],
       ['Why us', '#why-us'],
-      ['Reviews', '#reviews'],
+      ['Outcomes', '#reviews'],
       ['FAQ', '#questions'],
     ] as const;
 

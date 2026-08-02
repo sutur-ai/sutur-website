@@ -1,23 +1,30 @@
+import Image from 'next/image';
 import { SignalDot } from '@/components/ui/SignalDot';
 
 const reviews = [
   {
-    initials: 'CA',
     name: 'Charles Arbid',
     company: 'Retailinc',
     position: 'President',
+    image: '/brand/clients/charles-arbid.webp',
+    outcome:
+      'Retailinc unified purchasing, inventory, point of sale, and finance in one ERP. Its connected SUTUR agent surfaces exceptions early, helping the team act without chasing updates.',
   },
   {
-    initials: 'IJ',
     name: 'Ibrahim Jarkass',
     company: 'FixPro',
     position: 'CEO',
+    image: '/brand/clients/ibrahim-jarkass.webp',
+    outcome:
+      'FixPro connected project delivery, purchasing, costing, and site follow-ups in one ERP. Its SUTUR agent keeps approvals and exceptions moving from concept to completion.',
   },
   {
-    initials: 'AC',
     name: 'Dr. Amin Chaptini',
     company: 'Chaptini Smile Clinic',
     position: 'Owner & Head Dentist',
+    image: '/brand/clients/amin-chaptini.webp',
+    outcome:
+      'Chaptini Smile Clinic connected appointments, patient follow-ups, billing, and daily operations in one ERP. Its SUTUR agent keeps priorities moving so the team can focus on patient care.',
   },
 ];
 
@@ -29,8 +36,8 @@ export function Reviews() {
       aria-labelledby="reviews-title"
     >
       <div className="reviews-heading">
-        <p className="reviews-label">Selected clients</p>
-        <h2 id="reviews-title">Reviews<SignalDot /></h2>
+        <p className="reviews-label">Connected operations</p>
+        <h2 id="reviews-title">Client outcomes<SignalDot /></h2>
       </div>
       <div className="review-grid">
         {reviews.map((review, index) => (
@@ -40,16 +47,23 @@ export function Reviews() {
           >
             <div className="review-meta" aria-hidden="true">
               <span>{String(index + 1).padStart(2, '0')}</span>
-              <span>Client</span>
+              <span>ERP + SUTUR agent</span>
             </div>
+            <p className="review-outcome">{review.outcome}</p>
             <div className="review-profile">
-              <div className="review-avatar" aria-hidden="true">{review.initials}</div>
+              <Image
+                alt={`Portrait of ${review.name}`}
+                className="review-avatar"
+                height={256}
+                src={review.image}
+                width={256}
+              />
               <div className="review-identity">
                 <h3>{review.name}</h3>
                 <p className="review-position">{review.position}</p>
+                <p className="review-company">{review.company}</p>
               </div>
             </div>
-            <p className="review-company">{review.company}</p>
           </article>
         ))}
       </div>
