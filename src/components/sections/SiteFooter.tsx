@@ -35,7 +35,7 @@ export function SiteFooter() {
       <div>
         <h2>Contact</h2>
         <div className="footer-links">
-          <a href="mailto:hello@sutur.ai">hello@sutur.ai</a>
+          <a href="tel:+9613230063">+961(0)3230063</a>
           <span>Beirut, Lebanon</span>
         </div>
       </div>
