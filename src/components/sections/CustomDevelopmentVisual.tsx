@@ -32,7 +32,7 @@ const purchaseAdditions = [
   '        request.supplier_id)',
   '    quantity = validate_quantity(',
   '        request.quantity)',
-  '    return odoo.purchase.create(',
+  '    return erp.purchase.create(',
   '        supplier, quantity)',
 ];
 
@@ -212,7 +212,7 @@ export function CustomDevelopmentVisual({ active }: { active: boolean }) {
         <div className={styles.editorShell} ref={editorShellRef}>
           <aside className={styles.fileTree}>
             <strong>EXPLORER</strong>
-            <span>⌄ sutur-odoo</span>
+            <span>⌄ sutur-workflows</span>
             <span className={styles.folder}>⌄ src</span>
             <i
               className={activeFile === 'purchase_order.py' ? styles.activeFile : ''}

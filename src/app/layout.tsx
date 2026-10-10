@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: '%s | SUTUR',
   },
   description:
-    'Tailored Odoo ERP, custom development, and practical AI agents for clearer operations.',
+    'Practical AI agents that connect to any ERP, plus custom development, for clearer operations.',
   icons: {
     icon: '/brand/design-system/sutur-agent-favicon.png',
     apple: '/brand/design-system/sutur-agent-favicon.png',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: 'Sutur',
     title: 'SUTUR',
     description:
-      'Tailored Odoo ERP, custom development, and practical AI agents for clearer operations.',
+      'Practical AI agents that connect to any ERP, plus custom development, for clearer operations.',
   },
 };
 

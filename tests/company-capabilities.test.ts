@@ -96,14 +96,14 @@ describe('company capabilities section', () => {
 
   it('preserves Alex’s approved offer order: AI, ERP, custom development', () => {
     const agentIndex = component.indexOf("label: 'AI agent architecture'");
-    const erpIndex = component.indexOf("label: 'ERP implementation'");
+    const erpIndex = component.indexOf("label: 'ERP integration'");
     const customIndex = component.indexOf("label: 'Custom development'");
 
     expect(agentIndex).toBeGreaterThan(-1);
     expect(agentIndex).toBeLessThan(erpIndex);
     expect(erpIndex).toBeLessThan(customIndex);
     expect(component).toContain("number: '01',\n    label: 'AI agent architecture'");
-    expect(component).toContain("number: '02',\n    label: 'ERP implementation'");
+    expect(component).toContain("number: '02',\n    label: 'ERP integration'");
     expect(component).toContain("number: '03',\n    label: 'Custom development'");
   });
 

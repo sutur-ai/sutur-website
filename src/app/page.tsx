@@ -23,7 +23,7 @@ export default function Home() {
             <em>Automate the busywork<SignalDot /></em>
           </h1>
           <p className="lead">
-            We place all your business needs onto one platform, then have agents
+            We connect to the ERP and tools you already use, then have agents
             handle the tasks your team should not waste time on.
           </p>
           <div className="hero-actions">

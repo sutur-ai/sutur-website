@@ -19,7 +19,7 @@ export function SiteFooter() {
             height={1055}
           />
         </a>
-        <p>Tailored Odoo and practical AI agents for clearer operations.</p>
+        <p>Practical AI agents that connect to any ERP, for clearer operations.</p>
       </div>
 
       <div>
