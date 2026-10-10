@@ -242,7 +242,7 @@ export function AgentOrbit() {
   }, []);
 
   return (
-    <aside className={styles.orbit} aria-label="Sutur AI agent working across Odoo modules">
+    <aside className={styles.orbit} aria-label="Sutur AI agent working across your business systems">
       <p className={styles.prompt}>{prompt}</p>
       <div className={styles.ambient} aria-hidden="true" />
       <div className={`${styles.agent} ${working ? styles.working : ""}`} aria-label="Sutur AI agent">

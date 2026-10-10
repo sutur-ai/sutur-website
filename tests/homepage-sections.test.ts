@@ -103,7 +103,20 @@ describe('homepage narrative sections', () => {
     expect(faq.match(/<details/g)).toHaveLength(4);
     expect(faq.match(/<summary/g)).toHaveLength(4);
     expect(faq.match(/<ExpandIcon \/>/g)).toHaveLength(4);
-    expect(faq).toContain('Do we need to use Odoo?');
+    expect(faq).toContain('Do we need to change our ERP?');
     expect(faq).toContain('What happens after the discovery call?');
+  });
+
+  it('says we connect to any ERP, not that we implement Odoo', () => {
+    const copy = [
+      page,
+      readIfExists('../src/app/layout.tsx'),
+      readIfExists('../src/components/sections/CompanyCapabilities.tsx'),
+      readIfExists('../src/components/sections/FaqSection.tsx'),
+      readIfExists('../src/components/sections/SiteFooter.tsx'),
+    ].join('\n');
+
+    expect(copy).not.toMatch(/implement(?:s|ing|ation)? Odoo|Tailored Odoo|ERP implementation/i);
+    expect(copy).toContain('connect to any ERP');
   });
 });

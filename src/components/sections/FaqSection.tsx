@@ -15,12 +15,13 @@ export function FaqSection() {
       <div className="faq-list">
         <details open>
           <summary>
-            <span>Do we need to use Odoo?</span>
+            <span>Do we need to change our ERP?</span>
             <ExpandIcon />
           </summary>
           <p>
-            No. We can improve an existing setup or map a clean implementation from
-            the way your team works today.
+            No. We connect to any ERP, whether Odoo, SAP, Microsoft Dynamics,
+            NetSuite, or a system built in-house, so your team keeps working in the
+            system it already knows.
           </p>
         </details>
         <details>

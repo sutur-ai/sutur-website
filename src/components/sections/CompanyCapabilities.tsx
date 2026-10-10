@@ -62,10 +62,10 @@ const capabilities = [
   },
   {
     number: '02',
-    label: 'ERP implementation',
+    label: 'ERP integration',
     description:
-      'We implement Odoo around your real operation — from CRM and accounting to inventory, purchasing, and delivery — so your team works from one source of truth.',
-    cta: 'Plan your ERP implementation',
+      'We connect to any ERP — Odoo, SAP, Microsoft Dynamics, NetSuite, or a system built in-house — so agents work from your live records and your team keeps the system it already knows.',
+    cta: 'Connect your ERP',
     visual: 'erp',
   },
   {
