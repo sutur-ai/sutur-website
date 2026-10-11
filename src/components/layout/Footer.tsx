@@ -2,7 +2,7 @@ export function Footer() { return (
 <footer className="foot">
 <div className="wrap">
 <div className="foot-top">
-<h2 className="foot-claim">Rafic does the work{'\u2060'}<span className="dot">.</span> <em>You approve what matters{'\u2060'}<span className="dot">.</span></em></h2>
+<h2 className="foot-claim">Rafic does the <span className="nowrap">work<span className="dot">.</span></span> <em>You approve what <span className="nowrap">matters<span className="dot">.</span></span></em></h2>
 </div>
 <div className="foot-grid">
 <div className="foot-brand">

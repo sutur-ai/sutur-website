@@ -17,6 +17,8 @@ a{color:#3b1447}a:hover{color:#f57e20}
 .wrap{max-width:1720px;margin:0 auto;padding-inline:clamp(20px,5cqi,96px)}
 .label{font-size:11.5px;line-height:18.4px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);display:flex;gap:12px;align-items:center}
 .label b{color:var(--orange);font-weight:700}
+/* Keep the final word and its orange dot in one inline span. */
+.nowrap{white-space:nowrap}
 .dot{display:inline-block;width:.15em;height:.15em;margin-left:.05em;background:var(--orange);color:transparent;overflow:hidden;line-height:0;vertical-align:baseline}
 .disp{font-family:var(--font-display);font-weight:700;letter-spacing:-.04em;margin:0;text-wrap:balance}
 .h-section{font-family:var(--font-display);font-weight:700;letter-spacing:-.035em;line-height:1.06;margin:0;font-size:clamp(32px,3.4cqi,60px);text-wrap:balance}

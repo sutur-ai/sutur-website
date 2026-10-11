@@ -30,8 +30,8 @@ describe('foundation markup', () => {
   });
   it('keeps claim punctuation joined to the preceding word', () => {
     const markup = renderToStaticMarkup(React.createElement(Footer));
-    expect(markup).toContain('work\u2060<span class="dot">');
-    expect(markup).toContain('matters\u2060<span class="dot">');
+    expect(markup).toContain('<span class="nowrap">work<span class="dot">.</span></span>');
+    expect(markup).toContain('<span class="nowrap">matters<span class="dot">.</span></span>');
   });
   it('keeps the floating CTA inaccessible before hydration and hides at or beyond booking', () => {
     const markup = renderToStaticMarkup(React.createElement(FloatingCta));

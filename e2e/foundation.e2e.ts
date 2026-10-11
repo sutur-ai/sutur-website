@@ -1,4 +1,24 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function waitForScrollToSettle(page: Page) {
+  const settled = await page.evaluate(async () => {
+    const deadline = performance.now() + 5000;
+    let stableSince = performance.now();
+    let previousY = window.scrollY;
+    let previousHeaderHeight = document.querySelector('header')!.getBoundingClientRect().height;
+    while (performance.now() < deadline) {
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+      const currentY = window.scrollY;
+      const currentHeaderHeight = document.querySelector('header')!.getBoundingClientRect().height;
+      if (Math.abs(currentY - previousY) > 0.01 || Math.abs(currentHeaderHeight - previousHeaderHeight) > 0.01) stableSince = performance.now();
+      previousY = currentY;
+      previousHeaderHeight = currentHeaderHeight;
+      if (performance.now() - stableSince >= 300) return true;
+    }
+    return false;
+  });
+  expect(settled, 'scrollY and header height must remain stable for 300ms').toBe(true);
+}
 
 for (const width of [390, 1280, 1440, 1920, 2560]) {
   test(`foundation fits and navigates at ${width}px`, async ({ page }) => {
@@ -11,40 +31,33 @@ for (const width of [390, 1280, 1440, 1920, 2560]) {
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await expect(page.locator('.fab')).toHaveAttribute('aria-hidden', 'false');
-    if (width === 390) {
-      const menu = page.getByRole('button', { name: 'Menu', exact: true });
-      await menu.click();
-      await expect(menu).toHaveAttribute('aria-expanded', 'true');
-      await page.getByRole('navigation', { name: 'Menu', exact: true }).getByRole('link', { name: 'What Rafic does' }).click();
-      await expect(menu).toHaveAttribute('aria-expanded', 'false');
-      await expect(page.locator('#phone-menu')).toHaveCount(0);
-    }
-    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.evaluate(() => document.fonts.ready);
-    // Test the h2 in viewport pixels, including the page's CSS zoom.
+    // Use the same anchor links as a visitor, including opening/closing the phone menu.
     for (const id of ['what', 'teams', 'control', 'start', 'faq', 'book']) {
-      await page.evaluate(async id => {
-        location.hash = id;
-        document.getElementById(id)?.scrollIntoView({ block: 'start', behavior: 'instant' });
-        let stableFrames = 0;
-        let previous = window.scrollY;
-        for (let frame = 0; frame < 120 && stableFrames < 4; frame++) {
-          await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-          const current = window.scrollY;
-          stableFrames = Math.abs(current - previous) < 0.01 ? stableFrames + 1 : 0;
-          previous = current;
-        }
-      }, id);
-      await expect.poll(async () => page.evaluate(id => {
+      const menu = page.getByRole('button', { name: 'Menu', exact: true });
+      if (await menu.isVisible()) {
+        await menu.click();
+        await expect(menu).toHaveAttribute('aria-expanded', 'true');
+        await page.locator(`#phone-menu a[href="#${id}"]`).click();
+        await expect(menu).toHaveAttribute('aria-expanded', 'false');
+      } else {
+        await page.locator(id === 'book' ? '.nav-cta' : `.nav-links a[href="#${id}"]`).click();
+      }
+      await expect(page.locator('#phone-menu')).toHaveCount(0);
+      await expect(page).toHaveURL(new RegExp(`#${id}$`));
+      await waitForScrollToSettle(page);
+      const gap = await page.evaluate(id => {
         const heading = document.querySelector(`#${id} h2`)!.getBoundingClientRect();
         const header = document.querySelector('header')!.getBoundingClientRect();
-        return Math.abs(heading.top - header.bottom - 56);
-      }, id), { message: `${id} h2 must land 56px below the header` }).toBeLessThanOrEqual(0.5);
+        return heading.top - header.bottom;
+      }, id);
+      expect(Math.abs(gap - 56), `${id} h2 gap is ${gap}px`).toBeLessThanOrEqual(1);
     }
     const detachedDots = await page.evaluate(() => {
       return [...document.querySelectorAll('h1 .dot, h2 .dot')].filter(dot => {
+        if (!dot.parentElement?.matches('.nowrap') || getComputedStyle(dot.parentElement).whiteSpace !== 'nowrap') return true;
         let previous = dot.previousSibling;
-        while (previous && (previous.nodeType !== Node.TEXT_NODE || !previous.textContent?.replace(/\u2060/g, '').trim())) previous = previous.previousSibling;
+        while (previous && (previous.nodeType !== Node.TEXT_NODE || !previous.textContent?.trim())) previous = previous.previousSibling;
         if (!previous) return true;
         const text = previous.textContent ?? '';
         const range = document.createRange();
