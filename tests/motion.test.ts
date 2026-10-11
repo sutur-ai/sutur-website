@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { observeReducedMotion, usePrefersReducedMotion } from '../src/lib/motion';
+import { observeAnimationsPaused, setAnimationsPaused, observeReducedMotion, useAnimationsPaused, usePrefersReducedMotion } from '../src/lib/motion';
 import { observeInView, useInView } from '../src/lib/useInView';
 
 const hooks = vi.hoisted(() => ({ effects: [] as (() => void | (() => void))[], update: vi.fn(), ref: { current: null as HTMLElement | null } }));
@@ -60,5 +60,93 @@ describe('reduced motion lifecycle', () => {
     expect(update).toHaveBeenLastCalledWith(true);
     vi.stubGlobal('window', {}); observeReducedMotion(update)();
     expect(update).toHaveBeenLastCalledWith(true);
+  });
+});
+
+function motionBrowser(stored: string | null = null, storageBlocked = false) {
+  const root = region();
+  const localStorage = {
+    getItem: vi.fn(() => { if (storageBlocked) throw new Error('Storage unavailable'); return stored; }),
+    setItem: vi.fn((_key: string, value: string) => { if (storageBlocked) throw new Error('Storage unavailable'); stored = value; }),
+  };
+  const browser = Object.assign(new EventTarget(), { localStorage });
+  vi.stubGlobal('window', browser);
+  vi.stubGlobal('document', { documentElement: { classList: { ...root.classList, contains: (name: string) => root.classes.has(name) } } });
+  return { root, localStorage, browser };
+}
+
+describe('viewer animation pause', () => {
+  it('defaults to playing, persists changes, notifies subscribers and cleans up', () => {
+    const { root, localStorage } = motionBrowser();
+    const update = vi.fn();
+    const cleanup = observeAnimationsPaused(update);
+    expect(update).toHaveBeenLastCalledWith(false);
+    setAnimationsPaused(true);
+    expect(root.classes.has('animations-paused')).toBe(true);
+    expect(update).toHaveBeenLastCalledWith(true);
+    expect(localStorage.setItem).toHaveBeenLastCalledWith('sutur-animations-paused', 'true');
+    setAnimationsPaused(false);
+    expect(root.classes.has('animations-paused')).toBe(false);
+    expect(update).toHaveBeenLastCalledWith(false);
+    cleanup(); update.mockClear(); setAnimationsPaused(true);
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('restores a paused preference for a new document and shares it with the hook', () => {
+    const { root } = motionBrowser('true');
+    expect(useAnimationsPaused()).toBe(false);
+    const cleanup = hooks.effects[0]() as () => void;
+    expect(hooks.update).toHaveBeenLastCalledWith(true);
+    expect(root.classes.has('animations-paused')).toBe(true);
+    cleanup();
+    motionBrowser('true');
+    const update = vi.fn(); observeAnimationsPaused(update)();
+    expect(update).toHaveBeenLastCalledWith(true);
+  });
+
+  it('works without storage, accepts only a true saved preference, and is safe during SSR', () => {
+    for (const [stored, blocked] of [['true', true], ['invalid', false]] as const) {
+      motionBrowser(stored, blocked);
+      const update = vi.fn(); const cleanup = observeAnimationsPaused(update);
+      expect(update).toHaveBeenLastCalledWith(false);
+      setAnimationsPaused(true); expect(update).toHaveBeenLastCalledWith(true);
+      setAnimationsPaused(false); expect(update).toHaveBeenLastCalledWith(false);
+      cleanup();
+    }
+    vi.unstubAllGlobals();
+    const update = vi.fn(); observeAnimationsPaused(update)();
+    expect(update).toHaveBeenCalledWith(false);
+    expect(() => setAnimationsPaused(true)).not.toThrow();
+  });
+
+  it('stops the running signal on pause and resumes only regions still on screen', () => {
+    motionBrowser();
+    let callback: IntersectionObserverCallback = () => {};
+    vi.stubGlobal('IntersectionObserver', vi.fn(function (cb: IntersectionObserverCallback) {
+      callback = cb; return { observe: vi.fn(), disconnect: vi.fn() };
+    }));
+    const element = region(), update = vi.fn();
+    const cleanup = observeInView(element as unknown as HTMLElement, update);
+    const visible = (isIntersecting: boolean) => callback([{ target: element, isIntersecting } as unknown as IntersectionObserverEntry], {} as IntersectionObserver);
+    visible(true); expect(update).toHaveBeenLastCalledWith(true);
+    setAnimationsPaused(true); expect(update).toHaveBeenLastCalledWith(false);
+    expect(element.classes.has('idle')).toBe(true);
+    visible(true); expect(update).toHaveBeenLastCalledWith(false);
+    setAnimationsPaused(false); expect(update).toHaveBeenLastCalledWith(true);
+    setAnimationsPaused(true); visible(false); setAnimationsPaused(false);
+    expect(update).toHaveBeenLastCalledWith(false);
+    expect(element.classes.has('idle')).toBe(true);
+    cleanup(); update.mockClear(); setAnimationsPaused(true);
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('honors a saved pause even without IntersectionObserver', () => {
+    motionBrowser('true'); vi.stubGlobal('IntersectionObserver', undefined);
+    const element = region(), update = vi.fn();
+    const cleanup = observeInView(element as unknown as HTMLElement, update);
+    expect(update).toHaveBeenLastCalledWith(false);
+    expect(element.classes.has('idle')).toBe(true);
+    setAnimationsPaused(false); expect(update).toHaveBeenLastCalledWith(true);
+    cleanup();
   });
 });
