@@ -79,6 +79,35 @@ for (const width of [390, 1280, 1440, 1920, 2560]) {
   });
 }
 
+for (const width of [721, 900, 1100]) {
+  test(`header menu closes for its CTA and desktop resize at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await page.evaluate(() => document.fonts.ready);
+    const menu = page.locator('.nav-menu');
+    await menu.click();
+    await expect(menu).toHaveAttribute('aria-expanded', 'true');
+    await page.locator('.nav-cta').click();
+    await expect(menu).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#phone-menu')).toHaveCount(0);
+    await expect(page).toHaveURL(/#book$/);
+    await waitForScrollToSettle(page);
+    const gap = await page.evaluate(() => document.querySelector('#book h2')!.getBoundingClientRect().top - document.querySelector('header')!.getBoundingClientRect().bottom);
+    expect(Math.abs(gap - 56)).toBeLessThanOrEqual(1);
+
+    await menu.click();
+    await expect(menu).toHaveAttribute('aria-expanded', 'true');
+    await page.setViewportSize({ width: 1101, height: 900 });
+    await expect(menu).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#phone-menu')).toHaveCount(0);
+    await expect(page.locator('.nav-links')).toBeVisible();
+    await page.setViewportSize({ width, height: 900 });
+    await expect(menu).toBeVisible();
+    await expect(menu).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('#phone-menu')).toHaveCount(0);
+  });
+}
+
 test('booking validation and Calendly handoff remain functional', async ({ page }) => {
   await page.goto('/#book');
   const form = page.locator('.booking-lead-form');

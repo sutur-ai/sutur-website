@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -27,6 +28,15 @@ describe('foundation markup', () => {
     for (const path of ['/privacy', '/terms', '/security']) expect(markup).not.toContain(`href="${path}"`);
     expect(markup).toContain('/brand/sutur-wordmark-soft.png');
     expect(markup).toContain('Rafic is a Sutur product.');
+  });
+  it('reserves each wordmark’s intrinsic aspect ratio before it loads', () => {
+    for (const [component, image] of [[Header, 'sutur-wordmark-deep.png'], [Footer, 'sutur-wordmark-soft.png']] as const) {
+      const png = readFileSync(new URL(`../public/brand/${image}`, import.meta.url));
+      const markup = renderToStaticMarkup(React.createElement(component));
+      const imageTag = markup.match(new RegExp(`<img[^>]*src="/brand/${image}"[^>]*>`))?.[0] ?? '';
+      expect(imageTag).toContain(`width="${png.readUInt32BE(16)}"`);
+      expect(imageTag).toContain(`height="${png.readUInt32BE(20)}"`);
+    }
   });
   it('keeps claim punctuation joined to the preceding word', () => {
     const markup = renderToStaticMarkup(React.createElement(Footer));

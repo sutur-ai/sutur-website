@@ -6,7 +6,7 @@ export function Footer() { return (
 </div>
 <div className="foot-grid">
 <div className="foot-brand">
-<img src="/brand/sutur-wordmark-soft.png" alt="Sutur" />
+<img src="/brand/sutur-wordmark-soft.png" width={2250} height={816} alt="Sutur" />
 <span>Sutur builds Rafic, the AI assistant that connects to your business and does the work, with you in control.</span>
 </div>
 <nav className="foot-col" aria-label="Product">
