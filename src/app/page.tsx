@@ -18,11 +18,12 @@ export default function Home() {
     <main>
       <Hero /><AppsStrip /><Capabilities /><UseCases /><Control /><HowYouStart /><Faq />
       <SectionShell id="book" className="booking-section"><div className="wrap">
-        <div className="sec-head rv"><div className="label"><b>06</b> Book a demo</div>
+        <Booking>
+        <div className="sec-head"><div className="label"><b>06</b> Book a demo</div>
           <h2 className="h-section">See Rafic do your <span className="nowrap">work<span className="dot">.</span></span></h2>
           <p className="lead">Thirty minutes, one real task from your week, done live on the tools you already use.</p>
         </div>
-        <Booking />
+        </Booking>
       </div></SectionShell>
     </main>
     <Footer /><FloatingCta />
