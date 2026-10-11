@@ -73,7 +73,7 @@ for (const width of [390, 1440]) {
   });
 }
 
-test('apps roll in opposite directions and pause on hover and off screen', async ({ page }) => {
+test('apps roll in opposite directions and pause globally, on hover and off screen', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   const strip = page.getByRole('region', { name: 'Apps Rafic works with' });
@@ -87,6 +87,16 @@ test('apps roll in opposite directions and pause on hover and off screen', async
   await expect(tracks.first()).toHaveCSS('animation-direction', 'normal');
   await expect(tracks.last()).toHaveCSS('animation-direction', 'reverse');
   for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
+  await expect(strip.getByRole('button')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Pause animations', exact: true }).press('Space');
+  await strip.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  await expect(strip).not.toHaveClass(/idle/);
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
+  await page.getByRole('button', { name: 'Play animations', exact: true }).press('Space');
+  await strip.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
   for (const row of await rows.all()) {
     await row.hover();
     await expect(row.locator(':scope > div')).toHaveCSS('animation-play-state', 'paused');
@@ -98,44 +108,4 @@ test('apps roll in opposite directions and pause on hover and off screen', async
   await strip.scrollIntoViewIfNeeded();
   await expect(strip).not.toHaveClass(/idle/);
   for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
-});
-
-test('keyboard pause persists across hover, off-screen and reduced-motion changes', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  const strip = page.getByRole('region', { name: 'Apps Rafic works with' });
-  await strip.scrollIntoViewIfNeeded();
-  await page.mouse.move(0, 0);
-  const button = strip.getByRole('button');
-  await expect(button).toHaveAccessibleName('Pause the app strip');
-  const tracks = strip.locator(':scope > div').filter({ has: page.locator('img') }).locator(':scope > div');
-  expect(await strip.locator(':scope button, :scope a, :scope [tabindex="0"]').first().getAttribute('type')).toBe('button');
-  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBe(1);
-  // Reach the control through native tab navigation, without programmatic focus.
-  for (let attempt = 0; attempt < 15 && !await button.evaluate(element => element === document.activeElement); attempt++) {
-    await page.keyboard.press('Tab');
-  }
-  await expect(button).toBeFocused();
-  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThan(32);
-  await page.keyboard.press('Space');
-  await expect(button).toHaveText('Resume the app strip');
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
-  await tracks.first().hover();
-  await page.mouse.move(0, 0);
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
-  await page.locator('footer').scrollIntoViewIfNeeded();
-  await expect(strip).toHaveClass(/idle/);
-  await strip.scrollIntoViewIfNeeded();
-  await expect(strip).not.toHaveClass(/idle/);
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-name', 'none');
-  await page.keyboard.press('Enter');
-  await expect(button).toHaveText('Pause the app strip');
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-name', 'none');
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
-  await page.keyboard.press('Tab');
-  await expect(button).not.toBeFocused();
-  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBe(1);
 });

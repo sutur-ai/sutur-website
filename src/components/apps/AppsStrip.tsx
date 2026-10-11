@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { APP_ROW_1, APP_ROW_2, type App } from '../../content/apps';
 import { useInView } from '../../lib/useInView';
 import styles from './AppsStrip.module.css';
@@ -19,12 +18,8 @@ function AppCards({ apps, duplicate = false }: { apps: readonly App[]; duplicate
 
 export function AppsStrip() {
   const { ref, inView } = useInView<HTMLElement>();
-  const [paused, setPaused] = useState(false);
 
-  return <section ref={ref} className={`${styles.apps}${paused ? ` ${styles.paused}` : ''}${inView ? '' : ' idle'}`} aria-label="Apps Rafic works with">
-    <button type="button" className={styles.pauseControl} onClick={() => setPaused(value => !value)}>
-      {paused ? 'Resume the app strip' : 'Pause the app strip'}
-    </button>
+  return <section ref={ref} className={`${styles.apps}${inView ? '' : ' idle'}`} aria-label="Apps Rafic works with">
     <p className={styles['apps-k']}>Office, finance, sales, design, video, 3D. If your team works in it, Rafic can too.</p>
     {[APP_ROW_1, APP_ROW_2].map((apps, index) => <div className={styles.marq} key={index}>
       <div className={`${styles.track}${index === 1 ? ` ${styles.rev}` : ''}`}>

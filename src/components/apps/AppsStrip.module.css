@@ -1,7 +1,5 @@
 .apps{position:relative;isolation:isolate;padding:clamp(12px,1.6cqi,28px) 0 clamp(56px,6cqi,104px)}
 .apps::before{content:"";position:absolute;z-index:-1;inset:10% 0 20%;background:radial-gradient(closest-side,rgba(144,111,177,.2),transparent 70%) 20% 50%/45% 100% no-repeat,radial-gradient(closest-side,rgba(245,126,32,.14),transparent 70%) 80% 50%/40% 100% no-repeat;filter:blur(40px);pointer-events:none}
-.pauseControl{position:absolute;z-index:2;top:12px;left:clamp(20px,5cqi,96px);width:1px;height:1px;margin:0;padding:0;border:0;clip-path:inset(50%);overflow:hidden;white-space:nowrap;background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:var(--glass-hi),var(--sh-1);border-radius:999px;color:var(--deep);font:inherit;font-size:12px;font-weight:500}
-.pauseControl:focus-visible{width:auto;height:auto;min-height:32px;padding:6px 12px;border:1px solid var(--glass-edge);clip-path:none;overflow:visible}
 .apps-k{text-align:center;font-size:clamp(14px,1cqi,16px);font-weight:500;color:var(--muted);margin:0 0 18px;padding-inline:20px}
 .marq{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);padding:6px 0}
 .marq + .marq{margin-top:12px}
@@ -9,7 +7,6 @@
 .track.rev{animation-direction:reverse;animation-duration:90s}
 .copy{display:flex;flex:0 0 auto}
 .marq:hover .track{animation-play-state:paused}
-.paused .track{animation-play-state:paused}
 @keyframes sxmarq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .app{width:172px;margin-right:14px;flex:0 0 auto;background:linear-gradient(160deg,rgba(255,255,255,.78),rgba(255,255,255,.46));-webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);border:1px solid var(--glass-edge);box-shadow:var(--glass-hi),0 4px 14px -8px rgba(59,20,71,.16);border-radius:18px;padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;transition:transform .2s}
 .app:hover{transform:translateY(-2px)}

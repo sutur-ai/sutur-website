@@ -5,14 +5,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { APP_ROW_1, APP_ROW_2 } from '../src/content/apps';
 import { AppsStrip } from '../src/components/apps/AppsStrip';
 
-const visibility = vi.hoisted(() => ({ inView: false, paused: false }));
-vi.mock('react', async importOriginal => ({
-  ...await importOriginal<typeof React>(),
-  useState: () => [visibility.paused, (update: (paused: boolean) => boolean) => { visibility.paused = update(visibility.paused); }],
-}));
+const visibility = vi.hoisted(() => ({ inView: false }));
 vi.mock('../src/lib/useInView', () => ({ useInView: () => ({ ref: { current: null }, inView: visibility.inView }) }));
 vi.stubGlobal('React', React);
-afterEach(() => { visibility.inView = false; visibility.paused = false; });
+afterEach(() => { visibility.inView = false; });
 
 const expectedNames = [
   ['Outlook', 'Microsoft Teams', 'Gmail', 'Google Calendar', 'Slack', 'Notion', 'Jira', 'Asana', 'HubSpot', 'Salesforce', 'Odoo', 'SAP', 'QuickBooks', 'Xero', 'Stripe', 'Shopify', 'Zoom', 'WhatsApp', 'Zendesk', 'Airtable'],
@@ -23,27 +19,6 @@ const allApps = [...APP_ROW_1, ...APP_ROW_2];
 function markup() { return renderToStaticMarkup(React.createElement(AppsStrip)); }
 
 describe('rolling apps strip', () => {
-  it('places a named native pause control first and toggles both rows independently of visibility', () => {
-    visibility.inView = true;
-    const control = () => AppsStrip().props.children[0];
-    expect(control().type).toBe('button');
-    expect(control().props.type).toBe('button');
-    expect(control().props.children).toBe('Pause the app strip');
-    control().props.onClick();
-    expect(visibility.paused).toBe(true);
-    expect(control().props.children).toBe('Resume the app strip');
-    expect(markup()).toMatch(/<section class="[^"]*paused[^"]*"/);
-    visibility.inView = false;
-    expect(markup()).toMatch(/<section class="[^"]*paused[^"]* idle"/);
-    visibility.inView = true;
-    expect(control().props.children).toBe('Resume the app strip');
-    control().props.onClick();
-    expect(visibility.paused).toBe(false);
-    expect(markup()).not.toMatch(/<section class="[^"]*paused/);
-    visibility.inView = false;
-    expect(markup()).toMatch(/<section class="[^"]* idle"/);
-  });
-
   it('ships all 39 apps in the approved row order', () => {
     expect([APP_ROW_1, APP_ROW_2].map(row => row.map(app => app.name))).toEqual(expectedNames);
     expect(new Set(allApps.map(app => app.slug)).size).toBe(39);
