@@ -1,9 +1,22 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Montserrat } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], variable: '--font-montserrat', display: 'swap' });
-const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-inter', display: 'swap' });
+const montserrat = localFont({
+  src: './fonts/montserrat-latin.woff2',
+  weight: '100 900',
+  variable: '--font-montserrat',
+  display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['Montserrat Arial Fallback'],
+});
+const inter = localFont({
+  src: './fonts/inter-latin.woff2',
+  weight: '100 900',
+  variable: '--font-inter',
+  display: 'swap',
+  adjustFontFallback: 'Arial',
+});
 const description = "One assistant for your whole team. It works in your email, your business apps and on your computer, keeps going while you're away, and asks before anything is sent or deleted.";
 const title = 'Rafic by Sutur';
 const images = [{ url: '/brand/design-system/sutur-icon-deep.png', alt: 'Sutur' }];
