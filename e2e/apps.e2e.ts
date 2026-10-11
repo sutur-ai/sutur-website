@@ -91,12 +91,19 @@ test('apps roll in opposite directions and pause globally, on hover and off scre
   await page.getByRole('button', { name: 'Pause animations', exact: true }).press('Space');
   await strip.scrollIntoViewIfNeeded();
   await page.mouse.move(0, 0);
-  await expect(strip).not.toHaveClass(/idle/);
   for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
+  const transforms = () => tracks.evaluateAll(elements => elements.map(element => getComputedStyle(element).transform));
+  const pausedTransforms = await transforms();
+  expect(pausedTransforms).toHaveLength(2);
+  await page.waitForTimeout(500);
+  expect(await transforms()).toEqual(pausedTransforms);
   await page.getByRole('button', { name: 'Play animations', exact: true }).press('Space');
   await strip.scrollIntoViewIfNeeded();
   await page.mouse.move(0, 0);
+  await expect(strip).not.toHaveClass(/idle/);
   for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
+  const runningTransforms = await transforms();
+  await expect.poll(async () => (await transforms()).map((transform, index) => transform !== runningTransforms[index])).toEqual([true, true]);
   for (const row of await rows.all()) {
     await row.hover();
     await expect(row.locator(':scope > div')).toHaveCSS('animation-play-state', 'paused');
