@@ -1,4 +1,5 @@
 import { Header } from '@/components/layout/Header';
+import { MotionToggle } from '@/components/layout/MotionToggle';
 import { Footer } from '@/components/layout/Footer';
 import { FloatingCta } from '@/components/layout/FloatingCta';
 import { SectionShell } from '@/components/layout/SectionShell';
@@ -12,7 +13,7 @@ import { Faq } from '@/components/sections/Faq';
 import { Booking } from '@/components/booking/Booking';
 
 export default function Home() {
-  return <div className="sx"><div className="page">
+  return <div className="sx"><MotionToggle /><div className="page">
     <Header />
     <main>
       <Hero /><AppsStrip /><Capabilities /><UseCases /><Control /><HowYouStart /><Faq />
