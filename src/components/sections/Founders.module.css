@@ -1,0 +1,4 @@
+.founders{display:flex;align-items:center;gap:clamp(24px,4cqi,80px);flex-wrap:wrap;padding-top:48px;margin-top:clamp(64px,7cqi,120px);border-top:1px solid var(--line)}
+.founders-k{font-size:13px;font-weight:600;color:var(--muted)}
+.founders img{height:34px;width:auto}
+

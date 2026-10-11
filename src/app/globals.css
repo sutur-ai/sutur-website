@@ -10,6 +10,8 @@ body{margin:0}
 .sx #what,.sx #teams,.sx #control,.sx #start,.sx #faq,.sx #book{
   scroll-margin-top:calc(64px + 56px / var(--page-zoom) - var(--anchor-padding) - 18.4px - 18px);
 }
+/* Control's heading gap is 20px; preserve the 56px viewport anchor gap at every zoom. */
+.sx #control{scroll-margin-top:calc(64px + 56px / var(--page-zoom) - var(--anchor-padding) - 18.4px - 20px)}
 a{color:#3b1447}a:hover{color:#f57e20}
 .sx{container-type:inline-size;font-family:var(--font-body);color:var(--deep);background:var(--page);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:clip}
 .sx *{box-sizing:border-box}
