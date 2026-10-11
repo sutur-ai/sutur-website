@@ -72,6 +72,8 @@ a{color:#3b1447}a:hover{color:#f57e20}
 .fab:hover{background:linear-gradient(135deg,rgba(76,30,91,.9),rgba(42,13,51,.85));color:#fff}
 .fab.off{opacity:0;transform:translateY(12px);pointer-events:none}
 .idle,.idle::before,.idle::after,.idle *,.idle *::before,.idle *::after{animation-play-state:paused!important}
+/* motion.ts holds finite animations at their last keyframe, including new content;
+   this rule freezes loops without hiding entrances or requiring a class-name list. */
 .animations-paused,.animations-paused::before,.animations-paused::after,.animations-paused *,.animations-paused *::before,.animations-paused *::after{animation-play-state:paused!important}
 .motion-toggle{position:fixed;top:12px;left:12px;z-index:100;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--glass-edge);background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:var(--glass-hi),var(--sh-1);font:inherit;font-size:13px;font-weight:500;color:var(--deep);clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
 .motion-toggle:focus-visible{clip-path:none;width:auto;height:auto;overflow:visible}

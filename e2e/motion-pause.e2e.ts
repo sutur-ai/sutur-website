@@ -43,3 +43,23 @@ test('the keyboard control works with reduced motion', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect(page.getByRole('button', { name: 'Play animations', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
+
+test('paused phone menu and scroll entrances remain visible', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');
+  await expect(page.locator('html')).toHaveClass(/animations-paused/);
+  await page.getByRole('button', { name: 'Menu', exact: true }).click();
+  const menu = page.locator('#phone-menu');
+  await expect(menu).toHaveCSS('opacity', '1');
+  const link = menu.locator('a[href="#what"]');
+  await expect(link).toHaveCSS('opacity', '1');
+  await expect(link).toBeVisible();
+  await link.click();
+  const reveal = page.locator('#what .sec-head.rv');
+  await reveal.scrollIntoViewIfNeeded();
+  await expect(reveal).toHaveCSS('opacity', '1');
+  await expect(reveal).toHaveCSS('transform', 'none');
+});

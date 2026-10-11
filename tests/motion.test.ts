@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { observeAnimationsPaused, setAnimationsPaused, observeReducedMotion, useAnimationsPaused, usePrefersReducedMotion } from '../src/lib/motion';
+import { observeAnimationsPaused, setAnimationsPaused, settleFiniteAnimations, observeReducedMotion, useAnimationsPaused, usePrefersReducedMotion } from '../src/lib/motion';
 import { observeInView, useInView } from '../src/lib/useInView';
 
 const hooks = vi.hoisted(() => ({ effects: [] as (() => void | (() => void))[], update: vi.fn(), ref: { current: null as HTMLElement | null } }));
@@ -148,5 +148,56 @@ describe('viewer animation pause', () => {
     expect(element.classes.has('idle')).toBe(true);
     setAnimationsPaused(false); expect(update).toHaveBeenLastCalledWith(true);
     cleanup();
+  });
+});
+
+describe('finite entrances while paused', () => {
+  it('holds finite effects at the final frame, leaves loops untouched, handles new content and restores on play', () => {
+    class Effect {
+      frames = [{ opacity: '0', transform: 'translateY(6px)', offset: 0, computedOffset: 0 }, { opacity: '1', transform: 'none', offset: 1, computedOffset: 1 }];
+      setKeyframes = vi.fn();
+      updateTiming = vi.fn();
+      constructor(private iterations: number, private fill = 'none') {}
+      getTiming() { return { iterations: this.iterations, fill: this.fill }; }
+      getKeyframes() { return this.frames; }
+    }
+    vi.stubGlobal('KeyframeEffect', Effect);
+    let changed = () => {};
+    const disconnect = vi.fn(), observe = vi.fn();
+    vi.stubGlobal('MutationObserver', vi.fn(function (callback: () => void) {
+      changed = callback; return { observe, disconnect };
+    }));
+    vi.stubGlobal('window', new EventTarget());
+    const entrance = new Effect(1), loop = new Effect(Infinity), scrollReveal = new Effect(1, 'both');
+    class Transition { effect = new Effect(1); }
+    vi.stubGlobal('CSSTransition', Transition);
+    const transition = new Transition();
+    const animations = [{ effect: entrance }, { effect: loop }, { effect: scrollReveal }, transition];
+    const getAnimations = vi.fn(() => animations);
+    const root = Object.assign(new EventTarget(), { getAnimations });
+    const cleanup = settleFiniteAnimations(root as unknown as HTMLElement);
+    expect(getAnimations).toHaveBeenCalledWith({ subtree: true });
+    for (const effect of [entrance, scrollReveal]) {
+      expect(effect.setKeyframes).toHaveBeenCalledWith([
+        { opacity: '1', transform: 'none', offset: 0 },
+        { opacity: '1', transform: 'none', offset: 1 },
+      ]);
+      expect(effect.updateTiming).toHaveBeenCalledWith({ fill: 'both' });
+    }
+    expect(loop.setKeyframes).not.toHaveBeenCalled();
+    expect(loop.updateTiming).not.toHaveBeenCalled();
+    expect(transition.effect.setKeyframes).not.toHaveBeenCalled();
+    expect(observe).toHaveBeenCalledWith(root, { subtree: true, childList: true, attributes: true });
+    const menu = new Effect(1); animations.push({ effect: menu }); changed();
+    expect(menu.setKeyframes).toHaveBeenCalledOnce();
+    root.dispatchEvent(new Event('animationstart'));
+    expect(menu.setKeyframes).toHaveBeenCalledOnce();
+    cleanup();
+    expect(disconnect).toHaveBeenCalledOnce();
+    for (const effect of [entrance, scrollReveal, menu]) expect(effect.setKeyframes).toHaveBeenLastCalledWith(effect.frames);
+    expect(entrance.updateTiming).toHaveBeenLastCalledWith({ fill: 'none' });
+    expect(scrollReveal.updateTiming).toHaveBeenLastCalledWith({ fill: 'both' });
+    getAnimations.mockClear(); root.dispatchEvent(new Event('animationstart')); window.dispatchEvent(new Event('resize'));
+    expect(getAnimations).not.toHaveBeenCalled();
   });
 });
