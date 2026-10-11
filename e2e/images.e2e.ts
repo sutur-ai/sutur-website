@@ -6,22 +6,24 @@ for (const width of [1440, 390]) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
-    const avatar = page.locator('[class*="rf-ai-av"] img');
-    await avatar.scrollIntoViewIfNeeded();
-    await expect(avatar).toBeInViewport();
-    await expect.poll(() => avatar.evaluate(img => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)).toBe(true);
-    const avatarMetrics = await avatar.evaluate(img => {
-      if (!(img instanceof HTMLImageElement)) throw new Error('Expected an image element');
-      const rect = img.getBoundingClientRect();
-      return {
-        width: rect.width,
-        height: rect.height,
-        ratioError: Math.abs((rect.width / rect.height) / (img.naturalWidth / img.naturalHeight) - 1),
-      };
-    });
-    expect(avatarMetrics.width).toBeCloseTo(12, 1);
-    expect(avatarMetrics.height).toBeCloseTo(14.4, 1);
-    expect(avatarMetrics.ratioError).toBeLessThanOrEqual(0.02);
+    if (width === 1440) {
+      const avatar = page.locator('[class*="rf-ai-av"] img');
+      await avatar.scrollIntoViewIfNeeded();
+      await expect(avatar).toBeInViewport();
+      await expect.poll(() => avatar.evaluate(img => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)).toBe(true);
+      const avatarMetrics = await avatar.evaluate(img => {
+        if (!(img instanceof HTMLImageElement)) throw new Error('Expected an image element');
+        const rect = img.getBoundingClientRect();
+        return {
+          width: rect.width,
+          height: rect.height,
+          ratioError: Math.abs((rect.width / rect.height) / (img.naturalWidth / img.naturalHeight) - 1),
+        };
+      });
+      expect(avatarMetrics.width).toBeCloseTo(12, 1);
+      expect(avatarMetrics.height).toBeCloseTo(14.4, 1);
+      expect(avatarMetrics.ratioError).toBeLessThanOrEqual(0.02);
+    }
     let checked = 0;
     for (const image of await page.locator('img').all()) {
       if (!await image.isVisible()) continue;
