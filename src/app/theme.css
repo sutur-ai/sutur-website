@@ -1,3 +1,14 @@
+/* Weight-400 metrics from the bundled Montserrat font, relative to Arial.
+   Its variable default is 100, so next/font's automatic adjustment is too small. */
+@font-face {
+  font-family: "Montserrat Arial Fallback";
+  src: local("Arial");
+  ascent-override: 84.96%;
+  descent-override: 22.03%;
+  line-gap-override: 0.00%;
+  size-adjust: 113.94%;
+}
+
 :root {
   --deep:#3b1447;
   --deep-3:#2a0d33;

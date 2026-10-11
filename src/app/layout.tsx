@@ -7,7 +7,8 @@ const montserrat = localFont({
   weight: '100 900',
   variable: '--font-montserrat',
   display: 'swap',
-  adjustFontFallback: 'Arial',
+  adjustFontFallback: false,
+  fallback: ['Montserrat Arial Fallback'],
 });
 const inter = localFont({
   src: './fonts/inter-latin.woff2',
