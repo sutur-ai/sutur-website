@@ -28,6 +28,11 @@ describe('foundation markup', () => {
     expect(markup).toContain('/brand/sutur-wordmark-soft.png');
     expect(markup).toContain('Rafic is a Sutur product.');
   });
+  it('keeps claim punctuation joined to the preceding word', () => {
+    const markup = renderToStaticMarkup(React.createElement(Footer));
+    expect(markup).toContain('work\u2060<span class="dot">');
+    expect(markup).toContain('matters\u2060<span class="dot">');
+  });
   it('keeps the floating CTA inaccessible before hydration and hides at or beyond booking', () => {
     const markup = renderToStaticMarkup(React.createElement(FloatingCta));
     expect(markup).toContain('aria-hidden="true"');

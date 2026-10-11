@@ -1,18 +1,21 @@
 @import "./theme.css";
 html{scroll-behavior:smooth}
 body{margin:0}
-/* nav jumps: every heading lands 56px under the 64px header */
+/* H2 anchors: account for section padding, label line box and heading gap.
+   The 56px gap is in viewport pixels, even when the page is zoomed. */
 .sx section[id]{scroll-margin-top:64px}
-.sx #what{scroll-margin-top:calc(120px - clamp(48px,5cqi,88px))}
-.sx #start{scroll-margin-top:calc(120px - clamp(96px,9cqi,168px))}
-.sx #teams,.sx #faq{scroll-margin-top:120px}
-.sx #book{scroll-margin-top:96px}
+.sx #what{--anchor-padding:clamp(48px,5cqi,88px)}
+.sx #control,.sx #start{--anchor-padding:clamp(96px,9cqi,168px)}
+.sx #teams,.sx #faq,.sx #book{--anchor-padding:0px}
+.sx #what,.sx #teams,.sx #control,.sx #start,.sx #faq,.sx #book{
+  scroll-margin-top:calc(64px + 56px / var(--page-zoom) - var(--anchor-padding) - 18.4px - 18px);
+}
 a{color:#3b1447}a:hover{color:#f57e20}
 .sx{container-type:inline-size;font-family:var(--font-body);color:var(--deep);background:var(--page);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:clip}
 .sx *{box-sizing:border-box}
-.page{min-width:0}
+.page{min-width:0;--page-zoom:1;zoom:var(--page-zoom)}
 .wrap{max-width:1720px;margin:0 auto;padding-inline:clamp(20px,5cqi,96px)}
-.label{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);display:flex;gap:12px;align-items:center}
+.label{font-size:11.5px;line-height:18.4px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);display:flex;gap:12px;align-items:center}
 .label b{color:var(--orange);font-weight:700}
 .dot{display:inline-block;width:.15em;height:.15em;margin-left:.05em;background:var(--orange);color:transparent;overflow:hidden;line-height:0;vertical-align:baseline}
 .disp{font-family:var(--font-display);font-weight:700;letter-spacing:-.04em;margin:0;text-wrap:balance}
@@ -24,7 +27,8 @@ a{color:#3b1447}a:hover{color:#f57e20}
 .btn-ghost:hover{border-color:var(--deep);color:var(--deep)}
 .ic-check{flex:0 0 20px}
 /* nav */
-.nav{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(252,251,252,.72),rgba(252,251,252,.5));-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border-bottom:1px solid rgba(255,255,255,.6);box-shadow:inset 0 -1px 0 var(--line),0 8px 24px -16px rgba(59,20,71,.18)}
+.nav{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,rgba(252,251,252,.72),rgba(252,251,252,.5));-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);box-shadow:inset 0 -1px 0 var(--line),0 8px 24px -16px rgba(59,20,71,.18)}
+.nav::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:rgba(255,255,255,.6);pointer-events:none}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
 .nav-links{display:flex;gap:clamp(20px,2.2cqi,40px);font-size:14px;font-weight:500}
 .nav-links a{text-decoration:none;color:var(--muted);white-space:nowrap;transition:color .16s}
@@ -75,9 +79,9 @@ a{color:#3b1447}a:hover{color:#f57e20}
 @keyframes sxrise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sx *,.sx *::before,.sx *::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.stg.o1{opacity:1}}
-@container(min-width:1800px){.page{zoom:1.12}}
-@container(min-width:2300px){.page{zoom:1.28}}
-@container(min-width:3000px){.page{zoom:1.6}}
+@container(min-width:1800px){.page{--page-zoom:1.12}}
+@container(min-width:2300px){.page{--page-zoom:1.28}}
+@container(min-width:3000px){.page{--page-zoom:1.6}}
 @container(max-width:1100px){.foot-grid{grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr))}.nav-links{display:none}.nav-menu{display:flex}}
 @container(max-width:720px){.foot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.foot-brand{grid-column:1/-1}.nav-cta{display:none}}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

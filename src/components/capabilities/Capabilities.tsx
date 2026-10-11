@@ -52,7 +52,7 @@ export function Capabilities() {
     <div className="wrap">
       <div className="sec-head rv">
         <div className="label"><b>01</b> What Rafic does</div>
-        <h2 className="h-section">A colleague that gets it done<span className="dot">.</span></h2>
+        <h2 className="h-section">A colleague that gets it done{'\u2060'}<span className="dot">.</span></h2>
         <p className="lead">Rafic opens the apps, does the steps and reports back. Four things make that possible.</p>
       </div>
       <div className={styles.feats}>{features.map((feature, index) => {
