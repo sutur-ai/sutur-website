@@ -8,7 +8,7 @@ function AppCards({ apps, duplicate = false }: { apps: readonly App[]; duplicate
   return <div className={styles.copy} aria-hidden={duplicate ? true : undefined}>
     {apps.map(app => <div className={styles.app} key={app.slug}>
       <span className={styles['app-tile']}>
-        <img src={`/brand/apps/${app.slug}.svg`} width={23} height={23} alt="" />
+        <img loading="lazy" decoding="async" src={`/brand/apps/${app.slug}.svg`} width={23} height={23} alt="" />
       </span>
       <span className={styles['app-n']}>{app.name}</span>
       <span className={styles['app-d']}>{app.description}</span>

@@ -16,7 +16,7 @@ describe('hub visual', () => {
   it('connects all eight approved apps to the core at the approved positions', () => {
     const markup = render();
     expect(markup).toContain('role="img" aria-label="Rafic at the centre, connected to Outlook, Teams, HubSpot, Odoo, Drive, Slack, Jira and Gmail"');
-    const nodes = [...markup.matchAll(/<div class="[^\"]*node[^\"]*" style="([^\"]+)"><img src="([^\"]+)"/g)];
+    const nodes = [...markup.matchAll(/<div class="[^\"]*node[^\"]*" style="([^\"]+)"><img[^>]*src="([^\"]+)"/g)];
     const expected = [
       ['microsoftoutlook', 16, 20, '0s'], ['microsoft-teams', 50, 12, '-1s'],
       ['hubspot', 84, 20, '-2s'], ['odoo', 90, 50, '-3s'],

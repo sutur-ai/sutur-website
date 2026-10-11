@@ -29,10 +29,10 @@ export function HubVisual() {
         </svg>
         {apps.map(app => (
           <div key={app.slug} className={styles.node} style={{ left: `${app.x}%`, top: `${app.y}%`, animationDelay: app.delay }}>
-            <img src={`/brand/apps/${app.slug}.svg`} width="35" height="35" alt="" />
+            <img loading="lazy" decoding="async" src={`/brand/apps/${app.slug}.svg`} width="35" height="35" alt="" />
           </div>
         ))}
-        <div className={styles.core}><img src="/brand/design-system/sutur-icon-soft.png" width="751" height="898" alt="" /></div>
+        <div className={styles.core}><img loading="lazy" decoding="async" src="/brand/design-system/sutur-icon-soft.webp" width="140" height="168" alt="" /></div>
         {notes.map(note => (
           <div key={note.text} className={styles.ping} style={{ left: `${note.x}%`, top: `${note.y}%`, animationDelay: note.delay }}>
             <span className={styles['ping-ok']}>✓</span>{note.text}

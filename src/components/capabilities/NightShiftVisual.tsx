@@ -9,7 +9,7 @@ const rows = [
   { time: '22:30', delay: '2.4s', text: 'Matched 41 payments to invoices', sub: "2 didn't match, flagged for you", icon: '/brand/apps/quickbooks.svg' },
   { time: '02:00', delay: '3.6s', text: 'Read 12 supplier replies', sub: 'One delivery moved to Thursday', icon: '/brand/apps/gmail.svg' },
   { time: '05:30', delay: '4.8s', text: 'Drafted 3 client follow-ups', sub: 'Waiting for your yes', icon: '/brand/apps/hubspot.svg' },
-  { time: '07:30', delay: '6s', text: 'Good morning, Maya. 3 things need you.', sub: 'Your brief is ready in Rafic', icon: '/brand/design-system/sutur-icon-soft.png', variant: 'brief' },
+  { time: '07:30', delay: '6s', text: 'Good morning, Maya. 3 things need you.', sub: 'Your brief is ready in Rafic', icon: '/brand/design-system/sutur-icon-soft.webp', variant: 'brief' },
 ];
 
 export function NightShiftVisual() {
@@ -31,7 +31,7 @@ export function NightShiftVisual() {
               <span className={styles.ftime}>{row.time}</span>
               <span className={`${styles.fdot}${row.variant === 'brief' ? ` ${styles.brief}` : ''}`} />
               <div className={`${styles.fcard}${row.variant ? ` ${styles[row.variant]}` : ''}`}>
-                {row.icon && <img src={row.icon} width="20" height="20" alt="" />}
+                {row.icon && <img loading="lazy" decoding="async" src={row.icon} width={row.variant === 'brief' ? 140 : 20} height={row.variant === 'brief' ? 168 : 20} alt="" />}
                 <span className={styles.ftxt}>{row.text}<span className={styles.fsub}>{row.sub}</span></span>
               </div>
             </div>

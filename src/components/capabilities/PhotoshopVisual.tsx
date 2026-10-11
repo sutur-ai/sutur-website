@@ -70,7 +70,7 @@ export function PhotoshopVisual() {
         <div className={styles['ps-status']}><span>50%</span><span>1600 px × 2000 px (72 ppi)</span></div>
       </div>
       <div className={styles['ps-rafic']}>
-        <span className={styles['ps-rafic-l']}><span className={styles['pulse']}></span><img src="/brand/design-system/sutur-icon-soft.png" alt="" width="18" height="18" /><span className={styles['ps-say'] + ' ' + styles['stg'] + ' ' + styles['o1']}>Adding “SALE −20%”</span><span className={styles['ps-say'] + ' ' + styles['stg'] + ' ' + styles['o2']}>Changing the sun to violet</span></span>
+        <span className={styles['ps-rafic-l']}><span className={styles['pulse']}></span><img loading="lazy" decoding="async" src="/brand/design-system/sutur-icon-soft.webp" alt="" width="140" height="168" /><span className={styles['ps-say'] + ' ' + styles['stg'] + ' ' + styles['o1']}>Adding “SALE −20%”</span><span className={styles['ps-say'] + ' ' + styles['stg'] + ' ' + styles['o2']}>Changing the sun to violet</span></span>
         <span className={styles['kept']}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>Original kept</span>
         <span className={styles['stop']}><span className={styles['stop-sq']}></span>Stop</span>
       </div>
