@@ -1,62 +1,29 @@
-import { Header } from '@/components/sections/Header';
-import { SiteFooter } from '@/components/sections/SiteFooter';
-import { AgentOrbit } from '@/components/brand/AgentOrbit';
-import { CompanyCapabilities } from '@/components/sections/CompanyCapabilities';
-import { WhyUs } from '@/components/sections/WhyUs';
-import { FoundersFrom } from '@/components/sections/FoundersFrom';
-import { FaqSection } from '@/components/sections/FaqSection';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { FloatingCta } from '@/components/layout/FloatingCta';
+import { SectionShell } from '@/components/layout/SectionShell';
+import { Hero } from '@/components/hero/Hero';
+import { AppsStrip } from '@/components/apps/AppsStrip';
+import { Capabilities } from '@/components/capabilities/Capabilities';
+import { UseCases } from '@/components/sections/UseCases';
+import { Control } from '@/components/sections/Control';
+import { HowYouStart } from '@/components/sections/HowYouStart';
+import { Faq } from '@/components/sections/Faq';
 import { Booking } from '@/components/booking/Booking';
-import { SignalDot } from '@/components/ui/SignalDot';
-import { ArrowIcon } from '@/components/ui/icons';
 
 export default function Home() {
-  return (
-    <main id="top">
-      <Header />
-
-      <section className="hero scroll-section surface-ink">
-        <div className="hero-copy">
-          <h1>
-            Connect your business<SignalDot />
-            <br />
-            <em>Automate the busywork<SignalDot /></em>
-          </h1>
-          <p className="lead">
-            We connect to the ERP and tools you already use, then have agents
-            handle the tasks your team should not waste time on.
-          </p>
-          <div className="hero-actions">
-            <a className="button" href="#book">
-              Book a discovery call <ArrowIcon />
-            </a>
-            <a className="button-secondary" href="#capabilities">
-              Explore solutions
-            </a>
-          </div>
+  return <div className="sx"><div className="page">
+    <Header />
+    <main>
+      <Hero /><AppsStrip /><Capabilities /><UseCases /><Control /><HowYouStart /><Faq />
+      <SectionShell id="book" className="booking-section"><div className="wrap">
+        <div className="sec-head rv"><div className="label"><b>06</b> Book a demo</div>
+          <h2 className="h-section">See Rafic do your work<span className="dot">.</span></h2>
+          <p className="lead">Thirty minutes, one real task from your week, done live on the tools you already use.</p>
         </div>
-
-        <AgentOrbit />
-
-      </section>
-
-      <CompanyCapabilities />
-
-      <WhyUs />
-
-      <FoundersFrom />
-
-      <FaqSection />
-
-      <section className="booking-section scroll-section surface-soft" id="book">
-        <h2>Choose a time that works<SignalDot /></h2>
-        <p className="lead">
-          Add your details once, then choose any open spot without leaving the
-          page.
-        </p>
         <Booking />
-      </section>
-
-      <SiteFooter />
+      </div></SectionShell>
     </main>
-  );
+    <Footer /><FloatingCta />
+  </div></div>;
 }

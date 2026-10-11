@@ -23,7 +23,8 @@ client or a deal in the title is not.
 Work here is tracked at `sutur-ai.atlassian.net`, project **SUTUR**. Two rules,
 and you need both:
 
-- Branch name: `feature/SUTUR-<n>-<short-slug>`
+- Single-ticket branch: `SUTUR-<n>-<short-slug>` (no prefix)
+- Multi-ticket integration branch: `feature/<slug>`, such as `feature/rafic-landing`
 - PR title:    `SUTUR-<n>: <what changed>`
 
 Jira's GitHub app links branches by branch name and pull requests by title — and
