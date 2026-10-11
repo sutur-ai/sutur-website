@@ -19,7 +19,7 @@ const inter = localFont({
 });
 const description = "One assistant for your whole team. It works in your email, your business apps and on your computer, keeps going while you're away, and asks before anything is sent or deleted.";
 const title = 'Rafic by Sutur';
-const images = [{ url: '/brand/design-system/sutur-icon-deep.png', alt: 'Sutur' }];
+const images = [{ url: '/og.jpg', type: 'image/jpeg', width: 1200, height: 630, alt: 'Rafic by Sutur: Rafic does the work. You approve what matters.' }];
 export const metadata: Metadata = {
   metadataBase: new URL('https://sutur.ai'),
   title: { default: title, template: '%s | Rafic by Sutur' },
