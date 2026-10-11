@@ -3,7 +3,7 @@
 .hero::before{content:"";position:absolute;z-index:0;right:4%;top:6%;width:min(52%,860px);aspect-ratio:1.4;background:radial-gradient(closest-side,rgba(245,126,32,.22),transparent 70%) 70% 30%/60% 60% no-repeat,radial-gradient(closest-side,rgba(144,111,177,.3),transparent 70%) 25% 70%/70% 70% no-repeat;filter:blur(40px);pointer-events:none}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(32px,4cqi,88px);align-items:center}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:999px;background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-edge);box-shadow:var(--glass-hi),var(--sh-1);font-size:13px;font-weight:500}
-.eyebrow img{width:26px;height:26px;border-radius:8px;background:var(--deep);padding:5px}
+.eyebrow img{object-fit:contain;width:26px;height:26px;border-radius:8px;background:var(--deep);padding:5px}
 .hero h1{font-size:clamp(40px,3.7cqi,76px);line-height:1.03;margin:24px 0 22px}
 .hero h1 em{font-style:normal;color:var(--violet)}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
@@ -21,7 +21,7 @@
 .rf-body{flex:1;min-height:0;display:grid;grid-template-columns:clamp(170px,30cqi,220px) minmax(0,1fr)}
 .rf-side{background:#f7f6f8;border-right:1px solid #e7e4ea;display:flex;flex-direction:column;padding:10px 8px;gap:2px;min-width:0}
 .rf-brand{display:flex;align-items:center;gap:9px;padding:4px 6px 12px;font-weight:600;font-size:14.5px}
-.rf-brand img{width:24px;height:24px;padding:4px;border:1px solid #e7e4ea;border-radius:7px;background:#fff}
+.rf-brand img{object-fit:contain;width:24px;height:24px;padding:4px;border:1px solid #e7e4ea;border-radius:7px;background:#fff}
 .rf-nav{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;font-size:13px;color:#5d5864;white-space:nowrap}
 .rf-nav svg{flex:0 0 16px}
 .rf-badge{margin-left:auto;min-width:18px;height:18px;border-radius:9px;background:#a85006;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center}
@@ -39,7 +39,7 @@
 .rf-you{align-self:flex-end;max-width:min(80%,520px);background:#fde2c9;color:#3a1c06;border-radius:18px 18px 6px 18px;padding:8px 14px;font-size:13.5px;line-height:1.5;animation:sxin .3s ease-out}
 .rf-ai{display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;align-items:start}
 .rf-ai-av{width:26px;height:26px;border-radius:8px;border:1px solid rgba(168,80,6,.35);background:#fff;display:flex;align-items:center;justify-content:center}
-.rf-ai-av img{width:12px}
+.rf-ai-av img{width:12px;height:auto}
 .rf-ai-col{display:flex;flex-direction:column;gap:10px;min-width:0}
 .rf-trace-h{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#6c6673;min-height:26px}
 .rf-trace-h b{font-weight:600;color:#8a8590}
