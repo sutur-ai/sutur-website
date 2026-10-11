@@ -99,7 +99,7 @@ export function Booking({ children }: { children?: ReactNode }) {
   }
 
   return (
-    <div ref={cardRef} className={`${styles.cta} rv`}>
+    <div ref={cardRef} className={`${styles.cta} rv`} data-step={step}>
       {children && <div className={styles.heading}>{children}</div>}
       <div className={`booking-flow ${styles.flow}`}>
       {step === 1 ? (

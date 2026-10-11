@@ -88,4 +88,8 @@
 }
 @container (max-width: 720px) {
   .cta .form { grid-template-columns: minmax(0, 1fr); }
+  /* Give Calendly the full phone card width while keeping the heading inset. */
+  .cta[data-step='2'] { padding-inline: 0; }
+  .cta[data-step='2'] .heading { margin-inline: clamp(32px, 5cqi, 88px); }
+  .cta[data-step='2'] .flow { border-inline: 0; }
 }

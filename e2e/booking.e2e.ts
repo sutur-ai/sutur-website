@@ -22,7 +22,7 @@ for (const width of [390, 1280, 1440, 1920, 2560]) {
   });
 }
 
-for (const width of [390, 1440]) {
+for (const width of [360, 390, 1440]) {
   test(`booking keeps validated Calendly prefill at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/#book');
@@ -49,6 +49,14 @@ for (const width of [390, 1440]) {
     await expect(calendar).toContainText('Step 2 of 2 · Choose a time');
     const frame = page.locator('.booking-calendar-frame');
     await expect(frame).toBeAttached();
+    if (width <= 390) {
+      const bounds = await frame.boundingBox();
+      expect(bounds).not.toBeNull();
+      expect(bounds!.width).toBeGreaterThanOrEqual(320);
+      expect(bounds!.width).toBeGreaterThanOrEqual(width - 40);
+      expect(bounds!.x).toBeGreaterThanOrEqual(0);
+      expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    }
     const actual = new URL((await frame.getAttribute('src'))!);
     const expected = getCalendlyEmbedUrl(`${actual.origin}${actual.pathname}`, details);
     expect(actual.toString()).toBe(expected);
