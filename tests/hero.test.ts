@@ -39,6 +39,16 @@ for (const scenario of Object.keys(SX_SCEN) as HeroScenarioId[]) {
       expect(replay).toMatchObject({ scenario, step: 0, outcome: null });
       expect(replay.run).toBeGreaterThan(approved.run);
     });
+    it('keeps the answer and table visible after a reduced-motion decision when motion is enabled', () => {
+      const state = heroReducer(initialHeroState, { type: 'play', scenario });
+      for (const type of ['approve', 'deny'] as const) {
+        const decided = heroReducer(state, { type, reduced: true });
+        const reducedView = heroView(decided, true);
+        expect(heroView(decided, false)).toEqual(reducedView);
+        expect(heroView(decided, false)).toMatchObject({ answered: true, tracing: false, showApproval: false, busy: false, compText: 'Message Rafic' });
+        expect(heroReducer(decided, { type: 'tick' })).toBe(decided);
+      }
+    });
     it('shows the finished meaningful state under reduced motion and supports decisions and replay', () => {
       const state = heroReducer(initialHeroState, { type: 'play', scenario });
       expect(heroView(state, true)).toMatchObject({ answered: true, tracing: false, showApproval: true });

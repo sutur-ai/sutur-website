@@ -10,7 +10,7 @@ export function heroReducer(state: HeroState, action: HeroAction): HeroState {
   if (action.type === 'play') return { scenario: action.scenario, run: state.run + 1, step: 0, outcome: null };
   const end = SX_SCEN[state.scenario].tools.length + 2;
   if (action.type === 'tick') return state.step < end && !state.outcome ? { ...state, step: state.step + 1 } : state;
-  if (!state.outcome && (action.reduced || state.step >= end)) return { ...state, outcome: action.type };
+  if (!state.outcome && (action.reduced || state.step >= end)) return { ...state, step: end, outcome: action.type };
   return state;
 }
 
