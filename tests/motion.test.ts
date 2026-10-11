@@ -152,52 +152,97 @@ describe('viewer animation pause', () => {
 });
 
 describe('finite entrances while paused', () => {
-  it('holds finite effects at the final frame, leaves loops untouched, handles new content and restores on play', () => {
+  function harness() {
+    class Region extends EventTarget {
+      isConnected = true;
+      parent: Region | null = null;
+      animations: MotionAnimation[] = [];
+      getAnimations = vi.fn(() => this.animations);
+      contains(other: Region): boolean { return other === this || Boolean(other.parent && this.contains(other.parent)); }
+    }
     class Effect {
-      frames = [{ opacity: '0', transform: 'translateY(6px)', offset: 0, computedOffset: 0 }, { opacity: '1', transform: 'none', offset: 1, computedOffset: 1 }];
+      frames = [{ opacity: '0', offset: 0, computedOffset: 0 }, { opacity: '1', offset: 1, computedOffset: 1 }];
       setKeyframes = vi.fn();
       updateTiming = vi.fn();
-      constructor(private iterations: number, private fill = 'none') {}
+      constructor(public target: Region, private iterations = 1, private fill = 'none') {}
       getTiming() { return { iterations: this.iterations, fill: this.fill }; }
       getKeyframes() { return this.frames; }
     }
-    vi.stubGlobal('KeyframeEffect', Effect);
-    let changed = () => {};
+    class MotionAnimation extends EventTarget {
+      playState = 'paused';
+      constructor(public effect: Effect) { super(); }
+    }
+    class Transition extends MotionAnimation {}
+    vi.stubGlobal('Element', Region); vi.stubGlobal('KeyframeEffect', Effect); vi.stubGlobal('CSSTransition', Transition);
+    let changed: (records: { addedNodes: Region[] }[]) => void = () => {};
     const disconnect = vi.fn(), observe = vi.fn();
-    vi.stubGlobal('MutationObserver', vi.fn(function (callback: () => void) {
+    vi.stubGlobal('MutationObserver', vi.fn(function (callback: typeof changed) {
       changed = callback; return { observe, disconnect };
     }));
-    vi.stubGlobal('window', new EventTarget());
-    const entrance = new Effect(1), loop = new Effect(Infinity), scrollReveal = new Effect(1, 'both');
-    class Transition { effect = new Effect(1); }
-    vi.stubGlobal('CSSTransition', Transition);
-    const transition = new Transition();
-    const animations = [{ effect: entrance }, { effect: loop }, { effect: scrollReveal }, transition];
-    const getAnimations = vi.fn(() => animations);
-    const root = Object.assign(new EventTarget(), { getAnimations });
+    let callback = () => {};
+    const request = vi.fn((next: () => void) => { callback = next; return 1; });
+    const cancel = vi.fn();
+    vi.stubGlobal('requestAnimationFrame', request); vi.stubGlobal('cancelAnimationFrame', cancel);
+    const root = new Region();
+    const entrance = new MotionAnimation(new Effect(root)), loop = new MotionAnimation(new Effect(root, Infinity));
+    const reveal = new MotionAnimation(new Effect(root, 1, 'both')), transition = new Transition(new Effect(root));
+    root.animations.push(entrance, loop, reveal, transition);
     const cleanup = settleFiniteAnimations(root as unknown as HTMLElement);
-    expect(getAnimations).toHaveBeenCalledWith({ subtree: true });
-    for (const effect of [entrance, scrollReveal]) {
-      expect(effect.setKeyframes).toHaveBeenCalledWith([
-        { opacity: '1', transform: 'none', offset: 0 },
-        { opacity: '1', transform: 'none', offset: 1 },
-      ]);
-      expect(effect.updateTiming).toHaveBeenCalledWith({ fill: 'both' });
+    const start = (target: Region) => {
+      const event = new Event('animationstart');
+      Object.defineProperty(event, 'target', { value: target }); root.dispatchEvent(event);
+    };
+    return { Region, Effect, MotionAnimation, root, entrance, loop, reveal, transition, cleanup, request, cancel, observe, disconnect,
+      mutate: (addedNodes: Region[] = []) => changed([{ addedNodes }]), flush: () => callback(), start };
+  }
+
+  it('settles finite effects, preserves loops/transitions and restores on play', () => {
+    const h = harness();
+    expect(h.root.getAnimations).toHaveBeenCalledWith({ subtree: true });
+    for (const animation of [h.entrance, h.reveal]) {
+      expect(animation.effect.setKeyframes).toHaveBeenCalledWith([{ opacity: '1', offset: 0 }, { opacity: '1', offset: 1 }]);
+      expect(animation.effect.updateTiming).toHaveBeenCalledWith({ fill: 'both' });
     }
-    expect(loop.setKeyframes).not.toHaveBeenCalled();
-    expect(loop.updateTiming).not.toHaveBeenCalled();
-    expect(transition.effect.setKeyframes).not.toHaveBeenCalled();
-    expect(observe).toHaveBeenCalledWith(root, { subtree: true, childList: true, attributes: true });
-    const menu = new Effect(1); animations.push({ effect: menu }); changed();
-    expect(menu.setKeyframes).toHaveBeenCalledOnce();
-    root.dispatchEvent(new Event('animationstart'));
-    expect(menu.setKeyframes).toHaveBeenCalledOnce();
-    cleanup();
-    expect(disconnect).toHaveBeenCalledOnce();
-    for (const effect of [entrance, scrollReveal, menu]) expect(effect.setKeyframes).toHaveBeenLastCalledWith(effect.frames);
-    expect(entrance.updateTiming).toHaveBeenLastCalledWith({ fill: 'none' });
-    expect(scrollReveal.updateTiming).toHaveBeenLastCalledWith({ fill: 'both' });
-    getAnimations.mockClear(); root.dispatchEvent(new Event('animationstart')); window.dispatchEvent(new Event('resize'));
-    expect(getAnimations).not.toHaveBeenCalled();
+    expect(h.loop.effect.setKeyframes).not.toHaveBeenCalled();
+    expect(h.transition.effect.setKeyframes).not.toHaveBeenCalled();
+    expect(h.observe).toHaveBeenCalledWith(h.root, { subtree: true, childList: true });
+    h.cleanup(); expect(h.disconnect).toHaveBeenCalledOnce();
+    for (const animation of [h.entrance, h.reveal]) expect(animation.effect.setKeyframes).toHaveBeenLastCalledWith(animation.effect.frames);
+    expect(h.entrance.effect.updateTiming).toHaveBeenLastCalledWith({ fill: 'none' });
+    expect(h.reveal.effect.updateTiming).toHaveBeenLastCalledWith({ fill: 'both' });
+    h.start(h.root); expect(h.request).not.toHaveBeenCalled();
+  });
+
+  it('batches additions and animation targets into one frame and scans only their subtrees', () => {
+    const h = harness();
+    const menu = new h.Region(), child = new h.Region(); child.parent = menu;
+    const entrance = new h.MotionAnimation(new h.Effect(menu)); menu.animations.push(entrance);
+    h.mutate([menu, child]); h.mutate([menu]); h.start(menu);
+    expect(h.request).toHaveBeenCalledOnce(); expect(menu.getAnimations).not.toHaveBeenCalled();
+    h.flush();
+    expect(menu.getAnimations).toHaveBeenCalledOnce(); expect(child.getAnimations).not.toHaveBeenCalled();
+    expect(h.root.getAnimations).toHaveBeenCalledOnce(); expect(entrance.effect.setKeyframes).toHaveBeenCalledOnce();
+    const answer = new h.Region();
+    const fade = new h.MotionAnimation(new h.Effect(answer)); answer.animations.push(fade);
+    h.start(answer); h.start(answer); h.flush();
+    expect(h.request).toHaveBeenCalledTimes(2); expect(answer.getAnimations).toHaveBeenCalledOnce();
+    expect(fade.effect.setKeyframes).toHaveBeenCalledOnce(); h.cleanup();
+  });
+
+  it('prunes removed menus and cancelled effects rather than restoring them on play', () => {
+    const h = harness();
+    const removed = [];
+    for (let i = 0; i < 100; i++) {
+      const menu = new h.Region();
+      const entrance = new h.MotionAnimation(new h.Effect(menu)); menu.animations.push(entrance);
+      h.mutate([menu]); h.flush(); menu.isConnected = false; h.mutate(); h.flush();
+      // Pruned effects release the cancel listener that held the pause closure.
+      const requests = h.request.mock.calls.length; entrance.dispatchEvent(new Event('cancel'));
+      expect(h.request).toHaveBeenCalledTimes(requests); removed.push(entrance);
+    }
+    h.entrance.playState = 'idle'; h.entrance.dispatchEvent(new Event('cancel')); h.flush();
+    h.start(h.root); h.cleanup(); expect(h.cancel).toHaveBeenCalledWith(1);
+    for (const animation of [...removed, h.entrance]) expect(animation.effect.setKeyframes).toHaveBeenCalledOnce();
+    expect(h.reveal.effect.setKeyframes).toHaveBeenLastCalledWith(h.reveal.effect.frames);
   });
 });

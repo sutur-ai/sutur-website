@@ -8,34 +8,70 @@ let restoreEntrances: (() => void) | undefined;
 
 /** Hold finite animations at their final keyframe, including scroll timelines and new content. */
 export function settleFiniteAnimations(root: HTMLElement) {
-  const originals = new Map<KeyframeEffect, { frames: Keyframe[]; fill: FillMode }>();
-  const settle = () => {
-    for (const animation of root.getAnimations({ subtree: true })) {
+  const originals = new Map<Animation, { effect: KeyframeEffect; frames: Keyframe[]; fill: FillMode }>();
+  const pending = new Set<Element>();
+  let frame: number | undefined;
+  const prune = () => {
+    for (const [animation, original] of originals) {
+      if (!original.effect.target?.isConnected || animation.playState === 'idle') {
+        animation.removeEventListener('cancel', schedule);
+        originals.delete(animation);
+      }
+    }
+  };
+  const settle = (region: Element) => {
+    for (const animation of region.getAnimations({ subtree: true })) {
       if (typeof CSSTransition !== 'undefined' && animation instanceof CSSTransition) continue;
       const effect = animation.effect;
-      if (!(effect instanceof KeyframeEffect) || effect.getTiming().iterations === Infinity || originals.has(effect)) continue;
+      if (!(effect instanceof KeyframeEffect) || !effect.target?.isConnected || animation.playState === 'idle' || effect.getTiming().iterations === Infinity || originals.has(animation)) continue;
       const frames = effect.getKeyframes();
       if (!frames.length) continue;
-      originals.set(effect, { frames, fill: effect.getTiming().fill ?? 'auto' });
+      originals.set(animation, { effect, frames, fill: effect.getTiming().fill ?? 'auto' });
+      animation.addEventListener('cancel', schedule);
       const final: Keyframe = { ...frames[frames.length - 1] };
       delete final.computedOffset;
       effect.setKeyframes([{ ...final, offset: 0 }, { ...final, offset: 1 }]);
       effect.updateTiming({ fill: 'both' });
     }
   };
-  settle();
-  const observer = new MutationObserver(settle);
-  observer.observe(root, { subtree: true, childList: true, attributes: true });
-  root.addEventListener('animationstart', settle, { capture: true });
-  window.addEventListener('resize', settle);
+  const flush = () => {
+    frame = undefined;
+    prune();
+    const regions = [...pending];
+    pending.clear();
+    for (const region of regions) {
+      if (region.isConnected && !regions.some(parent => parent !== region && parent.contains(region))) settle(region);
+    }
+  };
+  function schedule() {
+    if (frame === undefined) frame = requestAnimationFrame(flush);
+  }
+  const onStart = (event: Event) => {
+    if (event.target instanceof Element) pending.add(event.target);
+    schedule();
+  };
+  // One initial page scan; subsequent passes only visit added subtrees or animation targets.
+  settle(root);
+  const observer = new MutationObserver(records => {
+    for (const record of records) {
+      for (const node of record.addedNodes) if (node instanceof Element) pending.add(node);
+    }
+    schedule(); // Removal-only batches still prune detached effects.
+  });
+  observer.observe(root, { subtree: true, childList: true });
+  root.addEventListener('animationstart', onStart, { capture: true });
   return () => {
     observer.disconnect();
-    root.removeEventListener('animationstart', settle, { capture: true });
-    window.removeEventListener('resize', settle);
-    for (const [effect, original] of originals) {
-      effect.setKeyframes(original.frames);
-      effect.updateTiming({ fill: original.fill });
+    root.removeEventListener('animationstart', onStart, { capture: true });
+    if (frame !== undefined) cancelAnimationFrame(frame);
+    pending.clear();
+    prune();
+    for (const [animation, original] of originals) {
+      animation.removeEventListener('cancel', schedule);
+      original.effect.setKeyframes(original.frames);
+      original.effect.updateTiming({ fill: original.fill });
     }
+    originals.clear();
   };
 }
 
@@ -44,7 +80,8 @@ function applyAnimationsPaused(paused: boolean) {
   restoreEntrances = undefined;
   document.documentElement.classList.toggle('animations-paused', paused);
   if (paused && typeof document.documentElement.getAnimations === 'function' && typeof KeyframeEffect !== 'undefined') {
-    restoreEntrances = settleFiniteAnimations(document.documentElement);
+    const page = document.querySelector<HTMLElement>('.sx');
+    if (page) restoreEntrances = settleFiniteAnimations(page);
   }
 }
 
