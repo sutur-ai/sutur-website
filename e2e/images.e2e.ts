@@ -6,8 +6,23 @@ for (const width of [1440, 390]) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
+    const avatar = page.locator('[class*="rf-ai-av"] img');
+    await avatar.scrollIntoViewIfNeeded();
+    await expect(avatar).toBeInViewport();
+    await expect.poll(() => avatar.evaluate(img => img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0)).toBe(true);
+    const avatarMetrics = await avatar.evaluate(img => {
+      if (!(img instanceof HTMLImageElement)) throw new Error('Expected an image element');
+      const rect = img.getBoundingClientRect();
+      return {
+        width: rect.width,
+        height: rect.height,
+        ratioError: Math.abs((rect.width / rect.height) / (img.naturalWidth / img.naturalHeight) - 1),
+      };
+    });
+    expect(avatarMetrics.width).toBeCloseTo(12, 1);
+    expect(avatarMetrics.height).toBeCloseTo(14.4, 1);
+    expect(avatarMetrics.ratioError).toBeLessThanOrEqual(0.02);
     let checked = 0;
-    let avatarChecked = false;
     for (const image of await page.locator('img').all()) {
       if (!await image.isVisible()) continue;
       // Bring below-fold images into view without scrolling clipped marquee copies horizontally.
@@ -55,20 +70,13 @@ for (const width of [1440, 390]) {
         return {
           src: img.currentSrc, renderedWidth, renderedHeight,
           ratioError: Math.abs((renderedWidth / renderedHeight) / (img.naturalWidth / img.naturalHeight) - 1),
-          avatar: Boolean(img.closest('[class*="rf-ai-av"]')),
         };
       });
       expect(metrics.renderedWidth, metrics.src).toBeGreaterThan(0);
       expect(metrics.renderedHeight, metrics.src).toBeGreaterThan(0);
       expect(metrics.ratioError, metrics.src).toBeLessThanOrEqual(0.02);
-      if (metrics.avatar) {
-        avatarChecked = true;
-        expect(metrics.renderedWidth).toBeCloseTo(12, 1);
-        expect(metrics.renderedHeight).toBeCloseTo(14.4, 1);
-      }
       checked++;
     }
     expect(checked).toBeGreaterThan(10);
-    expect(avatarChecked).toBe(true);
   });
 }
