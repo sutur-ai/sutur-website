@@ -69,7 +69,7 @@
 .field em:empty { display: none; }
 .labelText small { color: var(--muted); font-size: inherit; font-weight: 400; }
 .full, .step, .continue, .note { grid-column: 1 / -1; }
-.step { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--violet); margin: 0; }
+.step { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--violet-text); margin: 0; }
 .form .continue { width: 100%; margin: 0; justify-content: center; }
 .note, .privacy { margin: 0; font-size: 12px; color: var(--muted); text-align: center; }
 .flow .calendar { min-width: 0; background: transparent; }
