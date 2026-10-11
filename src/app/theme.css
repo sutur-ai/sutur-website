@@ -1,144 +1,60 @@
-/*
- * SUTUR WEB THEME
- * ----------------
- * This is the single source of truth for the website's visual system.
- * Change brand colors, typography, spacing, sizing, radii, shadows, and motion here.
- * Component styles consume these tokens instead of defining competing theme values.
- *
- * Deck breakpoints: 640px / 1024px / 1440px.
- * CSS custom properties cannot be used inside @media conditions, so those three
- * breakpoint values are repeated only in media-query declarations.
- */
+/* Weight-400 metrics from the bundled Montserrat font, relative to Arial.
+   Its variable default is 100, so next/font's automatic adjustment is too small. */
+@font-face {
+  font-family: "Montserrat Arial Fallback";
+  src: local("Arial");
+  ascent-override: 84.96%;
+  descent-override: 22.03%;
+  line-gap-override: 0.00%;
+  size-adjust: 113.94%;
+}
 
 :root {
-  /* Brand palette — Design Deck v1.0 */
-  --deep-interface: #3b1447;
-  --deep-interface-rgb: 59 20 71;
-  --deep-interface-hover: #4c1e5b;
-  --deep-interface-active: #2a0d33;
-  --deep-active-rgb: 42 13 51;
-  --soft-signal: #ead1e5;
-  --soft-signal-rgb: 234 209 229;
-  --active-orange: #f57e20;
-  --active-orange-rgb: 245 126 32;
-  --active-orange-hover: #e06f14;
-  --data-violet: #906fb1;
-  --data-violet-rgb: 144 111 177;
-  --white: #ffffff;
-  --white-rgb: 255 255 255;
-
-  /* Semantic color roles */
-  --surface-page: #fdfafc;
-  --surface-soft: #f7ebf5;
-  --surface-card: #ffffff;
-  --text-primary: var(--deep-interface);
-  --text-secondary: #725e7b;
-  --text-on-deep: var(--soft-signal);
-  --text-on-deep-muted: rgba(234, 209, 229, 0.74);
-  --text-on-orange: var(--deep-interface-active);
-  --border: #e2d0df;
-  --border-strong: #c7adc3;
-  --border-on-deep: rgba(234, 209, 229, 0.2);
-  --orange-tint: #fde9d8;
-  --violet-tint: #e9e2f0;
-  --focus-ring: var(--active-orange);
-  --error-text: #a53a0e;
-
-  /* Typography — use licensed Gotham when present; Montserrat is the bundled metric substitute. */
-  --font-display: "Gotham Black", "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  --font-body: "Gotham Book", "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --weight-book: 400;
-  --weight-medium: 600;
-  --weight-bold: 600;
-  --type-display: clamp(3.5rem, 5.2vw, 6.25rem);
-  --type-page-title: clamp(3.25rem, 4.7vw, 5.75rem);
-  --type-section: clamp(2.5rem, 4.2vw, 4.75rem);
-  --type-heading: clamp(1.875rem, 2.4vw, 2.5rem);
-  --type-card-heading: clamp(1.5rem, 1.8vw, 2rem);
-  --type-body-large: clamp(1rem, 1.15vw, 1.2rem);
-  --type-body: 1rem;
-  --type-small: 0.8125rem;
-  --type-label: clamp(0.75rem, 0.8vw, 0.875rem);
-  --tracking-display: -0.035em;
-  --tracking-label: 0.2em;
-  --leading-display: 0.94;
-  --leading-heading: 1.04;
-  --leading-body: 1.65;
-
-  /* 8px rhythm plus deck-supported intermediate values */
-  --space-0: 0;
-  --space-1: 0.25rem;  /* 4 */
-  --space-2: 0.5rem;   /* 8 */
-  --space-3: 1rem;     /* 16 */
-  --space-4: 1.5rem;   /* 24 */
-  --space-5: 2.5rem;   /* 40 */
-  --space-6: 4rem;     /* 64 */
-  --space-7: 6rem;     /* 96 */
-  --space-8: 7.5rem;   /* 120 */
-  --space-9: 10rem;    /* 160 */
-
-  /* Layout */
-  --content-width: 120rem; /* Uses the full width of large desktop canvases. */
-  --page-gutter: clamp(1.25rem, 4vw, 5rem);
-  --section-space: clamp(5rem, 8vw, 8rem);
-  --grid-gutter: 1.5rem;
-  --header-height: 5.25rem;
-  --header-floating-height: 3.625rem;
-  --hero-min-height: clamp(42rem, 92svh, 55rem);
-  --hero-visual-max: 46rem;
-  --capability-visual-height: 20rem;
-  --capability-visual-height-wide: 23.75rem;
-  --booking-embed-height: 46rem;
-
-  /* Shape */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-card: 1.125rem;
-  --radius-lg: var(--radius-card);
-  --radius-pill: 999px;
-  --control-height: 2.75rem;
-  --control-height-small: 2.375rem;
-  --hit-target: 2.75rem;
-
-  /* Elevation — restrained, flat-first */
-  --shadow-card: 0 1px 2px rgba(59, 20, 71, 0.06), 0 12px 30px rgba(59, 20, 71, 0.08);
-  --shadow-overlay: 0 18px 60px rgba(42, 13, 51, 0.3);
-  --shadow-focus: 0 0 0 4px rgba(245, 126, 32, 0.18);
-
-  /* Motion — deck: 16px rise, 600ms, ease-out */
-  --motion-distance: 1rem;
-  --motion-fast: 160ms;
-  --motion-medium: 240ms;
-  --motion-reveal: 600ms;
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-standard: ease-out;
-
-  /* Interactive agent visual */
-  --orbit-size: 38.75rem;
-  --orbit-height: 35rem;
-  --orbit-field-size: 32.5rem;
-  --orbit-node-min: 3.375rem;
-  --orbit-node-max: 4rem;
-  --orbit-cycle: 80s;
-}
-
-@media (max-width: 1024px) {
-  :root {
-    --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
-    --hero-min-height: auto;
-    --section-space: clamp(var(--space-7), 12vw, var(--space-8));
-  }
-}
-
-@media (max-width: 640px) {
-  :root {
-    --page-gutter: 1.5rem;
-    --type-display: clamp(3rem, 14vw, 4.6rem);
-    --type-page-title: clamp(3rem, 13vw, 4.5rem);
-    --type-section: clamp(2.55rem, 12vw, 4rem);
-    --section-space: 5.5rem;
-    --capability-visual-height: 18.75rem;
-    --booking-embed-height: 50rem;
-  }
+  --deep:#3b1447;
+  --deep-3:#2a0d33;
+  --soft:#ead1e5;
+  --orange:#f57e20;
+  --orange-h:#e06f14;
+  --violet:#906fb1;
+  --violet-text:#7d5c9f;
+  --page:#fcfbfc;
+  --tint:#f6f1f5;
+  --card:#fff;
+  --muted:#6e5c77;
+  --line:rgba(59,20,71,.10);
+  --line-2:rgba(59,20,71,.20);
+  --sh-1:0 1px 2px rgba(59,20,71,.04),0 8px 24px -10px rgba(59,20,71,.12);
+  --sh-2:0 40px 90px -30px rgba(59,20,71,.32);
+  --glass:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.42));
+  --glass-edge:rgba(255,255,255,.75);
+  --glass-hi:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.25);
+  --glass-blur:blur(20px) saturate(180%);
+  --orange-tint:#fde9d8;
+  --violet-tint:#e9e2f0;
+  --ok:#2f7d4f;
+  --font-body:"Gotham Book",var(--font-montserrat),"Helvetica Neue",sans-serif;
+  --font-display:"Gotham Black",var(--font-montserrat),sans-serif;
+  --font-app:var(--font-inter),system-ui,sans-serif;
+  --deep-interface:var(--deep);
+  --active-orange:var(--orange);
+  --surface-page:var(--page);
+  --text-primary:var(--deep);
+  --text-secondary:var(--muted);
+  --border:var(--line);
+  --border-strong:var(--line-2);
+  --focus-ring:var(--orange);
+  --error-text:#a53a0e;
+  --shadow-focus:0 0 0 4px rgba(245,126,32,.18);
+  --space-2:.5rem;
+  --space-3:1rem;
+  --space-4:1.5rem;
+  --space-5:2.5rem;
+  --space-6:4rem;
+  --type-small:.8125rem;
+  --weight-bold:600;
+  --weight-regular:400;
+  --radius-sm:.5rem;
+  --motion-fast:160ms;
+  --ease-standard:ease-out;
+  --booking-embed-height:46rem;
 }
