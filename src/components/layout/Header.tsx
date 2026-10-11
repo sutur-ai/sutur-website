@@ -18,7 +18,7 @@ export function Header() {
   }, []);
   return <header className="nav" onKeyDown={event => { if (event.key === 'Escape') { close(); event.currentTarget.querySelector<HTMLButtonElement>('.nav-menu')?.focus(); } }}>
     <div className="wrap nav-in">
-      <a href="#top" aria-label="Sutur home" onClick={close}><img className="nav-brand" src="/brand/sutur-wordmark-deep.png" width={1551} height={562} alt="Sutur" /></a>
+      <a href="#top" aria-label="Sutur home" onClick={close}><img className="nav-brand" src="/brand/sutur-wordmark-deep.webp" width={265} height={96} alt="Sutur" /></a>
       <nav className="nav-links" aria-label="Main">{links.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}</nav>
       <div className="nav-actions">
         <a className="btn nav-cta" href="#book" onClick={close}>Book a demo</a>

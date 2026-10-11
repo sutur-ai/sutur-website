@@ -6,11 +6,11 @@ export function Footer() { return (
 </div>
 <div className="foot-grid">
 <div className="foot-brand">
-<img src="/brand/sutur-wordmark-soft.png" width={2250} height={816} alt="Sutur" />
+<img loading="lazy" decoding="async" src="/brand/sutur-wordmark-soft.webp" width={265} height={96} alt="Sutur" />
 <span>Sutur builds Rafic, the AI assistant that connects to your business and does the work, with you in control.</span>
 </div>
 <nav className="foot-col" aria-label="Product">
-<h5>Product</h5>
+<h3>Product</h3>
 <a href="#what">What Rafic does</a>
 <a href="#teams">Use cases</a>
 <a href="#control">Control</a>
@@ -18,7 +18,7 @@ export function Footer() { return (
 <a href="#faq">FAQ</a>
 </nav>
 <nav className="foot-col" aria-label="Company">
-<h5>Company</h5>
+<h3>Company</h3>
 <a href="#book">Book a demo</a>
 <a href="tel:+9613230063">+961 3 230 063</a>
 </nav>

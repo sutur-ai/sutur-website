@@ -22,7 +22,7 @@ describe('Photoshop visual', () => {
     for (const copy of ['File', 'Type', 'Shape', 'Layers', 'Channels', 'Paths', 'Properties', 'spring-campaign.psd @ 50% (RGB/8)', '1600 px × 2000 px (72 ppi)', 'SALE −20%', '906FB1', 'Original kept', 'Stop']) {
       expect(markup).toContain(copy);
     }
-    expect(markup).toContain('src="/brand/design-system/sutur-icon-soft.png"');
+    expect(markup).toContain('src="/brand/design-system/sutur-icon-soft.webp"');
     expect(markup).not.toContain('/_blob/');
   });
 

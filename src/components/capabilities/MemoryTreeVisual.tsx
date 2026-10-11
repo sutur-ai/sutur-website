@@ -12,7 +12,7 @@ export function MemoryTreeVisual() {
           <path d="M50 15 L 50 22 M18 22 L 82 22 M18 22 L 18 27 M50 22 L 50 27 M82 22 L 82 27"></path>
           <path className={styles["dash"]} d="M18 46 L 18 57 M50 46 L 50 57 M82 46 L 82 57"></path>
         </svg>
-        <div className={[styles["tn"], styles["t-root"]].join(" ")} style={{ left: "50%", top: "9%" }}><img src="/brand/design-system/sutur-icon-soft.png" width="34" height="34" alt="" />Rafic</div>
+        <div className={[styles["tn"], styles["t-root"]].join(" ")} style={{ left: "50%", top: "9%" }}><img loading="lazy" decoding="async" src="/brand/design-system/sutur-icon-soft.webp" width="140" height="168" alt="" />Rafic</div>
         <div className={[styles["tn"], styles["t-dec"], styles["d1"]].join(" ")} style={{ left: "18%", top: "36%" }}><span className={styles["t-dec-k"]}>Decision</span>Closed September&apos;s books in 5 steps<br /><span className={styles["t-learn"]}>Learned a skill</span></div>
         <div className={[styles["tn"], styles["t-dec"], styles["d2"]].join(" ")} style={{ left: "50%", top: "36%" }}><span className={styles["t-dec-k"]}>Decision</span>Sent the Beit Mery quote as a PDF, in French<br /><span className={styles["t-learn"]}>Learned a habit</span></div>
         <div className={[styles["tn"], styles["t-dec"], styles["d3"]].join(" ")} style={{ left: "82%", top: "36%" }}><span className={styles["t-dec-k"]}>Decision</span>Wrote your brief on Monday morning<br /><span className={styles["t-learn"]}>Learned a routine</span></div>

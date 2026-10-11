@@ -4,7 +4,7 @@
 .hub-lines line.in{animation-direction:reverse;stroke:var(--violet)}
 @keyframes sxflow{to{stroke-dashoffset:-20}}
 .node{position:absolute;translate:-50% -50%;width:clamp(48px,10cqi,76px);height:clamp(48px,10cqi,76px);border-radius:20px;background:var(--glass);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur);border:1px solid var(--glass-edge);box-shadow:0 10px 26px rgba(59,20,71,.1);display:flex;align-items:center;justify-content:center;animation:sxfloat 6s ease-in-out infinite}
-.node img{width:46%;height:46%}
+.node img{object-fit:contain;width:46%;height:46%}
 @keyframes sxfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .core{position:absolute;left:50%;top:50%;translate:-50% -50%;width:clamp(84px,17cqi,128px);height:clamp(84px,17cqi,128px);border-radius:32px;background:var(--deep);display:flex;align-items:center;justify-content:center;box-shadow:0 20px 50px rgba(59,20,71,.35);z-index:2}
 .core img{width:34%;height:auto}

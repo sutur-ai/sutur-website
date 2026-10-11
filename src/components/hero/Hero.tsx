@@ -12,7 +12,7 @@ function Icon({ kind = 'check', size = 16 }: { kind?: 'check' | 'arrow' | 'up' |
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={kind === 'edit' || kind === 'search' || kind === 'bell' ? 1.8 : kind === 'arrow' ? 2.2 : kind === 'down' || kind === 'right' ? 2 : size === 10 ? 3 : size === 11 ? 2.6 : 2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind === 'search' && <circle cx="11" cy="11" r="7" />}<path d={paths[kind]} /></svg>;
 }
 function Mark({ soft = false }: { soft?: boolean }) {
-  return <img src={`/brand/design-system/sutur-icon-${soft ? 'soft' : 'deep'}.png`} alt="" aria-hidden="true" />;
+  return <img src={`/brand/design-system/sutur-icon-${soft ? 'soft' : 'deep'}.webp`} width={140} height={168} decoding="async" alt="" aria-hidden="true" />;
 }
 
 export function Hero() {

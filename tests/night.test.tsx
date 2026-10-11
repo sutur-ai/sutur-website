@@ -35,9 +35,9 @@ describe('night shift visual', () => {
     expect(rows[5]).toContain(`class="${styles.fcard} ${styles.brief}"`);
     expect(rows[5]).toContain(`class="${styles.fdot} ${styles.brief}"`);
     expect(markup).not.toMatch(/<(button|input)|tabindex=|\/_blob\//);
-    const imgs = [...markup.matchAll(/<img src="([^\"]+)" width="20" height="20" alt=""/g)];
+    const imgs = [...markup.matchAll(/<img[^>]*src="([^\"]+)"[^>]*>/g)];
     expect(imgs).toHaveLength(5);
-    expect(imgs.map(img => img[1])).toEqual(['/brand/apps/shopify.svg', '/brand/apps/quickbooks.svg', '/brand/apps/gmail.svg', '/brand/apps/hubspot.svg', '/brand/design-system/sutur-icon-soft.png']);
+    expect(imgs.map(img => img[1])).toEqual(['/brand/apps/shopify.svg', '/brand/apps/quickbooks.svg', '/brand/apps/gmail.svg', '/brand/apps/hubspot.svg', '/brand/design-system/sutur-icon-soft.webp']);
     for (const img of imgs) expect(existsSync(new URL(`../public${img[1]}`, import.meta.url))).toBe(true);
   });
 

@@ -20,7 +20,7 @@ describe('memory tree', () => {
   it('exposes the approved image description and reserves the root icon size', () => {
     const markup = render();
     expect(markup).toContain('role="img" aria-label="A tree: Rafic at the top, three decisions below it. From each decision Rafic learns something and files it into its memory: a new skill, a new habit and a new reminder"');
-    expect(markup).toContain('src="/brand/design-system/sutur-icon-soft.png" width="34" height="34" alt=""');
+    expect(markup).toContain('src="/brand/design-system/sutur-icon-soft.webp" width="140" height="168" alt=""');
     expect(markup.match(/<svg[^>]+aria-hidden="true"/g)).toHaveLength(9);
   });
 

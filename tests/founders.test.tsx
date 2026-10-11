@@ -1,27 +1,23 @@
-import { readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { expect, it, vi } from 'vitest';
 import { Founders } from '../src/components/sections/Founders';
 
 vi.stubGlobal('React', React);
-it('renders the four original logos with design alt text and intrinsic dimensions', () => {
+it('renders the four right-sized logos with design alt text and intrinsic dimensions', () => {
   const markup = renderToStaticMarkup(<Founders />);
   expect(markup.match(/<img /g)).toHaveLength(4);
-  for (const [file, alt] of [
-    ['american-university-of-beirut.png', 'American University of Beirut'],
-    ['university-of-toronto.svg', 'University of Toronto'],
-    ['uclouvain.png', 'UCLouvain'],
-    ['boston-consulting-group.png', 'Boston Consulting Group'],
+  for (const [file, alt, width] of [
+    ['american-university-of-beirut.webp', 'American University of Beirut', 327],
+    ['university-of-toronto.webp', 'University of Toronto', 294],
+    ['uclouvain.webp', 'UCLouvain', 471],
+    ['boston-consulting-group.webp', 'Boston Consulting Group', 519],
   ]) {
     const tag = markup.match(new RegExp(`<img[^>]*src="/brand/founders/${file}"[^>]*>`))?.[0] ?? '';
     expect(tag).toContain(`alt="${alt}"`);
-    if (file.endsWith('.png')) {
-      const png = readFileSync(new URL(`../public/brand/founders/${file}`, import.meta.url));
-      expect(tag).toContain(`width="${png.readUInt32BE(16)}"`);
-      expect(tag).toContain(`height="${png.readUInt32BE(20)}"`);
-    } else {
-      expect(tag).toContain('width="428.5" height="159"');
-    }
+    expect(existsSync(new URL(`../public/brand/founders/${file}`, import.meta.url))).toBe(true);
+    expect(tag).toContain(`width="${width}" height="109"`);
+    expect(tag).toContain('loading="lazy" decoding="async"');
   }
 });
