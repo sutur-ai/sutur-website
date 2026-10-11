@@ -1,0 +1,10 @@
+.faq-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(40px,5.5cqi,128px)}
+.faq{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;background:none;border:0;font:inherit;font-size:17px;font-weight:600;color:var(--deep);text-align:left;cursor:pointer;min-height:44px}
+.faq-sign{flex:0 0 30px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;font-weight:600}
+.faq-a{padding:4px 0 26px;color:var(--muted);margin:0;max-width:40em;animation:sxin .3s ease-out}
+.faq-grid .head{margin-bottom:0}
+@container(max-width:1100px){.faq-grid{grid-template-columns:minmax(0,1fr)}}
+@keyframes sxin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.faq-a{animation:none}}
