@@ -67,6 +67,22 @@ describe('memory tree', () => {
     expect(css).toContain('animation:global(sxring) 2.8s ease-out infinite');
   });
 
+  it('reserves New-row space and uses only non-layout animation properties on phones', () => {
+    const phone = css.split('@container vis (max-width:620px)')[1].split('@keyframes')[0];
+    expect(phone).toContain('.mf.new{max-height:30px;padding-block:4px;border-width:1px}');
+    for (let index = 1; index <= 3; index++) {
+      const animation = phone.match(new RegExp(`\\.mf\\.n${index}\\{animation-name:([^}]+)\\}`))?.[1];
+      expect(animation).toBeDefined();
+      const frames = css.match(new RegExp(`@keyframes ${animation}\\{([^\\n]+)\\}`))?.[1];
+      expect(frames).toBeDefined();
+      const properties = [...frames!.matchAll(/([a-z-]+)\s*:/g)].map(match => match[1]);
+      expect(properties.length).toBeGreaterThan(0);
+      expect(properties.every(property => ['opacity', 'transform'].includes(property))).toBe(true);
+      expect(frames).toContain(`${26 + (index - 1) * 30}%,96%{opacity:1}`);
+      expect(frames).toContain('100%{opacity:0}');
+    }
+  });
+
   it('stacks on phone and shows the complete memory without motion', () => {
     expect(css).toContain('.tree{position:relative;height:clamp(600px,72cqi,740px)}');
     const phone = css.split('@container vis (max-width:620px)')[1].split('@media')[0];

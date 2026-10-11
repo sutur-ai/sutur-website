@@ -51,7 +51,14 @@
 .t-root{align-self:center;position:relative;left:0!important;top:0!important}
 .t-dec{width:auto}
 .mem-cols{grid-template-columns:minmax(0,1fr)}
+/* Reserve the final row space while the tree contributes to page height. */
+.mf.new{max-height:30px;padding-block:4px;border-width:1px}
+.mf.n1{animation-name:sxmp1}.mf.n2{animation-name:sxmp2}.mf.n3{animation-name:sxmp3}
 }
+
+@keyframes sxmp1{0%,23%,100%{opacity:0}26%,96%{opacity:1}}
+@keyframes sxmp2{0%,53%,100%{opacity:0}56%,96%{opacity:1}}
+@keyframes sxmp3{0%,83%,100%{opacity:0}86%,96%{opacity:1}}
 
 @media (prefers-reduced-motion: reduce) {
   .tree *, .tree *::before, .tree *::after {
