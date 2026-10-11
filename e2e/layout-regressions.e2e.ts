@@ -47,7 +47,8 @@ test('footer ends with the current outlined Sutur artwork below the copyright li
   }
 });
 
-test('reviews stay structured and contained from desktop through 320px', async ({ page }) => {
+// The reviews section is off the homepage (SUTUR-1214); unskip when it returns.
+test.skip('reviews stay structured and contained from desktop through 320px', async ({ page }) => {
   for (const width of [1440, 1025, 1024, 760, 320]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');

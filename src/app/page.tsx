@@ -4,7 +4,6 @@ import { AgentOrbit } from '@/components/brand/AgentOrbit';
 import { CompanyCapabilities } from '@/components/sections/CompanyCapabilities';
 import { WhyUs } from '@/components/sections/WhyUs';
 import { FoundersFrom } from '@/components/sections/FoundersFrom';
-import { Reviews } from '@/components/sections/Reviews';
 import { FaqSection } from '@/components/sections/FaqSection';
 import { Booking } from '@/components/booking/Booking';
 import { SignalDot } from '@/components/ui/SignalDot';
@@ -45,8 +44,6 @@ export default function Home() {
       <WhyUs />
 
       <FoundersFrom />
-
-      <Reviews />
 
       <FaqSection />
 

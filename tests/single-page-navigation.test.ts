@@ -19,7 +19,6 @@ const homepageSources = [
   '../src/app/page.tsx',
   '../src/components/sections/CompanyCapabilities.tsx',
   '../src/components/sections/WhyUs.tsx',
-  '../src/components/sections/Reviews.tsx',
   '../src/components/sections/FaqSection.tsx',
 ].map((path) => readFileSync(new URL(path, import.meta.url), 'utf8')).join('\n');
 
@@ -48,9 +47,10 @@ describe('single-page website architecture', () => {
     const expectedLinks = [
       ["Capabilities", '#capabilities'],
       ['Why us', '#why-us'],
-      ['Outcomes', '#reviews'],
       ['FAQ', '#questions'],
     ] as const;
+
+    expect(navigation).not.toContain('#reviews');
 
     for (const [label, href] of expectedLinks) {
       expect(navigation).toContain(`['${label}', '${href}']`);
