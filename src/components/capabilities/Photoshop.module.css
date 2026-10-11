@@ -1,6 +1,6 @@
 .ps{margin:clamp(16px,4cqi,36px) clamp(16px,4cqi,36px) 0;border-radius:10px 10px 0 0;overflow:hidden;background:#535353;font-family:var(--font-app);color:#d4d4d4;font-size:11px;box-shadow:0 30px 70px rgba(42,13,51,.35);letter-spacing:0}
 .ps-menu{height:26px;background:#2c2c2c;display:flex;align-items:center;gap:14px;padding:0 10px;white-space:nowrap;overflow:hidden;color:#cfcfcf}
-.ps-menu svg{width:15px;height:15px}
+.ps-menu svg{width:15px;height:15px;flex-shrink:0}
 .ps-opt{position:relative;height:32px;background:#3a3a3a;border-bottom:1px solid #262626;overflow:hidden}
 .ps-optset{position:absolute;inset:0;display:flex;align-items:center;gap:10px;padding:0 10px;white-space:nowrap}
 .ps-sel{background:#2b2b2b;border:1px solid #1f1f1f;border-radius:3px;padding:2px 8px;color:#e6e6e6;white-space:nowrap}

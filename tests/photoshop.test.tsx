@@ -61,6 +61,7 @@ describe('Photoshop visual', () => {
 
   it('preserves the phone layout and uses the shared application font', () => {
     expect(css).toContain('font-family:var(--font-app)');
+    expect(css).toContain('.ps-menu svg{width:15px;height:15px;flex-shrink:0}');
     expect(css).toContain('@container vis (max-width: 620px){\n.ps-main{grid-template-columns:30px minmax(0,1fr)}\n.ps-side{display:none}\n.ps-sel:nth-of-type(n+3){display:none}');
     const component = readFileSync(new URL('../src/components/capabilities/PhotoshopVisual.tsx', import.meta.url), 'utf8');
     for (const match of component.matchAll(/styles\['([^']+)'\]/g)) {
