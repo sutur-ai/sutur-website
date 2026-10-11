@@ -42,6 +42,33 @@ for (const width of [390, 1440]) {
       expect(result.cardWidth).toBe(width === 390 ? 150 : 172);
       expect(result.logo).toEqual([23, 23, true, true]);
     }
+    if (width === 390) {
+      for (const name of ['Microsoft Teams', 'Premiere Pro', 'Google Sheets', 'Google Drive']) {
+        const metrics = await strip.getByText(name, { exact: true }).first().evaluate(element => {
+          const style = getComputedStyle(element);
+          const card = element.parentElement!;
+          const cardStyle = getComputedStyle(card);
+          const range = document.createRange();
+          range.selectNodeContents(element);
+          return {
+            lines: range.getClientRects().length,
+            fontFamily: style.fontFamily,
+            fontVariationSettings: style.fontVariationSettings,
+            nameWidth: element.getBoundingClientRect().width,
+            fontSize: style.fontSize,
+            fontWeight: style.fontWeight,
+            letterSpacing: style.letterSpacing,
+            padding: [cardStyle.paddingLeft, cardStyle.paddingRight],
+            cardWidth: card.getBoundingClientRect().width,
+          };
+        });
+        expect(metrics.lines, `${name}: ${JSON.stringify(metrics)}`).toBe(1);
+        expect(metrics).toMatchObject({
+          lines: 1, fontSize: '14px', fontWeight: '600', letterSpacing: 'normal',
+          padding: ['14px', '14px'], cardWidth: 150,
+        });
+      }
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }
@@ -71,4 +98,44 @@ test('apps roll in opposite directions and pause on hover and off screen', async
   await strip.scrollIntoViewIfNeeded();
   await expect(strip).not.toHaveClass(/idle/);
   for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
+});
+
+test('keyboard pause persists across hover, off-screen and reduced-motion changes', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const strip = page.getByRole('region', { name: 'Apps Rafic works with' });
+  await strip.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  const button = strip.getByRole('button');
+  await expect(button).toHaveAccessibleName('Pause the app strip');
+  const tracks = strip.locator(':scope > div').filter({ has: page.locator('img') }).locator(':scope > div');
+  expect(await strip.locator(':scope button, :scope a, :scope [tabindex="0"]').first().getAttribute('type')).toBe('button');
+  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBe(1);
+  // Reach the control through native tab navigation, without programmatic focus.
+  for (let attempt = 0; attempt < 15 && !await button.evaluate(element => element === document.activeElement); attempt++) {
+    await page.keyboard.press('Tab');
+  }
+  await expect(button).toBeFocused();
+  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThan(32);
+  await page.keyboard.press('Space');
+  await expect(button).toHaveText('Resume the app strip');
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
+  await tracks.first().hover();
+  await page.mouse.move(0, 0);
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
+  await page.locator('footer').scrollIntoViewIfNeeded();
+  await expect(strip).toHaveClass(/idle/);
+  await strip.scrollIntoViewIfNeeded();
+  await expect(strip).not.toHaveClass(/idle/);
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'paused');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-name', 'none');
+  await page.keyboard.press('Enter');
+  await expect(button).toHaveText('Pause the app strip');
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-name', 'none');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  for (const track of await tracks.all()) await expect(track).toHaveCSS('animation-play-state', 'running');
+  await page.keyboard.press('Tab');
+  await expect(button).not.toBeFocused();
+  expect(await button.evaluate(element => element.getBoundingClientRect().width)).toBe(1);
 });
