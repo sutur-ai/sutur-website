@@ -44,7 +44,6 @@ describe('website design-system theme', () => {
     const hero = page.indexOf('className="hero scroll-section surface-ink"');
     const capabilities = page.indexOf('<CompanyCapabilities />');
     const whyUs = page.indexOf('<WhyUs />');
-    const reviews = page.indexOf('<Reviews />');
     const questions = page.indexOf('<FaqSection />');
     const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
     const footer = page.indexOf('<SiteFooter />');
@@ -53,8 +52,7 @@ describe('website design-system theme', () => {
     expect(capabilities).toBeGreaterThan(hero);
     expect(whyUs).toBeGreaterThan(capabilities);
     expect(page).not.toContain('className="section team scroll-section surface-ink"');
-    expect(reviews).toBeGreaterThan(whyUs);
-    expect(questions).toBeGreaterThan(reviews);
+    expect(questions).toBeGreaterThan(whyUs);
     expect(booking).toBeGreaterThan(questions);
     expect(footer).toBeGreaterThan(booking);
   });
@@ -160,11 +158,11 @@ describe('website design-system theme', () => {
     for (const link of [
       "['Capabilities', '#capabilities']",
       "['Why us', '#why-us']",
-      "['Outcomes', '#reviews']",
       "['FAQ', '#questions']",
     ]) {
       expect(navigation).toContain(link);
     }
+    expect(navigation).not.toContain('#reviews');
     expect(header).toContain('href="#book">Book a call</a>');
     expect(css).toMatch(/\.site-header\s*{[^}]*position:\s*fixed[^}]*background:\s*var\(--deep-interface\)/s);
     expect(css).toMatch(/\.site-header\s*{[^}]*width:\s*min\(82rem, max\(58rem, 70vw\), calc\(100% - 2rem\)\)/s);

@@ -32,11 +32,11 @@ describe('homepage narrative sections', () => {
     const founders = readIfExists('../src/components/sections/FoundersFrom.tsx');
     const whyUs = page.indexOf('<WhyUs />');
     const foundersSection = page.indexOf('<FoundersFrom />');
-    const reviews = page.indexOf('<Reviews />');
+    const faqSection = page.indexOf('<FaqSection />');
 
     expect(page).toContain("import { FoundersFrom } from '@/components/sections/FoundersFrom'");
     expect(foundersSection).toBeGreaterThan(whyUs);
-    expect(reviews).toBeGreaterThan(foundersSection);
+    expect(faqSection).toBeGreaterThan(foundersSection);
     expect(founders).toContain('Founders from<SignalDot />');
     expect(founders).toContain('University of Toronto');
     expect(founders).toContain('UCLouvain');
@@ -51,16 +51,14 @@ describe('homepage narrative sections', () => {
     expect(css).toMatch(/\.founders-from-list\s*{[^}]*flex-wrap:\s*wrap/s);
   });
 
-  it('shows three real client outcomes without invented quotations', () => {
+  // Off the homepage since 2026-10-11 (SUTUR-1214) but kept to bring back: the
+  // component must stay intact even while the page does not render it.
+  it('keeps three real client outcomes, without invented quotations, off the homepage', () => {
     const reviews = readIfExists('../src/components/sections/Reviews.tsx');
-    const whyUs = page.indexOf('<WhyUs />');
-    const reviewSection = page.indexOf('<Reviews />');
-    const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
 
-    expect(page).toContain("import { Reviews } from '@/components/sections/Reviews'");
+    expect(page).not.toContain('<Reviews />');
+    expect(page).not.toContain("import { Reviews } from '@/components/sections/Reviews'");
     expect(page).not.toContain('className="section team scroll-section surface-ink"');
-    expect(reviewSection).toBeGreaterThan(whyUs);
-    expect(booking).toBeGreaterThan(reviewSection);
     expect(reviews).toContain('id="reviews"');
     expect(reviews).toContain('Client outcomes<SignalDot />');
     expect(reviews).not.toMatch(/[Pp]laceholder/);
@@ -91,12 +89,12 @@ describe('homepage narrative sections', () => {
 
   it('adds an accessible Q&A section immediately before booking', () => {
     const faq = readIfExists('../src/components/sections/FaqSection.tsx');
-    const reviews = page.indexOf('<Reviews />');
+    const founders = page.indexOf('<FoundersFrom />');
     const faqSection = page.indexOf('<FaqSection />');
     const booking = page.indexOf('className="booking-section scroll-section surface-soft"');
 
     expect(page).toContain("import { FaqSection } from '@/components/sections/FaqSection'");
-    expect(faqSection).toBeGreaterThan(reviews);
+    expect(faqSection).toBeGreaterThan(founders);
     expect(booking).toBeGreaterThan(faqSection);
     expect(faq).toContain('id="questions"');
     expect(faq).toContain('Questions & answers<SignalDot />');

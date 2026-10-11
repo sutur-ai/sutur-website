@@ -1,3 +1,4 @@
+// Not rendered on the homepage since 2026-10-11 (SUTUR-1214); kept to bring back.
 import Image from 'next/image';
 import { SignalDot } from '@/components/ui/SignalDot';
 
