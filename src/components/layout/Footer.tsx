@@ -1,3 +1,4 @@
+import Link from 'next/link';
 export function Footer() { return (
 <footer className="foot">
 <div className="wrap">
@@ -23,7 +24,7 @@ export function Footer() { return (
 <a href="tel:+9613230063">+961 3 230 063</a>
 </nav>
 </div>
-<div className="foot-base"><span>© 2026 Sutur. All rights reserved.</span><span>Rafic is a Sutur product.</span></div>
+<div className="foot-base"><span>© 2026 Sutur. All rights reserved.</span><span><Link href="/privacy">Privacy</Link> · <Link href="/support">Support</Link> · <Link href="/delete-account">Delete account</Link></span><span>Rafic is a Sutur product.</span></div>
 </div>
 </footer>
 ); }

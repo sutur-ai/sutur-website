@@ -27,7 +27,8 @@ describe('foundation markup', () => {
     expect(markup.match(/<h3>/g)).toHaveLength(2);
     expect(markup).not.toContain('<h5>');
     expect(markup).not.toContain('aria-label="Legal"');
-    for (const path of ['/privacy', '/terms', '/security']) expect(markup).not.toContain(`href="${path}"`);
+    for (const path of ['/terms', '/security']) expect(markup).not.toContain(`href="${path}"`);
+    for (const path of ['/privacy', '/support', '/delete-account']) expect(markup).toContain(`href="${path}"`);
     expect(markup).toContain('/brand/sutur-wordmark-soft.webp');
     expect(markup).toContain('Rafic is a Sutur product.');
   });
