@@ -51,3 +51,7 @@ it('explains both the in-app path and the email path to deletion', () => {
   expect(markup).toContain(`write to <a href="mailto:${EMAIL}">${EMAIL}</a> from the email address on your account`);
   expect(markup).toContain('<strong>within 30 days</strong>');
 });
+
+it('names the same in-app deletion path on the privacy and support pages', () => {
+  for (const Page of [Privacy, Support]) expect(renderToStaticMarkup(<Page />)).toContain('<strong>Settings › Account › Delete account</strong>');
+});

@@ -35,7 +35,7 @@ export default function Support() {
     <h3>Which AI providers see my data?</h3>
     <p>See the &ldquo;Who receives your data&rdquo; section of our privacy policy: <Link href="/privacy">https://sutur.ai/privacy</Link></p>
     <h3>Delete my account.</h3>
-    <p>In the app, choose <strong>Delete account</strong>, or go to <Link href="/delete-account">https://sutur.ai/delete-account</Link>. Deletion is completed within 30 days.</p>
+    <p>In the app, go to <strong>Settings › Account › Delete account</strong>, or go to <Link href="/delete-account">https://sutur.ai/delete-account</Link>. Deletion is completed within 30 days.</p>
 
     <h2>Report a problem or abuse</h2>
     <p>Write to <Mail />. Tell us:</p>

@@ -66,7 +66,7 @@ export default function Privacy() {
     ]} />
 
     <h2>Deleting your account</h2>
-    <p>In the Rafic app, choose <strong>Delete account</strong> and confirm with your password. Sutur staff complete the deletion <strong>within 30 days</strong> and email you when it is done. If you can&rsquo;t use the app, write to <Mail />. What is deleted, and what remains for a time, is set out at <Link href="/delete-account">https://sutur.ai/delete-account</Link>.</p>
+    <p>In the Rafic app, go to <strong>Settings › Account › Delete account</strong> and confirm with your email and current password (and your two-step code if you use one). Sutur staff complete the deletion <strong>within 30 days</strong> and email you when it is done. If you can&rsquo;t use the app, write to <Mail />. What is deleted, and what remains for a time, is set out at <Link href="/delete-account">https://sutur.ai/delete-account</Link>.</p>
 
     <h2>Your rights</h2>
     <p>You can ask us for a copy of your data, to correct it, or to delete it. Where the law gives you more rights, for example in the European Union, the United Kingdom or California, you can also object to or restrict processing. Write to <Mail />.</p>
